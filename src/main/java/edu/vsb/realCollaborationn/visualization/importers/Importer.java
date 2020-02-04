@@ -31,7 +31,6 @@
  */
 package edu.vsb.realCollaborationn.visualization.importers;
 
-import javafx.animation.Timeline;
 import javafx.scene.Group;
 
 import java.io.IOException;
@@ -60,11 +59,5 @@ public abstract class Importer {
      * @return True if the extension is of a supported type. False otherwise.
      */
     public abstract boolean isSupported(String supportType);
-    /**
-     * Can be overridden to return a timeline animation for the 3D file
-     * @return A timeline animation. Null if there is no timeline animation.
-     */
-    public Timeline getTimeline() {
-        return null;
-    }
+
 }

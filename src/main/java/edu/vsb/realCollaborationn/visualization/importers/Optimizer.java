@@ -60,19 +60,17 @@ import java.util.*;
  */
 public class Optimizer {
 
-    private Timeline timeline;
     private Node root;
     private Set<Transform> bound = new HashSet<>();
     private List<Parent> emptyParents = new ArrayList<>();
     private List<MeshView> meshViews = new ArrayList<>();
     private boolean convertToDiscrete = true;
 
-    public Optimizer(Timeline timeline, Node root) {
-        this(timeline, root, false);
+    public Optimizer(Node root) {
+        this(root, false);
     }
 
-    public Optimizer(Timeline timeline, Node root, boolean convertToDiscrete) {
-        this.timeline = timeline;
+    public Optimizer(Node root, boolean convertToDiscrete) {
         this.root = root;
         this.convertToDiscrete = convertToDiscrete;
     }
@@ -87,7 +85,6 @@ public class Optimizer {
         groupsTotal = 0;
         emptyParents.clear();
 
-        parseTimeline();
         optimize(root);
         removeEmptyGroups();
         optimizeMeshes();
@@ -105,12 +102,12 @@ public class Optimizer {
             Transform transform = iterator.next();
             trTotal++;
             if (transform.isIdentity()) {
-                if (timeline == null || !bound.contains(transform)) {
+                if (!bound.contains(transform)) {
                     iterator.remove();
                     trRemoved++;
                 }
             } else {
-                if (timeline == null || !bound.contains(transform)) {
+                if (!bound.contains(transform)) {
                     if (prevIsStatic) {
                         trCandidate++;
                     }
@@ -332,52 +329,6 @@ public class Optimizer {
         System.out.printf("Now we have %d texcoords.\n", check);
     }
 
-    private void cleanUpRepeatingFramesAndValues() {
-        ObservableList<KeyFrame> timelineKeyFrames = timeline.getKeyFrames().sorted(new KeyFrameComparator());
-//        Timeline timeline;
-        int kfTotal = timelineKeyFrames.size(), kfRemoved = 0;
-        int kvTotal = 0, kvRemoved = 0;
-        Map<Duration, KeyFrame> kfUnique = new HashMap<>();
-        Map<WritableValue, KeyValue> kvUnique = new HashMap<>();
-        MapOfLists<KeyFrame, KeyFrame> duplicates = new MapOfLists<>();
-        Iterator<KeyFrame> iterator = timelineKeyFrames.iterator();
-        while (iterator.hasNext()) {
-            KeyFrame duplicate = iterator.next();
-            KeyFrame original = kfUnique.put(duplicate.getTime(), duplicate);
-            if (original != null) {
-                kfRemoved++;
-                iterator.remove(); // removing duplicate keyFrame
-                duplicates.add(original, duplicate);
-
-                kfUnique.put(duplicate.getTime(), original);
-            }
-            kvUnique.clear();
-            for (KeyValue kvDup : duplicate.getValues()) {
-                kvTotal++;
-                KeyValue kvOrig = kvUnique.put(kvDup.getTarget(), kvDup);
-                if (kvOrig != null) {
-                    kvRemoved++;
-                    if (!kvOrig.getEndValue().equals(kvDup.getEndValue()) && kvOrig.getTarget() == kvDup.getTarget()) {
-                        System.err.println("KeyValues set different values for KeyFrame " + duplicate.getTime() + ":"
-                                + "\n kvOrig = " + kvOrig + ", \nkvDup = " + kvDup);
-                    }
-                }
-            }
-        }
-        for (KeyFrame orig : duplicates.keySet()) {
-            List<KeyValue> keyValues = new ArrayList<>();
-            for (KeyFrame dup : duplicates.get(orig)) {
-                keyValues.addAll(dup.getValues());
-            }
-            timelineKeyFrames.set(timelineKeyFrames.indexOf(orig),
-                    new KeyFrame(orig.getTime(), keyValues.toArray(new KeyValue[keyValues.size()])));
-        }
-        System.out.printf("Removed %d (%.2f%%) duplicate KeyFrames out of total %d.\n",
-                kfRemoved, 100d * kfRemoved / kfTotal, kfTotal);
-        System.out.printf("Identified %d (%.2f%%) duplicate KeyValues out of total %d.\n",
-                kvRemoved, 100d * kvRemoved / kvTotal, kvTotal);
-    }
-
     private static class KeyInfo {
         KeyFrame keyFrame;
         KeyValue keyValue;
@@ -406,132 +357,6 @@ public class Optimizer {
             }
             p.add(value);
         }
-    }
-
-    private void parseTimeline() {
-        bound.clear();
-        if (timeline == null) {
-            return;
-        }
-//        cleanUpRepeatingFramesAndValues(); // we don't need it usually as timeline is initially correct
-        SortedList<KeyFrame> sortedKeyFrames = timeline.getKeyFrames().sorted(new KeyFrameComparator());
-        MapOfLists<KeyFrame, KeyValue> toRemove = new MapOfLists<>();
-        Map<WritableValue, KeyInfo> prevValues = new HashMap<>();
-        Map<WritableValue, KeyInfo> prevPrevValues = new HashMap<>();
-        int kvTotal = 0;
-        for (KeyFrame keyFrame : sortedKeyFrames) {
-            for (KeyValue keyValue : keyFrame.getValues()) {
-                WritableValue<?> target = keyValue.getTarget();
-                KeyInfo prev = prevValues.get(target);
-                kvTotal++;
-                if (prev != null && prev.keyValue.getEndValue().equals(keyValue.getEndValue())) {
-//                if (prev != null && (prev.keyValue.equals(keyValue) || (prev.first && prev.keyValue.getEndValue().equals(keyValue.getEndValue())))) {
-                    KeyInfo prevPrev = prevPrevValues.get(target);
-                    if ((prevPrev != null && prevPrev.keyValue.getEndValue().equals(keyValue.getEndValue()))
-                            || (prev.first && target.getValue().equals(prev.keyValue.getEndValue()))) {
-                        // All prevPrev, prev and current match, so prev can be removed
-                        // or prev is first and its value equals to the property existing value, so prev can be removed
-                        toRemove.add(prev.keyFrame, prev.keyValue);
-                    } else {
-                        prevPrevValues.put(target, prev);
-//                        KeyInfo oldKeyInfo = prevPrevValues.put(target, prev);
-//                        if (oldKeyInfo != null && oldKeyInfo.keyFrame.getTime().equals(prev.keyFrame.getTime())) {
-//                            System.err.println("prevPrev replaced more than once per keyFrame on " + target + "\n"
-//                                    + "old = " + oldKeyInfo.keyFrame.getTime() + ", " + oldKeyInfo.keyValue + "\n"
-//                                    + "new = " + prev.keyFrame.getTime() + ", " + prev.keyValue
-//                                    );
-//                        }
-                    }
-                }
-                KeyInfo oldPrev = prevValues.put(target, new KeyInfo(keyFrame, keyValue, prev == null));
-                if (oldPrev != null) prevPrevValues.put(target, oldPrev);
-            }
-        }
-        // Deal with ending keyValues
-        for (WritableValue target : prevValues.keySet()) {
-            KeyInfo prev = prevValues.get(target);
-            KeyInfo prevPrev = prevPrevValues.get(target);
-            if (prevPrev != null && prevPrev.keyValue.getEndValue().equals(prev.keyValue.getEndValue())) {
-                // prevPrev and prev match, so prev can be removed
-                toRemove.add(prev.keyFrame, prev.keyValue);
-            }
-        }
-        int kvRemoved = 0;
-        int kfRemoved = 0, kfTotal = timeline.getKeyFrames().size(), kfSimplified = 0, kfNotRemoved = 0;
-        // Removing unnecessary KeyValues and KeyFrames
-        List<KeyValue> newKeyValues = new ArrayList<>();
-        for (int i = 0; i < timeline.getKeyFrames().size(); i++) {
-            KeyFrame keyFrame = timeline.getKeyFrames().get(i);
-            List<KeyValue> keyValuesToRemove = toRemove.get(keyFrame);
-            if (keyValuesToRemove != null) {
-                newKeyValues.clear();
-                for (KeyValue keyValue : keyFrame.getValues()) {
-                    if (keyValuesToRemove.remove(keyValue)) {
-                        kvRemoved++;
-                    } else {
-                        if (convertToDiscrete) {
-                            newKeyValues.add(new KeyValue((WritableValue)keyValue.getTarget(), keyValue.getEndValue(), Interpolator.DISCRETE));
-                        } else {
-                            newKeyValues.add(keyValue);
-                        }
-                    }
-                }
-            } else if (convertToDiscrete) {
-                newKeyValues.clear();
-                for (KeyValue keyValue : keyFrame.getValues()) {
-                    newKeyValues.add(new KeyValue((WritableValue)keyValue.getTarget(), keyValue.getEndValue(), Interpolator.DISCRETE));
-                }
-            }
-            if (keyValuesToRemove != null || convertToDiscrete) {
-                if (newKeyValues.isEmpty()) {
-                    if (keyFrame.getOnFinished() == null) {
-                        if (keyFrame.getName() != null) {
-                            System.err.println("Removed KeyFrame with name = " + keyFrame.getName());
-                        }
-                        timeline.getKeyFrames().remove(i);
-                        i--;
-                        kfRemoved++;
-                        continue; // for i
-                    } else {
-                        kfNotRemoved++;
-                    }
-                } else {
-                    keyFrame = new KeyFrame(keyFrame.getTime(), keyFrame.getName(), keyFrame.getOnFinished(), newKeyValues);
-                    timeline.getKeyFrames().set(i, keyFrame);
-                    kfSimplified++;
-                }
-            }
-            // collecting bound targets
-            for (KeyValue keyValue : keyFrame.getValues()) {
-                WritableValue<?> target = keyValue.getTarget();
-                if (target instanceof Property) {
-                    Property p = (Property) target;
-                    Object bean = p.getBean();
-                    if (bean instanceof Transform) {
-                        bound.add((Transform) bean);
-                    } else {
-                        throw new UnsupportedOperationException("Bean is not transform, bean = " + bean);
-                    }
-                } else {
-                    throw new UnsupportedOperationException("WritableValue is not property, can't identify what it changes, target = " + target);
-                }
-            }
-        }
-//        System.out.println("bound.size() = " + bound.size());
-        System.out.printf("Removed %d (%.2f%%) repeating KeyValues out of total %d.\n", kvRemoved, 100d * kvRemoved / kvTotal, kvTotal);
-        System.out.printf("Removed %d (%.2f%%) and simplified %d (%.2f%%) KeyFrames out of total %d. %d (%.2f%%) were not removed due to event handler attached.\n",
-                kfRemoved, 100d * kfRemoved / kfTotal,
-                kfSimplified, 100d * kfSimplified / kfTotal, kfTotal, kfNotRemoved, 100d * kfNotRemoved / kfTotal);
-        int check = 0;
-        for (KeyFrame keyFrame : timeline.getKeyFrames()) {
-            check += keyFrame.getValues().size();
-//            for (KeyValue keyValue : keyFrame.getValues()) {
-//                if (keyValue.getInterpolator() != Interpolator.DISCRETE) {
-//                    throw new IllegalStateException();
-//                }
-//            }
-        }
-        System.out.printf("Now there are %d KeyValues and %d KeyFrames.\n", check, timeline.getKeyFrames().size());
     }
 
     private void removeEmptyGroups() {

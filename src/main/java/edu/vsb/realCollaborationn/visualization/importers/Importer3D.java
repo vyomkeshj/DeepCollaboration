@@ -31,15 +31,9 @@
  */
 package edu.vsb.realCollaborationn.visualization.importers;
 
-import javafx.animation.Timeline;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.TriangleMesh;
-import javafx.util.Pair;
 
 import java.io.IOException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ServiceLoader;
 
@@ -77,7 +71,7 @@ public final class Importer3D {
      * @throws IOException if issue loading file
      */
     public static Node load(String fileUrl, boolean asPolygonMesh) throws IOException {
-        return loadIncludingAnimation(fileUrl,asPolygonMesh).getKey();
+        return loadModelFile(fileUrl,asPolygonMesh);
     }
 
     /**
@@ -88,7 +82,7 @@ public final class Importer3D {
      * @return The loaded Node which could be a MeshView or a Group and the Timeline animation
      * @throws IOException if issue loading file
      */
-    public static Pair<Node, Timeline> loadIncludingAnimation(String fileUrl, boolean asPolygonMesh) throws IOException {
+    public static Node loadModelFile(String fileUrl, boolean asPolygonMesh) throws IOException {
         // get extension
         final int dot = fileUrl.lastIndexOf('.');
         if (dot <= 0) {
@@ -112,10 +106,8 @@ public final class Importer3D {
         // Check well known loaders that might not be in a jar (ie. running from an IDE)
         if ((importer == null) && (!extension.equals("fxml"))){
             String[] names = {
-                 "com.crada.renderer.engine3d.importers.dae.DaeImporter",
-                 "com.crada.renderer.engine3d.importers.max.MaxLoader",
-                 "com.crada.renderer.engine3d.importers.maya.MayaImporter",
-                 "com.crada.renderer.engine3d.importers.obj.ObjOrPolyObjImporter",
+                 "edu.vsb.realCollaborationn.visualization.importers.obj.ObjOrPolyObjImporter",
+                    "edu.vsb.realCollaborationn.visualization.importers.dae.DaeImporter"
             };
             boolean fail = true;
             for (String name : names) {
@@ -137,17 +129,8 @@ public final class Importer3D {
             if (fail) throw new IOException("Unknown 3D file format [" + extension + "]");
         }
 
-        if (extension.equals("fxml")) {
-            final Object fxmlRoot = FXMLLoader.load(new URL(fileUrl));
-            if (fxmlRoot instanceof Node) {
-                return new Pair<>((Node) fxmlRoot, null);
-            } else if (fxmlRoot instanceof TriangleMesh) {
-                return new Pair<>(new MeshView((TriangleMesh) fxmlRoot), null);
-            }
-            throw new IOException("Unknown object in FXML file [" + fxmlRoot.getClass().getName() + "]");
-        } else {
             importer.load(fileUrl, asPolygonMesh);
-            return new Pair<>(importer.getRoot(), importer.getTimeline());
+            return importer.getRoot();
         }
     }
-}
+
