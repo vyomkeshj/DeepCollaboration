@@ -50,13 +50,16 @@ public class JointArtifact implements Artifact{
     }
 
     @Override
-    public void transform(Affine3D transformer) {
+    public void setTransform(Affine3D transformer) {
 
     }
 
     @Override
     public Affine3D getTransform() {
-        return null;    //todo: return a real transform
+        Affine3D currentJointTransform = new Affine3D();
+        currentJointTransform.setToRotation(jointCurrentAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z,
+                jointTranslation.x, jointTranslation.y, jointTranslation.z);
+        return currentJointTransform;    //todo: return a real transform
     }
 
     public Affine3D getTransformerForRotation(double rotationAngle) {
@@ -68,7 +71,6 @@ public class JointArtifact implements Artifact{
             returnAffine.setToRotation(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z,
                     jointTranslation.x, jointTranslation.y, jointTranslation.z);
             return returnAffine;
-
         }
        return null;
     }

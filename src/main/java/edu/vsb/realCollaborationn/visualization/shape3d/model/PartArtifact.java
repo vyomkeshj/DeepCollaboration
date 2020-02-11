@@ -42,16 +42,9 @@ public class PartArtifact implements Artifact {
     }
 
     @Override
-    public void transform(Affine3D transformer) {
-        System.out.println("_________________________________");
-        System.out.println("artifact  = "+artifactKey);
-        System.out.println("artifact before pre transform = "+artifactTransform);
-        System.out.println("artifact transformer = "+transformer);
-        artifactTransform.preTransform(transformer);
-
-        System.out.println("artifact after pre transform = "+artifactTransform);
-        System.out.println("_________________________________");
-
+    public void setTransform(Affine3D transformer) {
+        artifactTransform.setTransform(transformer);
+        artifactModel.getTransforms().clear();
         artifactModel.getTransforms().add(artifactTransform.getTransform());
 
     }

@@ -118,7 +118,7 @@ public class ContentModel {
             }
         }
     };
-    private SimpleBooleanProperty showAxis = new SimpleBooleanProperty(false){
+    private SimpleBooleanProperty showAxis = new SimpleBooleanProperty(true){
         @Override
         protected void invalidated() {
             if (get()) {

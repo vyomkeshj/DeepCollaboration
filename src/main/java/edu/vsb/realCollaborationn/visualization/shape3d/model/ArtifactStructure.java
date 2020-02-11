@@ -4,7 +4,6 @@ import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,48 +37,44 @@ public class ArtifactStructure {
     //fixme: use subsequent artifact's translation
     public boolean rotateAtJoint(int jointIndex, double angle) {
         boolean transformFound = false;
-        Affine3D subsequentTransform = null;
-        JointArtifact transformerJoint = null;
+        JointArtifact transformerJoint = null;      //to be used to compute the transformation of subsequent parts
         for(Artifact artifact: partList) {
             if (artifact instanceof JointArtifact && !transformFound) {
                 JointArtifact currentArtifact = (JointArtifact) artifact;
                 if (currentArtifact.getArtifactPosition() == jointIndex) {
                     transformFound = true;
                     transformerJoint = currentArtifact;
-                    subsequentTransform = currentArtifact.getTransformerForRotation(angle);
                 }
             } else if (transformFound){
                 //todo: pretranslate, rotate, retranslate
+
                 Affine3D  artifactAffine  = artifact.getTransform();
-                Vec3d transformerAxis  = transformerJoint.getJointAxis();
-                Vec3d transformerTranslation = transformerJoint.getJointTranslation();
 
-                Affine3D preTranslation = artifact.getTransform();
-                System.out.println(artifact.getArtifactKey()+ "before : "+preTranslation);
+                Vec3d rotatorJointTranslation = transformerJoint.getJointTranslation();
+                Vec3d rotatorJointAxis = transformerJoint.getJointAxis();
 
-                preTranslation.preTranslate(0, -0.152, 1);
-                Affine3D affineTransformer = new Affine3D();
-                affineTransformer.translate(1.2, 1.4,1.3);
-                preTranslation.preTransform(new Affine3D());
+                System.out.println("artifact's initial: "+artifactAffine);
 
-                //preTranslation.translate(0, -0.152, 1);
-                //preTranslation.rotate(angle, transformerAxis.x, transformerAxis.y, transformerAxis.z);
-                //preTranslation.translate(artifactAffine.getMxt(), 0.152, artifactAffine.getMzt());
-//
-//                Affine3D postTranslation = artifact.getTransform();
-//                preTranslation.translate(transformerTranslation.x, transformerTranslation.y, transformerTranslation.z);
-//
-//
-//                Affine3D transform = new Affine3D();
-//                transform.setToRotation(angle, transformerAxis.x, transformerAxis.y, transformerAxis.z);
-//                System.out.println(transform);
-//
-//                transform.preTransform(preTranslation);
-               // postTranslation.preTransform(transform);
-                System.out.println("artifactName: "+artifact.getArtifactKey());
-                System.out.println("artifactAffine: "+artifactAffine);
-                System.out.println("transform: "+preTranslation);
-                artifact.transform(preTranslation);
+                Affine3D preTranslation = new Affine3D();
+                        preTranslation.translate(+artifactAffine.getMxt()-rotatorJointTranslation.x,
+                        artifactAffine.getMyt()-rotatorJointTranslation.y, +artifactAffine.getMzt()-rotatorJointTranslation.z);
+
+                System.out.println("artifact's pretranslate: "+preTranslation);
+
+                Affine3D rotation = new Affine3D();
+                rotation.setToRotation(-angle, rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z);
+
+                System.out.println("artifact's rotation: "+rotation);
+
+                Affine3D postTranslation = new Affine3D();
+                postTranslation.translate(-artifactAffine.getMxt()+rotatorJointTranslation.x,
+                        -artifactAffine.getMyt()+rotatorJointTranslation.y, -artifactAffine.getMzt()+rotatorJointTranslation.z);
+                System.out.println("artifact's post translation: "+postTranslation);
+
+                artifactAffine.preTransform(preTranslation);
+                artifactAffine.preTransform(rotation);
+                artifactAffine.preTransform(postTranslation);
+                artifact.setTransform(artifactAffine);
             }
         }
         return false;

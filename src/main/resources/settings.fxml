@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           <children>
             <Label text="Show Axis:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <Label text="Y Up:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <CheckBox fx:id="showAxisCheckBox" mnemonicParsing="false" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <CheckBox fx:id="showAxisCheckBox" mnemonicParsing="true" text="" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <CheckBox fx:id="yUpCheckBox" mnemonicParsing="false" selected="true" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="MSAA Antialiasing" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <CheckBox id="msaaCheckBox" fx:id="msaaCheckBox" mnemonicParsing="false" selected="true" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />

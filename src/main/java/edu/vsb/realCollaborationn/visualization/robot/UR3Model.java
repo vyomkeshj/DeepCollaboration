@@ -49,7 +49,7 @@ public class UR3Model extends ArtifactStructure {
             wrist3Affine.translate(0, 0.609+0.080, -0.122);
 
             Vec3d baseShoulderJointAxis = new Vec3d(0,1,0);
-            Vec3d baseShoulderJointPosition = new Vec3d(0,0,0);
+            Vec3d baseShoulderJointPosition = new Vec3d(0,0.152,0);
             
             JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointAxis,baseShoulderJointPosition, "shoulderBaseJoint",
                     2, -90, 90, 0);
@@ -71,14 +71,14 @@ public class UR3Model extends ArtifactStructure {
 
 
 
-            addToParts(robotBase);
+            //addToParts(robotBase);
             addToParts(baseShoulderJoint);
-            addToParts(robotShoulder);
+            //addToParts(robotShoulder);
             addToParts(robotUpperArm);
-            addToParts(robotForeArm);
-            addToParts(robotWrist1);
-            addToParts(robotWrist2);
-            addToParts(robotWrist3);
+            //addToParts(robotForeArm);
+            //addToParts(robotWrist1);
+            //addToParts(robotWrist2);
+            //addToParts(robotWrist3);
 
             rotateAtJoint(2,  1.54/2);
 

@@ -340,19 +340,20 @@ public class Affine3D extends AffineBase {
     }
 
     public void preTransform(Affine3D transformer) {
-        INDArray currentMatrix = Nd4j.create(new double[]{this.mxx, this.myx, this.mzx, 0, this.mxy, this.myy, this.mzy,
-                0, this.mxz, this.myz, this.mzz, 0, this.mxt, this.myt, this.mzt, 1}, new int[]{4, 4});
+        INDArray currentMatrix = Nd4j.create(new double[]{
+                this.mxx, this.myx, this.mzx, this.mxt,
+                this.mxy, this.myy, this.mzy, this.myt,
+                this.mxz, this.myz, this.mzz, this.mzt,
+                        0, 0, 0, 1}, new int[]{4, 4});
 
-        System.out.println("pre transform matrix = "+currentMatrix);
-        System.out.println("pre transform transformer = "+transformer);
-
-        INDArray transformerMatrix = Nd4j.create(new double[]{transformer.mxx, transformer.myx, transformer.mzx,
-                0, transformer.mxy, transformer.myy, transformer.mzy, 0, transformer.mxz, transformer.myz, transformer.mzz,
-                0, transformer.mxt, transformer.myt, transformer.mzt, 1}, new int[]{4, 4});
+        INDArray transformerMatrix = Nd4j.create(new double[]
+                {transformer.mxx, transformer.myx, transformer.mzx, transformer.mxt,
+                 transformer.mxy, transformer.myy, transformer.mzy, transformer.myt,
+                 transformer.mxz, transformer.myz, transformer.mzz, transformer.mzt,
+                                0, 0, 0, 1}, new int[]{4, 4});
 
         INDArray result = transformerMatrix.mmul(currentMatrix);
 
-        System.out.println("pre transform result = "+result);
         this.mxx = result.getDouble(0,0);
         this.mxy = result.getDouble(0,1);
         this.mxz = result.getDouble(0,2);

@@ -7,10 +7,15 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac:11" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:mac:11" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="javafx" level="application" />
     <orderEntry type="library" name="Maven: org.bytedeco:librealsense2-platform:2.29.0-1.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:librealsense2:2.29.0-1.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:javacpp:1.5.2" level="project" />
@@ -99,9 +104,9 @@
     <orderEntry type="library" name="Maven: org.bytedeco:leptonica:1.78.0-1.5" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:tesseract:4.0.0-1.5" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:11" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac:11" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:11" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:11" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:mac:11" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:11" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:opencv-platform:4.0.1-1.5" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:opencv:android-arm:4.0.1-1.5" level="project" />
     <orderEntry type="library" name="Maven: org.bytedeco:opencv:android-arm64:4.0.1-1.5" level="project" />
@@ -169,6 +174,13 @@
     <orderEntry type="library" name="Maven: org.nd4j:nd4j-native:windows-x86_64:1.0.0-beta4" level="project" />
     <orderEntry type="library" name="Maven: org.nd4j:nd4j-native:linux-ppc64le:1.0.0-beta4" level="project" />
     <orderEntry type="library" name="Maven: org.nd4j:nd4j-native:linux-armhf:1.0.0-beta4" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter:5.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.6.0" level="project" />
   </component>
 </module>
