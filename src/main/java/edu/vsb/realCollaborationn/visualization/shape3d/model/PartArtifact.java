@@ -9,18 +9,21 @@ import java.net.URL;
 
 public class PartArtifact implements Artifact {
 
-    private Affine3D artifactTransform;
+    private Affine3D artifactTransform = new Affine3D();
+
     private String artifactKey;
     private int artifactPosition;
     Node artifactModel;
 
     public PartArtifact(URL artifactLoadPath, Affine3D artifactTransform, String artifactKey, int artifactPosition,
                         boolean loadAsPolyMesh) throws IOException {
-        this.artifactTransform = artifactTransform;
         this.artifactKey = artifactKey;
         this.artifactPosition = artifactPosition;
+        this.artifactTransform = artifactTransform;
+
         artifactModel = Importer3D.loadModelFile(artifactLoadPath.toString(), loadAsPolyMesh);
         artifactModel.getTransforms().add(artifactTransform.getTransform()); //fixme: check if the transform works
+        artifactModel.setId(artifactKey);
     }
 
     @Override
@@ -40,8 +43,17 @@ public class PartArtifact implements Artifact {
 
     @Override
     public void transform(Affine3D transformer) {
+        System.out.println("_________________________________");
+        System.out.println("artifact  = "+artifactKey);
+        System.out.println("artifact before pre transform = "+artifactTransform);
+        System.out.println("artifact transformer = "+transformer);
         artifactTransform.preTransform(transformer);
+
+        System.out.println("artifact after pre transform = "+artifactTransform);
+        System.out.println("_________________________________");
+
         artifactModel.getTransforms().add(artifactTransform.getTransform());
+
     }
 
     public Affine3D getArtifactTransform() {
@@ -52,4 +64,12 @@ public class PartArtifact implements Artifact {
         return artifactKey;
     }
 
+    @Override
+    public Affine3D getTransform() {
+        return artifactTransform;
+    }
+
+    public Node getArtifactModel() {
+        return artifactModel;
+    }
 }

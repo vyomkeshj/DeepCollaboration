@@ -33,6 +33,7 @@ package edu.vsb.realCollaborationn.visualization.renderer;
 
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.importers.Optimizer;
+import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -103,6 +104,9 @@ public class MainController implements Initializable {
 //            System.out.println("supportedFormatRegex[i] = " + supportedFormatRegex[i]);
         }
         // do initial status update
+        UR3Model model = new UR3Model();
+        contentModel.setContent(model.getStructureNode());
+
         updateStatus();
     }
 

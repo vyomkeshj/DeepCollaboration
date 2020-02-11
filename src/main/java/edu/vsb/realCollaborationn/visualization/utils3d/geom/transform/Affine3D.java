@@ -341,28 +341,32 @@ public class Affine3D extends AffineBase {
 
     public void preTransform(Affine3D transformer) {
         INDArray currentMatrix = Nd4j.create(new double[]{this.mxx, this.myx, this.mzx, 0, this.mxy, this.myy, this.mzy,
-        0, this.mxz, this.myz, this.mzz, 0, this.mxt, this.myt, this.mzt, 1}, new int[]{4, 4});
+                0, this.mxz, this.myz, this.mzz, 0, this.mxt, this.myt, this.mzt, 1}, new int[]{4, 4});
+
+        System.out.println("pre transform matrix = "+currentMatrix);
+        System.out.println("pre transform transformer = "+transformer);
 
         INDArray transformerMatrix = Nd4j.create(new double[]{transformer.mxx, transformer.myx, transformer.mzx,
                 0, transformer.mxy, transformer.myy, transformer.mzy, 0, transformer.mxz, transformer.myz, transformer.mzz,
                 0, transformer.mxt, transformer.myt, transformer.mzt, 1}, new int[]{4, 4});
 
-        currentMatrix = transformerMatrix.mmul(currentMatrix);
+        INDArray result = transformerMatrix.mmul(currentMatrix);
 
-        this.mxx = currentMatrix.getDouble(0,0);
-        this.mxy = currentMatrix.getDouble(0,1);
-        this.mxz = currentMatrix.getDouble(0,2);
-        this.mxt = currentMatrix.getDouble(0,3);
+        System.out.println("pre transform result = "+result);
+        this.mxx = result.getDouble(0,0);
+        this.mxy = result.getDouble(0,1);
+        this.mxz = result.getDouble(0,2);
+        this.mxt = result.getDouble(0,3);
 
-        this.myx = currentMatrix.getDouble(1,0);
-        this.myy = currentMatrix.getDouble(1,1);
-        this.myz = currentMatrix.getDouble(1,2);
-        this.myt = currentMatrix.getDouble(1,3);
+        this.myx = result.getDouble(1,0);
+        this.myy = result.getDouble(1,1);
+        this.myz = result.getDouble(1,2);
+        this.myt = result.getDouble(1,3);
 
-        this.mzx = currentMatrix.getDouble(2,0);
-        this.mzy = currentMatrix.getDouble(2,1);
-        this.mzz = currentMatrix.getDouble(2,2);
-        this.mzt = currentMatrix.getDouble(2,3);
+        this.mzx = result.getDouble(2,0);
+        this.mzy = result.getDouble(2,1);
+        this.mzz = result.getDouble(2,2);
+        this.mzt = result.getDouble(2,3);
 
         updateState();
     }

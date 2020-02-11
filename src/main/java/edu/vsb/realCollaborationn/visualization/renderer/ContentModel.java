@@ -286,8 +286,6 @@ public class ContentModel {
         sessionManager.bind(camera.nearClipProperty(), "cameraNearClip");
         sessionManager.bind(camera.farClipProperty(), "cameraFarClip");
 
-        UR3Model model = new UR3Model();
-        root3D.getChildren().add(model.getStructureNode());
         // Build SubScene
         rebuildSubScene();
     }
@@ -548,9 +546,9 @@ public class ContentModel {
     }
 
     private void createAxes() {
-        double length = 200.0;
-        double width = 1.0;
-        double radius = 2.0;
+        double length = 1;
+        double width = 0.01;
+        double radius = 0.02;
         final PhongMaterial redMaterial = new PhongMaterial();
         redMaterial.setDiffuseColor(Color.DARKRED);
         redMaterial.setSpecularColor(Color.RED);

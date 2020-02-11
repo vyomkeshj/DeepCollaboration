@@ -1,21 +1,37 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
+import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
 
 public class JointArtifact implements Artifact{
-    private Affine3D jointAxis;
+    private Vec3d rotationAxis;
+    private Vec3d jointTranslation;
     private String artifactKey;
     private int artifactPosition;
     private int jointMinimumAngle;
     private int jointMaximumAngle;
-    private int jointCurrentAngle;
+    private double jointCurrentAngle;
 
-    public Affine3D getJointAxis() {
-        return jointAxis;
+    public JointArtifact(Vec3d jointAxis, Vec3d jointTranslation, String artifactKey, int artifactPosition, int jointMinimumAngle, int jointMaximumAngle, double jointCurrentAngle) {
+        this.rotationAxis = jointAxis;
+        this.jointTranslation = jointTranslation;
+        this.artifactKey = artifactKey;
+        this.artifactPosition = artifactPosition;
+        this.jointMinimumAngle = jointMinimumAngle;
+        this.jointMaximumAngle = jointMaximumAngle;
+        this.jointCurrentAngle = jointCurrentAngle;
     }
 
-    public void setJointAxis(Affine3D jointAxis) {
-        this.jointAxis = jointAxis;
+    public Vec3d getJointAxis() {
+        return rotationAxis;
+    }
+
+    public Vec3d getJointTranslation() {
+        return jointTranslation;
+    }
+
+    public void setJointAxis(Vec3d jointAxis) {
+        this.rotationAxis = jointAxis;
     }
 
     @Override
@@ -35,13 +51,26 @@ public class JointArtifact implements Artifact{
 
     @Override
     public void transform(Affine3D transformer) {
-        jointAxis.preTransform(transformer);
+
+    }
+
+    @Override
+    public Affine3D getTransform() {
+        return null;    //todo: return a real transform
     }
 
     public Affine3D getTransformerForRotation(double rotationAngle) {
-        Affine3D rotationTransform = jointAxis;
-        rotationTransform.rotate(rotationAngle);
-        return rotationTransform;
+        if(rotationAngle<=jointMaximumAngle && rotationAngle >= jointMinimumAngle) {
+            rotationAngle = rotationAngle - jointCurrentAngle;
+
+            Affine3D returnAffine = new Affine3D();
+
+            returnAffine.setToRotation(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z,
+                    jointTranslation.x, jointTranslation.y, jointTranslation.z);
+            return returnAffine;
+
+        }
+       return null;
     }
 
     public String getArtifactKey() {
@@ -64,11 +93,11 @@ public class JointArtifact implements Artifact{
         this.jointMaximumAngle = jointMaximumAngle;
     }
 
-    public int getJointCurrentAngle() {
+    public double getJointCurrentAngle() {
         return jointCurrentAngle;
     }
 
-    public void setJointCurrentAngle(int jointCurrentAngle) {
+    public void setJointCurrentAngle(double jointCurrentAngle) {
         this.jointCurrentAngle = jointCurrentAngle;
     }
 }
