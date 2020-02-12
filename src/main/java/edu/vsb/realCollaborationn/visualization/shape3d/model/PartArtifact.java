@@ -3,6 +3,7 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
 import javafx.scene.Node;
+import javafx.scene.transform.Rotate;
 
 import java.io.IOException;
 import java.net.URL;

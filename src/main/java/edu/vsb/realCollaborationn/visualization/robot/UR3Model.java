@@ -31,28 +31,35 @@ public class UR3Model extends ArtifactStructure {
             Affine3D baseAffine = new Affine3D();
 
             Affine3D shoulderAffine = new Affine3D();
-            shoulderAffine.translate(0, 0.152, 0);
+            shoulderAffine.translate(0, 0.085, 0);
 
             Affine3D upperArmAffine = new Affine3D();
-            upperArmAffine.translate(0, 0.152, -0.122);
+            upperArmAffine.translate(0, 0.151, -0.053);
 
             Affine3D foreArmAffine = new Affine3D();
-            foreArmAffine.translate(0, 0.152+0.244, -0.029);
+            foreArmAffine.translate(0, 0.39525, -0.06954);
 
             Affine3D wrist1Affine = new Affine3D();
-            wrist1Affine.translate(0, 0.152+0.244+0.213, -0.029);
+            wrist1Affine.translate(0, 0.609, -0.0609);
 
             Affine3D wrist2Affine = new Affine3D();
-            wrist2Affine.translate(0, 0.609, -0.115);
+            wrist2Affine.translate(0, 0.64816, -0.1067);
 
             Affine3D wrist3Affine = new Affine3D();
-            wrist3Affine.translate(0, 0.609+0.080, -0.122);
+            wrist3Affine.translate(0, 0.69378, -0.14753);
 
             Vec3d baseShoulderJointAxis = new Vec3d(0,1,0);
-            Vec3d baseShoulderJointPosition = new Vec3d(0,0.152,0);
+            Vec3d baseShoulderJointPosition = new Vec3d(0,0.085,0);
             
             JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointAxis,baseShoulderJointPosition, "shoulderBaseJoint",
                     2, -90, 90, 0);
+
+            Vec3d shoulderUpperArmjointAxis = new Vec3d(0,0,1);
+            Vec3d shoulderUpperArmjointPosition = new Vec3d(0,0.151,-0.053);
+
+            JointArtifact shoulderUpperArmJoint = new JointArtifact(shoulderUpperArmjointAxis,shoulderUpperArmjointPosition, "shoulderUpperArmJoint",
+                    4, -90, 90, 0);
+
 
             PartArtifact robotBase = new PartArtifact(base,
                     baseAffine, "base", 1, true);
@@ -74,14 +81,15 @@ public class UR3Model extends ArtifactStructure {
             addToParts(robotBase);
             addToParts(baseShoulderJoint);
             addToParts(robotShoulder);
+            addToParts(shoulderUpperArmJoint);
             addToParts(robotUpperArm);
             addToParts(robotForeArm);
             addToParts(robotWrist1);
             addToParts(robotWrist2);
             addToParts(robotWrist3);
 
-            rotateAtJoint(2,  1.54/2);
-            //rotateAtJoint(2,  1.54/3);
+            rotateAtJoint(4,  45);
+            //rotateAtJoint(2,  -45);
 
 
         } catch (IOException e) {

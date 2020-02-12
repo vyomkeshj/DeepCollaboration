@@ -10,5 +10,6 @@ void setArtifactPosition(int newPosition);
 void setArtifactKey(String artifactKey);
 String getArtifactKey();
 void setTransform(Affine3D transformer);
+
 Affine3D getTransform();
 }

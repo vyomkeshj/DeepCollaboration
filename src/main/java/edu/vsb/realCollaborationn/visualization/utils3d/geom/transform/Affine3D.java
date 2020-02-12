@@ -37,6 +37,7 @@ import edu.vsb.realCollaborationn.visualization.utils3d.geom.Point2D;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.Rectangle;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
@@ -84,6 +85,26 @@ public class Affine3D extends AffineBase {
 
         updateState();
     }
+
+    public Affine3D(Transform fromTransform) {
+        this.mxx = fromTransform.getMxx();
+        this.mxy = fromTransform.getMxy();
+        this.mxz = fromTransform.getMxz();
+        this.mxt = fromTransform.getTx();
+
+        this.myx = fromTransform.getMyx();;
+        this.myy = fromTransform.getMyy();;
+        this.myz = fromTransform.getMyz();;
+        this.myt = fromTransform.getTy();;
+
+        this.mzx = fromTransform.getMzx();;
+        this.mzy = fromTransform.getMzy();;
+        this.mzz = fromTransform.getMzz();;
+        this.mzt = fromTransform.getTz();;
+
+        updateState();
+    }
+
 
     public Affine3D(Affine3D other) {
         this.mxx = other.mxx;
@@ -324,17 +345,17 @@ public class Affine3D extends AffineBase {
         this.mxx = t * ax * ax + cosTheta;
         this.mxy = t * xy - sinTheta * az;
         this.mxz = t * xz + sinTheta * ay;
-        this.mxt = 0.0;
+        //this.mxt = 0.0;
 
         this.myx = t * xy + sinTheta * az;
         this.myy = t * ay * ay + cosTheta;
         this.myz = t * yz - sinTheta * ax;
-        this.myt = 0.0;
+        //this.myt = 0.0;
 
         this.mzx = t * xz - sinTheta * ay;
         this.mzy = t * yz + sinTheta * ax;
         this.mzz = t * az * az + cosTheta;
-        this.mzt = 0.0;
+        //this.mzt = 0.0;
 
         updateState();
     }

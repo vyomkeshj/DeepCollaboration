@@ -2,6 +2,7 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
+import javafx.scene.transform.Rotate;
 
 public class JointArtifact implements Artifact{
     private Vec3d rotationAxis;
