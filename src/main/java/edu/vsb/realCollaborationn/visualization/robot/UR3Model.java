@@ -71,16 +71,17 @@ public class UR3Model extends ArtifactStructure {
 
 
 
-            //addToParts(robotBase);
+            addToParts(robotBase);
             addToParts(baseShoulderJoint);
-            //addToParts(robotShoulder);
+            addToParts(robotShoulder);
             addToParts(robotUpperArm);
-            //addToParts(robotForeArm);
-            //addToParts(robotWrist1);
-            //addToParts(robotWrist2);
-            //addToParts(robotWrist3);
+            addToParts(robotForeArm);
+            addToParts(robotWrist1);
+            addToParts(robotWrist2);
+            addToParts(robotWrist3);
 
             rotateAtJoint(2,  1.54/2);
+            //rotateAtJoint(2,  1.54/3);
 
 
         } catch (IOException e) {

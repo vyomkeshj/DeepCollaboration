@@ -56,24 +56,27 @@ public class ArtifactStructure {
                 System.out.println("artifact's initial: "+artifactAffine);
 
                 Affine3D preTranslation = new Affine3D();
-                        preTranslation.translate(+artifactAffine.getMxt()-rotatorJointTranslation.x,
-                        artifactAffine.getMyt()-rotatorJointTranslation.y, +artifactAffine.getMzt()-rotatorJointTranslation.z);
+                        preTranslation.translate(-rotatorJointTranslation.x,
+                        -rotatorJointTranslation.y, -rotatorJointTranslation.z);    //fixme: is translate = setting translation
 
                 System.out.println("artifact's pretranslate: "+preTranslation);
 
                 Affine3D rotation = new Affine3D();
-                rotation.setToRotation(-angle, rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z);
+                rotation.setToRotation(angle, rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z
+                , rotatorJointTranslation.x, rotatorJointTranslation.y, rotatorJointTranslation.z);
 
                 System.out.println("artifact's rotation: "+rotation);
 
                 Affine3D postTranslation = new Affine3D();
-                postTranslation.translate(-artifactAffine.getMxt()+rotatorJointTranslation.x,
-                        -artifactAffine.getMyt()+rotatorJointTranslation.y, -artifactAffine.getMzt()+rotatorJointTranslation.z);
+                postTranslation.translate(+rotatorJointTranslation.x,
+                        +rotatorJointTranslation.y, +rotatorJointTranslation.z);
                 System.out.println("artifact's post translation: "+postTranslation);
 
-                artifactAffine.preTransform(preTranslation);
+                //artifactAffine.preTransform(preTranslation);
                 artifactAffine.preTransform(rotation);
-                artifactAffine.preTransform(postTranslation);
+                artifactAffine.preTransform(rotation);
+
+                // artifactAffine.preTransform(postTranslation);
                 artifact.setTransform(artifactAffine);
             }
         }
