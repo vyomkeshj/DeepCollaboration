@@ -51,21 +51,24 @@ public class ArtifactStructure {
             } else if (transformFound){
                 //todo: pretranslate, rotate, retranslate
 
-                if(artifact.getArtifactKey().equals("upper_arm") || artifact.getArtifactKey().equals("base")) {
                     Affine3D artifactAffine = artifact.getTransform();
 
                     Vec3d rotatorJointTranslation = transformerJoint.getJointTranslation();
                     Vec3d rotatorJointAxis = transformerJoint.getJointAxis();
 
+                    System.out.println("rotator joint translation= "+rotatorJointTranslation);
+                    Rotate rotationTrf = new Rotate(45);
+                    rotationTrf.setPivotX(rotatorJointTranslation.x);
+                    rotationTrf.setPivotY(rotatorJointTranslation.y);
+                    rotationTrf.setPivotZ(rotatorJointTranslation.z);
+                    rotationTrf.axisProperty().setValue(new Point3D(rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z));
 
-                    Point3D rotationAxis = new Point3D(rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z);
-                    Rotate rotationTrf = new Rotate(angle, artifactAffine.getMxt(), artifactAffine.getMyt(), artifactAffine.getMzt(), rotationAxis);
-
-                    System.out.println("part = " + artifact.getArtifactKey() + " Transformer= " + rotationTrf);
+                System.out.println("rotation applied = "+new Affine3D(rotationTrf));
                     artifactAffine.preTransform(new Affine3D(rotationTrf));
 
-                    artifact.setTransform(new Affine3D(rotationTrf));
-                }
+
+                    artifact.setTransform(artifactAffine);
+
             }
         }
         return false;
