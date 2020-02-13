@@ -6,7 +6,6 @@ import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 
 import java.util.ArrayList;
 import java.util.List;

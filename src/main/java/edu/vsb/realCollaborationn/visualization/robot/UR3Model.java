@@ -5,6 +5,7 @@ import edu.vsb.realCollaborationn.visualization.shape3d.model.JointArtifact;
 import edu.vsb.realCollaborationn.visualization.shape3d.model.PartArtifact;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
+import javafx.geometry.Point3D;
 import javafx.scene.transform.Rotate;
 
 import java.io.IOException;
@@ -51,46 +52,71 @@ public class UR3Model extends ArtifactStructure {
 
             Vec3d baseShoulderJointAxis = new Vec3d(0,1,0);
             Vec3d baseShoulderJointPosition = new Vec3d(0,0.085,0);
-            Rotate baseShoulderJointTransformation = new Rotate()
 
-            JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointAxis,baseShoulderJointPosition, "shoulderBaseJoint",
-                    2, -90, 90, 0);
 
-            Vec3d shoulderUpperArmjointAxis = new Vec3d(0,0,1);
-            Vec3d shoulderUpperArmjointPosition = new Vec3d(0,0.151,-0.053);
+            Rotate baseShoulderJointTransformation = new Rotate(0,0, 0.085, 0, new Point3D(0,1,0));
+            JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointTransformation,"shoulderBaseJoint", 2, -90, 90, 10);
 
-            JointArtifact shoulderUpperArmJoint = new JointArtifact(shoulderUpperArmjointAxis,shoulderUpperArmjointPosition, "shoulderUpperArmJoint",
-                    4, -90, 90, 0);
+            Rotate upperarmShoulderJointRot = new Rotate(0,0, 0.151, -0.053, new Point3D(0,0,-1));
+            JointArtifact shoulderUpperArmJoint = new JointArtifact(upperarmShoulderJointRot,"shoulderUpperArmJoint", 4, -90, 90, 10);
+
 
 
             PartArtifact robotBase = new PartArtifact(base,
-                    baseAffine, "base", 1, true);
+                    "base", 1, true);
             PartArtifact robotShoulder = new PartArtifact(shoulder,
-                   shoulderAffine, "shoulder", 3, true);
+                 "shoulder", 3, true);
             PartArtifact robotUpperArm = new PartArtifact(upperArm,
-                    upperArmAffine, "upper_arm", 5, true);
+               "upper_arm", 5, true);
             PartArtifact robotForeArm = new PartArtifact(foreArm,
-                    foreArmAffine, "fore_arm", 7, true);
+                  "fore_arm", 7, true);
             PartArtifact robotWrist1 = new PartArtifact(wrist1,
-                    wrist1Affine, "wrist_1", 9, true);
+                    "wrist_1", 9, true);
             PartArtifact robotWrist2 = new PartArtifact(wrist2,
-                    wrist2Affine, "wrist_2", 11, true);
+                   "wrist_2", 11, true);
             PartArtifact robotWrist3 = new PartArtifact(wrist3,
-                    wrist3Affine, "wrist_3", 13, true);
+                    "wrist_3", 13, true);
 
 
 
             addToParts(robotBase);
-            addToParts(baseShoulderJoint);
-            addToParts(robotShoulder);
-            addToParts(shoulderUpperArmJoint);
-            addToParts(robotUpperArm);
-            addToParts(robotForeArm);
-            addToParts(robotWrist1);
-            addToParts(robotWrist2);
-            addToParts(robotWrist3);
 
-            rotateAtJoint(4,  45);
+            addToParts(baseShoulderJoint);
+            //baseShoulderJoint.addTransform(baseShoulderJointTransformation);
+
+            robotShoulder.addTransform(baseShoulderJointTransformation);
+            robotShoulder.addTransform(shoulderAffine.getTransform());
+
+            addToParts(robotShoulder);
+
+            addToParts(shoulderUpperArmJoint);
+
+            robotUpperArm.addTransform(baseShoulderJointTransformation);
+            robotUpperArm.addTransform(upperarmShoulderJointRot);
+
+            robotUpperArm.addTransform(upperArmAffine.getTransform());
+            addToParts(robotUpperArm);
+
+
+            robotForeArm.addTransform(baseShoulderJointTransformation);
+            robotForeArm.addTransform(upperarmShoulderJointRot);
+
+            robotForeArm.addTransform(foreArmAffine.getTransform());
+            addToParts(robotForeArm);
+
+
+//            addToParts(robotWrist1);
+//            robotWrist1.addTransform(baseShoulderJointTransformation);
+//            addToParts(robotWrist2);
+//            robotWrist2.addTransform(baseShoulderJointTransformation);
+//            addToParts(robotWrist3);
+//            robotWrist3.addTransform(baseShoulderJointTransformation);
+
+
+            baseShoulderJointTransformation.setAngle(60);
+            baseShoulderJointTransformation.setAngle(40);
+            upperarmShoulderJointRot.setAngle(40);
+            //rotateAtJoint(4,  45);
             //rotateAtJoint(2,  -45);
 
 
