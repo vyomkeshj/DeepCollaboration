@@ -57,11 +57,11 @@ public class ArtifactStructure {
                     Vec3d rotatorJointAxis = transformerJoint.getJointAxis();
 
                     System.out.println("rotator joint translation= "+rotatorJointTranslation);
-                    Rotate rotationTrf = new Rotate(45);
-                    rotationTrf.setPivotX(rotatorJointTranslation.x);
-                    rotationTrf.setPivotY(rotatorJointTranslation.y);
-                    rotationTrf.setPivotZ(rotatorJointTranslation.z);
-                    rotationTrf.axisProperty().setValue(new Point3D(rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z));
+                    Rotate rotationTrf = new Rotate(-110,
+                            rotatorJointTranslation.x,
+                            rotatorJointTranslation.y,
+                            rotatorJointTranslation.z,
+                            new Point3D(rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z));
 
                 System.out.println("rotation applied = "+new Affine3D(rotationTrf));
                     artifactAffine.preTransform(new Affine3D(rotationTrf));
