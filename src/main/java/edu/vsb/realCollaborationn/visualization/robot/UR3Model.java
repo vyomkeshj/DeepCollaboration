@@ -5,6 +5,7 @@ import edu.vsb.realCollaborationn.visualization.shape3d.model.JointArtifact;
 import edu.vsb.realCollaborationn.visualization.shape3d.model.PartArtifact;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
+import javafx.scene.transform.Rotate;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +51,8 @@ public class UR3Model extends ArtifactStructure {
 
             Vec3d baseShoulderJointAxis = new Vec3d(0,1,0);
             Vec3d baseShoulderJointPosition = new Vec3d(0,0.085,0);
-            
+            Rotate baseShoulderJointTransformation = new Rotate()
+
             JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointAxis,baseShoulderJointPosition, "shoulderBaseJoint",
                     2, -90, 90, 0);
 

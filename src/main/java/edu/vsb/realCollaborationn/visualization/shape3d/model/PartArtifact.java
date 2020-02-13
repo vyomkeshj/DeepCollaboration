@@ -3,27 +3,29 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
 import javafx.scene.Node;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class PartArtifact implements Artifact {
 
-    private Affine3D artifactTransform = new Affine3D();
+    private Transform artifactTransform;
 
     private String artifactKey;
     private int artifactPosition;
     Node artifactModel;
 
-    public PartArtifact(URL artifactLoadPath, Affine3D artifactTransform, String artifactKey, int artifactPosition,
+    public PartArtifact(URL artifactLoadPath, Affine artifactTransform, String artifactKey, int artifactPosition,
                         boolean loadAsPolyMesh) throws IOException {
         this.artifactKey = artifactKey;
         this.artifactPosition = artifactPosition;
         this.artifactTransform = artifactTransform;
 
         artifactModel = Importer3D.loadModelFile(artifactLoadPath.toString(), loadAsPolyMesh);
-        artifactModel.getTransforms().add(artifactTransform.getTransform()); //fixme: check if the transform works
+        artifactModel.getTransforms().add(artifactTransform); //fixme: check if the transform works
         artifactModel.setId(artifactKey);
     }
 
@@ -42,15 +44,8 @@ public class PartArtifact implements Artifact {
         this.artifactKey = artifactKey;
     }
 
-    @Override
-    public void setTransform(Affine3D transformer) {
-        artifactTransform.setTransform(transformer);
-        artifactModel.getTransforms().clear();
-        artifactModel.getTransforms().add(artifactTransform.getTransform());
 
-    }
-
-    public Affine3D getArtifactTransform() {
+    public Transform getArtifactTransform() {
         return artifactTransform;
     }
 
@@ -59,8 +54,13 @@ public class PartArtifact implements Artifact {
     }
 
     @Override
-    public Affine3D getTransform() {
-        return artifactTransform;
+    public void addTransform(Transform transformer) {
+        artifactModel.getTransforms().add(transformer);
+    }
+
+    @Override
+    public Transform getTransform() {
+        return null;
     }
 
     public Node getArtifactModel() {

@@ -49,25 +49,7 @@ public class ArtifactStructure {
                     transformerJoint = currentArtifact;
                 }
             } else if (transformFound){
-                //todo: pretranslate, rotate, retranslate
-
-                    Affine3D artifactAffine = artifact.getTransform();
-
-                    Vec3d rotatorJointTranslation = transformerJoint.getJointTranslation();
-                    Vec3d rotatorJointAxis = transformerJoint.getJointAxis();
-
-                    System.out.println("rotator joint translation= "+rotatorJointTranslation);
-                    Rotate rotationTrf = new Rotate(-110,
-                            rotatorJointTranslation.x,
-                            rotatorJointTranslation.y,
-                            rotatorJointTranslation.z,
-                            new Point3D(rotatorJointAxis.x, rotatorJointAxis.y, rotatorJointAxis.z));
-
-                System.out.println("rotation applied = "+new Affine3D(rotationTrf));
-                    artifactAffine.preTransform(new Affine3D(rotationTrf));
-
-
-                    artifact.setTransform(artifactAffine);
+                //todo: set the angle here
 
             }
         }

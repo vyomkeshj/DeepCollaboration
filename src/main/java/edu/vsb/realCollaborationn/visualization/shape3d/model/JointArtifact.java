@@ -1,21 +1,18 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
-import edu.vsb.realCollaborationn.visualization.utils3d.geom.Vec3d;
-import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 public class JointArtifact implements Artifact{
-    private Vec3d rotationAxis;
-    private Vec3d jointTranslation;
+    private Rotate jointRotation;
     private String artifactKey;
     private int artifactPosition;
     private int jointMinimumAngle;
     private int jointMaximumAngle;
     private double jointCurrentAngle;
 
-    public JointArtifact(Vec3d jointAxis, Vec3d jointTranslation, String artifactKey, int artifactPosition, int jointMinimumAngle, int jointMaximumAngle, double jointCurrentAngle) {
-        this.rotationAxis = jointAxis;
-        this.jointTranslation = jointTranslation;
+    public JointArtifact(Rotate jointRotation, String artifactKey, int artifactPosition, int jointMinimumAngle, int jointMaximumAngle, double jointCurrentAngle) {
+        this.jointRotation = jointRotation;
         this.artifactKey = artifactKey;
         this.artifactPosition = artifactPosition;
         this.jointMinimumAngle = jointMinimumAngle;
@@ -23,16 +20,12 @@ public class JointArtifact implements Artifact{
         this.jointCurrentAngle = jointCurrentAngle;
     }
 
-    public Vec3d getJointAxis() {
-        return rotationAxis;
+    public Rotate getJointAxis() {
+        return jointRotation;
     }
 
-    public Vec3d getJointTranslation() {
-        return jointTranslation;
-    }
-
-    public void setJointAxis(Vec3d jointAxis) {
-        this.rotationAxis = jointAxis;
+    public void setJointRotation(Rotate jointRotation) {
+        this.jointRotation = jointRotation;
     }
 
     @Override
@@ -51,29 +44,13 @@ public class JointArtifact implements Artifact{
     }
 
     @Override
-    public void setTransform(Affine3D transformer) {
+    public void addTransform(Transform transformer) {
 
     }
 
     @Override
-    public Affine3D getTransform() {
-        Affine3D currentJointTransform = new Affine3D();
-        currentJointTransform.setToRotation(jointCurrentAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z,
-                jointTranslation.x, jointTranslation.y, jointTranslation.z);
-        return currentJointTransform;    //todo: return a real transform
-    }
-
-    public Affine3D getTransformerForRotation(double rotationAngle) {
-        if(rotationAngle<=jointMaximumAngle && rotationAngle >= jointMinimumAngle) {
-            rotationAngle = rotationAngle - jointCurrentAngle;
-
-            Affine3D returnAffine = new Affine3D();
-
-            returnAffine.setToRotation(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z,
-                    jointTranslation.x, jointTranslation.y, jointTranslation.z);
-            return returnAffine;
-        }
-       return null;
+    public Transform getTransform() {
+        return jointRotation;    //todo: return a real transform
     }
 
     public String getArtifactKey() {

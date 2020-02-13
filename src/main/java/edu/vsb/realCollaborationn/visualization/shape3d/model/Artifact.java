@@ -1,7 +1,7 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
 
-import edu.vsb.realCollaborationn.visualization.utils3d.geom.transform.Affine3D;
+import javafx.scene.transform.Transform;
 
 public interface Artifact {
 int getArtifactPosition();
@@ -9,7 +9,7 @@ void setArtifactPosition(int newPosition);
 
 void setArtifactKey(String artifactKey);
 String getArtifactKey();
-void setTransform(Affine3D transformer);
+void addTransform(Transform transformer);
 
-Affine3D getTransform();
+Transform getTransform();
 }
