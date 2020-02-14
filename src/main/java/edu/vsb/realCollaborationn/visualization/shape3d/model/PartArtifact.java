@@ -2,7 +2,6 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import javafx.scene.Node;
-import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
 import java.io.IOException;
@@ -10,11 +9,10 @@ import java.net.URL;
 
 public class PartArtifact implements Artifact {
 
-    private Transform artifactTransform;
-
+    private Transform artifactTransform;            //fixme: doesn't work yet
     private String artifactKey;
     private int artifactPosition;
-    Node artifactModel;
+    private Node artifactModel;
 
     public PartArtifact(URL artifactLoadPath, String artifactKey, int artifactPosition,
                         boolean loadAsPolyMesh) throws IOException {
@@ -26,7 +24,7 @@ public class PartArtifact implements Artifact {
     }
 
     @Override
-    public int getArtifactPosition() {
+    public int getArtifactPositionInPartsSequence() {
         return artifactPosition;
     }
 
@@ -45,16 +43,12 @@ public class PartArtifact implements Artifact {
         return artifactTransform;
     }
 
-    public void setArtifactTransform(Transform artifactTransform) {
-        this.artifactTransform = artifactTransform;
-    }
-
     public String getArtifactKey() {
         return artifactKey;
     }
 
     @Override
-    public void addTransform(Transform transformer) {
+    public void addOrSetTransform(Transform transformer) {
         artifactModel.getTransforms().add(transformer);
     }
 

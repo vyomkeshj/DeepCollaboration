@@ -4,12 +4,11 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 import javafx.scene.transform.Transform;
 
 public interface Artifact {
-int getArtifactPosition();
 void setArtifactPosition(int newPosition);
-
 void setArtifactKey(String artifactKey);
-String getArtifactKey();
-void addTransform(Transform transformer);
+void addOrSetTransform(Transform transformer);
 
 Transform getTransform();
+int getArtifactPositionInPartsSequence();
+String getArtifactKey();
 }

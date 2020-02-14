@@ -29,7 +29,7 @@ public class JointArtifact implements Artifact{
     }
 
     @Override
-    public int getArtifactPosition() {
+    public int getArtifactPositionInPartsSequence() {
         return artifactPosition;
     }
 
@@ -44,13 +44,13 @@ public class JointArtifact implements Artifact{
     }
 
     @Override
-    public void addTransform(Transform transformer) {
-
+    public void addOrSetTransform(Transform transformer) {
+        jointRotation = (Rotate) transformer;
     }
 
     @Override
     public Transform getTransform() {
-        return jointRotation;    //todo: return a real transform
+        return jointRotation;
     }
 
     public String getArtifactKey() {
