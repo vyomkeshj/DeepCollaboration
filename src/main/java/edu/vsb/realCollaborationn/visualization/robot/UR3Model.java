@@ -34,8 +34,9 @@ public class UR3Model extends ArtifactStructure {
             URL wrist2 = getClass().getResource("/wrist2.obj");
             URL wrist3 = getClass().getResource("/wrist3.obj");
 
-
+            URL table = getClass().getResource("/stul.obj");
             Affine3D baseAffine = new Affine3D();
+            Affine3D tableAffine = new Affine3D();
 
             Affine3D shoulderAffine = new Affine3D();
             shoulderAffine.translate(0, 0.085, 0);
@@ -55,6 +56,9 @@ public class UR3Model extends ArtifactStructure {
             Affine3D wrist3Affine = new Affine3D();
             wrist3Affine.translate(0, 0.69378, -0.14753);
 
+
+            PartArtifact robotTable = new PartArtifact(table,
+                    "table", 0, true);
 
             PartArtifact robotBase = new PartArtifact(base,
                     "base", 1, true);
@@ -79,7 +83,7 @@ public class UR3Model extends ArtifactStructure {
             JointArtifact wrist1Wrist2Joint = new JointArtifact(wrist1Wrist2JointTransformation, "wrist1Wrist2Joint", 10, -90, 90,0);
             JointArtifact wrist2Wrist3Joint = new JointArtifact(wrist2Wrist3JointTransformation, "wrist2Wrist3Joint", 12, -90, 90,0);
 
-
+            //addToParts(robotTable);
             addToParts(robotBase);
             addToParts(baseShoulderJoint);
 
@@ -131,6 +135,8 @@ public class UR3Model extends ArtifactStructure {
             robotWrist3.addOrSetTransform(wrist1Wrist2JointTransformation);
             robotWrist3.addOrSetTransform(wrist2Wrist3JointTransformation);
             robotWrist3.addOrSetTransform(wrist3Affine.getTransform());
+
+            addToParts(robotWrist3);
 
 
         } catch (IOException e) {

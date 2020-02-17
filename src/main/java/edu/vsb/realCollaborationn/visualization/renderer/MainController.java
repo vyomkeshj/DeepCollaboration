@@ -115,15 +115,15 @@ public class MainController implements Initializable {
 
         final Timeline rotationAnimation = new Timeline();
 
-        for(float angle = -45; angle<=45; angle = angle+0.1f) {
+        for(float angle = -45; angle<=45; angle=angle+0.08f) {
             float finalAngle = angle;
             System.out.println(finalAngle);
             rotationAnimation.getKeyFrames()
                     .addAll(
                             new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(2, Math.abs(finalAngle))),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(4, -finalAngle*1.42)),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(6, finalAngle*2)),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(8, finalAngle*2))
+                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(4, Math.abs(finalAngle*1.42))),
+                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(6, Math.abs(finalAngle*2))),
+                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(8, Math.abs(finalAngle*2)))
                     );
         }
 
