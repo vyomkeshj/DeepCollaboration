@@ -83,7 +83,7 @@ public class UR3Model extends ArtifactStructure {
             JointArtifact wrist1Wrist2Joint = new JointArtifact(wrist1Wrist2JointTransformation, "wrist1Wrist2Joint", 10, -90, 90,0);
             JointArtifact wrist2Wrist3Joint = new JointArtifact(wrist2Wrist3JointTransformation, "wrist2Wrist3Joint", 12, -90, 90,0);
 
-            //addToParts(robotTable);
+            //`addToParts(robotTable);
             addToParts(robotBase);
             addToParts(baseShoulderJoint);
 

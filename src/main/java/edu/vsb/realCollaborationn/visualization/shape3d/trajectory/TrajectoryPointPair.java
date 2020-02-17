@@ -2,9 +2,12 @@ package edu.vsb.realCollaborationn.visualization.shape3d.trajectory;
 
 import javafx.geometry.Point3D;
 
+import java.util.List;
+
 public class TrajectoryPointPair {
     Point3D fromPoint;
     Point3D toPoint;
+    float resolution = 100;     // points per meter of trajectory
     IntermediateTrajectoryType trajectoryType;
 
     public TrajectoryPointPair(Point3D fromPoint, Point3D toPoint, IntermediateTrajectoryType trajectoryType) {
@@ -19,6 +22,10 @@ public class TrajectoryPointPair {
 
     public Point3D getToPoint() {
         return toPoint;
+    }
+
+    public List<Point3D> getIntermediatePoints() {
+        return trajectoryType.getPointsToBeTraversed(fromPoint, toPoint, resolution);
     }
 
     public IntermediateTrajectoryType getTrajectoryType() {
