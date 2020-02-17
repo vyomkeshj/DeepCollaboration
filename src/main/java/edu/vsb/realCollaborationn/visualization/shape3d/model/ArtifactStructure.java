@@ -53,7 +53,7 @@ public class ArtifactStructure {
     public Node getStructureNode() {
         for (Artifact currentPart: partList) {
             if(currentPart instanceof PartArtifact) {
-                rootNode.getChildren().add(((PartArtifact) currentPart).artifactModel);
+                rootNode.getChildren().add(((PartArtifact) currentPart).getArtifactModel());
             }
         }
         return rootNode;

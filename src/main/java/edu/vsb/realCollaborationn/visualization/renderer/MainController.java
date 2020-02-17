@@ -115,8 +115,8 @@ public class MainController implements Initializable {
 
         final Timeline rotationAnimation = new Timeline();
 
-        for(int angle = -45; angle<=45; angle++) {
-            int finalAngle = angle;
+        for(float angle = -45; angle<=45; angle = angle+0.1f) {
+            float finalAngle = angle;
             System.out.println(finalAngle);
             rotationAnimation.getKeyFrames()
                     .addAll(
