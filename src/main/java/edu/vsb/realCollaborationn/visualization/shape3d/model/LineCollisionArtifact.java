@@ -47,9 +47,7 @@ public class LineCollisionArtifact implements CollisionArtifact {
         Point3D axisOfRotation = diff.crossProduct(yAxis);
         double angle = Math.acos(diff.normalize().dotProduct(yAxis));
         Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
-
-        Cylinder line = new Cylinder(1, height);
-
+        Cylinder line = new Cylinder(0.001, height);
         line.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
 
         return line;

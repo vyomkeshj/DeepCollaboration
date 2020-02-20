@@ -1,6 +1,7 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
+import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.transform.Transform;
 
@@ -11,7 +12,6 @@ import java.util.List;
 
 public class PartArtifact implements Artifact {
 
-    private Transform artifactTransform;            //fixme: doesn't work yet
     private String artifactKey;
     private int artifactPosition;
     private Node artifactModel;
@@ -41,11 +41,6 @@ public class PartArtifact implements Artifact {
         this.artifactKey = artifactKey;
     }
 
-
-    public Transform getArtifactTransform() {
-        return artifactTransform;
-    }
-
     public String getArtifactKey() {
         return artifactKey;
     }
@@ -53,14 +48,19 @@ public class PartArtifact implements Artifact {
     @Override
     public void addOrSetTransform(Transform transformer) {
         artifactModel.getTransforms().add(transformer);
-        for (CollisionArtifact curentColisionArtifact: partCollisionArtifact) {
-            curentColisionArtifact.addOrSetTransform(transformer);
+        for (CollisionArtifact curentCollisionArtifact: partCollisionArtifact) {
+            curentCollisionArtifact.addOrSetTransform(transformer);
         }
+    }
+
+    public Point3D getTranslation() {
+        Transform partTransform = artifactModel.getLocalToParentTransform();
+        return new Point3D(partTransform.getTx(), partTransform.getTy(), partTransform.getTz());
     }
 
     @Override
     public Transform getTransform() {
-        return artifactTransform;
+        return artifactModel.getLocalToParentTransform();
     }
 
     public Node getArtifactModel() {

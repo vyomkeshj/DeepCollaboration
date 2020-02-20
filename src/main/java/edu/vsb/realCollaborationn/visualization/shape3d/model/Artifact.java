@@ -1,6 +1,7 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
 
+import javafx.geometry.Point3D;
 import javafx.scene.transform.Transform;
 
 public interface Artifact {

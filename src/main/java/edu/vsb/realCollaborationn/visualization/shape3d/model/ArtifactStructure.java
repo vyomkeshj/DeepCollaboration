@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.visualization.shape3d.model;
 
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Transform;
@@ -44,10 +45,19 @@ public class ArtifactStructure {
                 }
             }
         }
+
+        System.out.println("TCP at: "+getTCPcoords());
     }
 
     public void transformStructureRoot(Transform structureTransformer) {
      rootNode.getTransforms().add(structureTransformer);
+    }
+
+
+    public Point3D getTCPcoords() {
+        Artifact lastPart = partList.get(partList.size()-1);
+        Transform partTransform = lastPart.getTransform();
+        return new Point3D(partTransform.getTx(), partTransform.getTy(), partTransform.getTz());
     }
 
     public Node getStructureNode() {
