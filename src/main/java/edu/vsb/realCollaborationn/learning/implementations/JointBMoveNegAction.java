@@ -12,6 +12,6 @@ public class JointBMoveNegAction implements Action {
 
     @Override
     public void performAction() {
-
+        currentModel.decrementB();
     }
 }

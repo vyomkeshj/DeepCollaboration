@@ -5,13 +5,13 @@ import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 
 public class JointAMovePosAction implements Action {
 
-    UR3Model robotModel;
+    UR3Model currentModel;
     public JointAMovePosAction(UR3Model robot) {
-        this.robotModel = robot;
+        this.currentModel = robot;
     }
 
     @Override
     public void performAction() {
-
+        currentModel.incrementA();
     }
 }

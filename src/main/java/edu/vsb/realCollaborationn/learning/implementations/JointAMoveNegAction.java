@@ -12,7 +12,7 @@ public class JointAMoveNegAction implements Action {
 
     @Override
     public void performAction() {
-
+        currentModel.decrementA();
     }
 
 }

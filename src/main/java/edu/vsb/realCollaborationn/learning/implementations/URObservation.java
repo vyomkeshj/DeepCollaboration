@@ -24,7 +24,7 @@ public class URObservation implements ObservationSpace<URSimRobotState> {
 
     @Override
     public int[] getShape() {
-        return new int[0];
+        return new int[2];
     }
 
     @Override

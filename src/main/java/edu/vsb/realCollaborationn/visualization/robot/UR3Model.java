@@ -20,6 +20,8 @@ public class UR3Model extends ArtifactStructure {
     private final Rotate wrist1Wrist2JointTransformation = new Rotate(0,0, 0.64816, -0.1067, new Point3D(0,1,0));
     private final Rotate wrist2Wrist3JointTransformation = new Rotate(0,0, 0.69378, -0.14753, new Point3D(0,0,1));      //todo: axis impact
 
+    private float incrementBy = 0.1f;
+
     public UR3Model() {
         loadParts();
     }
@@ -144,28 +146,47 @@ public class UR3Model extends ArtifactStructure {
         }
     }
 
-    void setBaseShoulderJointAngle(int angle) {
+    void setBaseShoulderJointAngle(double angle) {
         baseShoulderJointTransformation.setAngle(angle);
     }
 
-    void setUpperArmShoulderJointAngle(int angle) {
+    void setUpperArmShoulderJointAngle(double angle) {
         upperArmShoulderJointTransformation.setAngle(angle);
     }
 
-    void setShoulderForeArmJointAngle(int angle) {
+    void setShoulderForeArmJointAngle(double angle) {
         shoulderForeArmJointTransformation.setAngle(angle);
     }
 
-    void setForeArmWrist1JointAngle(int angle) {
+    void setForeArmWrist1JointAngle(double angle) {
         foreArmWrist1JointTransformation.setAngle(angle);
     }
 
-    void setWrist1Wrist2JointAngle(int angle) {
+    void setWrist1Wrist2JointAngle(double angle) {
         wrist1Wrist2JointTransformation.setAngle(angle);
     }
 
-    void wrist2Wrist3JointAngle(int angle) {
+    void wrist2Wrist3JointAngle(double angle) {
         wrist2Wrist3JointTransformation.setAngle(angle);
     }
+
+
+    public void incrementA() {
+        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+    }
+
+    public void decrementA() {
+        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+    }
+
+    public void incrementB() {
+        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + incrementBy);
+    }
+
+    public void decrementB() {
+        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
+
+    }
+
 
 }

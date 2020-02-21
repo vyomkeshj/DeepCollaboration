@@ -10,14 +10,14 @@ import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 
-public class BaseLearningEnvironment implements MDP<URSimRobotState, Action, URControlActionSpace<Action>>{
+public class BaseLearningEnvironment implements MDP{
 
     UR3Model currentRobotModel;
     URControlActionSpace actionSpace = new URControlActionSpace(currentRobotModel);
     URSimRobotState robotState = new URSimRobotState(currentRobotModel);
     URObservation observationSpace = new URObservation(robotState);
 
-    BaseLearningEnvironment() {
+    public BaseLearningEnvironment() {
         this.currentRobotModel = new UR3Model();
     }
 
@@ -33,7 +33,9 @@ public class BaseLearningEnvironment implements MDP<URSimRobotState, Action, URC
 
     @Override
     public URSimRobotState reset() {
-        return null;
+        currentRobotModel.rotateAtJoint(2,0);
+        currentRobotModel.rotateAtJoint(4,0);
+        return robotState;
     }
 
     @Override
@@ -42,8 +44,9 @@ public class BaseLearningEnvironment implements MDP<URSimRobotState, Action, URC
     }
 
     @Override
-    public StepReply<URSimRobotState> step(Action action) {
-        action.performAction();
+    public StepReply step(Object o) {
+        if(o instanceof Action)
+           ((Action) o).performAction();
         return observationSpace.getCurrentReward();
     }
 
@@ -53,7 +56,7 @@ public class BaseLearningEnvironment implements MDP<URSimRobotState, Action, URC
     }
 
     @Override
-    public MDP<URSimRobotState, Action, URControlActionSpace<Action>> newInstance() {
+    public MDP newInstance() {
         return new BaseLearningEnvironment();
     }
 

@@ -12,6 +12,7 @@ public class JointBMovePosAction implements Action {
 
     @Override
     public void performAction() {
+        currentModel.incrementB();
     }
 
 }
