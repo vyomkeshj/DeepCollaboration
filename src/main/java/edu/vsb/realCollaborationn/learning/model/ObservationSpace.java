@@ -8,7 +8,6 @@ public class ObservationSpace implements org.deeplearning4j.rl4j.space.Observati
 
     private Observation robotObservation;
 
-
     public ObservationSpace(UR3Model robotModel) {
         robotObservation = new Observation(robotModel);
     }

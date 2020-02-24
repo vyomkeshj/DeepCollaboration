@@ -31,6 +31,7 @@
  */
 package edu.vsb.realCollaborationn.visualization.renderer;
 
+import edu.vsb.realCollaborationn.learning.URAgent;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.importers.Optimizer;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
@@ -110,9 +111,10 @@ public class MainController implements Initializable {
 //            System.out.println("supportedFormatRegex[i] = " + supportedFormatRegex[i]);
         }
         // do initial status update
-        ArtifactStructure model = new UR3Model();
+        ArtifactStructure model = URAgent.robotModel;
 
 
+/*
         final Timeline rotationAnimation = new Timeline();
 
         for(float angle = -45; angle<=45; angle=angle+0.08f) {
@@ -130,6 +132,18 @@ public class MainController implements Initializable {
 
         rotationAnimation.setCycleCount(Animation.INDEFINITE);
         rotationAnimation.play();
+*/
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    URAgent.urAgent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
         contentModel.setContent(model.getStructureNode());
 
         updateStatus();

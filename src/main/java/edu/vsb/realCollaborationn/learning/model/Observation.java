@@ -17,12 +17,7 @@ public class Observation implements Encodable {
 
     public Observation(UR3Model robotModel) {
         this.robotModel = robotModel;
-    }
-
-    public Observation(double jointAngleA, double jointAngleB, Point3D currentTCPCoords) {
-        this.jointAngleA = jointAngleA;
-        this.jointAngleB = jointAngleB;
-        this.currentTCPCoords = currentTCPCoords;
+        currentTCPCoords = robotModel.getTCPcoords();
     }
 
     public double getJointAngleA() {
@@ -42,7 +37,7 @@ public class Observation implements Encodable {
     }
 
     public INDArray getData() {
-        int[] stateArray = {(int) jointAngleA, (int) jointAngleB, (int) currentTCPCoords.getX()*tcpFactor, (int) currentTCPCoords.getY()*tcpFactor, (int) currentTCPCoords.getZ()*tcpFactor};
+        double[] stateArray = {jointAngleA, jointAngleB, currentTCPCoords.getX() ,currentTCPCoords.getY(), currentTCPCoords.getZ()};
         return Nd4j.create(stateArray);
     }
 

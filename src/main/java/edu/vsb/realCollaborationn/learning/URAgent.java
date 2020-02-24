@@ -43,7 +43,7 @@ public class URAgent {
     }
 
     public static void urAgent() throws IOException {
-        MDP mdp = new RobotDecisionProcess();
+        MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
         QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, CARTPOLE_NET, CARTPOLE_QL);
         //train
@@ -57,7 +57,7 @@ public class URAgent {
     }
     public static void loadAgent() throws IOException {
         //define the mdp from gym (name, render)
-        MDP mdp2 = new RobotDecisionProcess();
+        MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
         DQNPolicy<Box> pol2 = DQNPolicy.load("/tmp/pol1");
         //evaluate the agent

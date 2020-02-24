@@ -8,12 +8,22 @@ import org.deeplearning4j.rl4j.mdp.MDP;
 
 public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteActionSpace> {
 
-    UR3Model robotModel = new UR3Model();
-    ObservationSpace currentObservationSpace = new ObservationSpace(robotModel);
-    ActionSpace actionSpace = new ActionSpace(robotModel);
+    UR3Model robotModel;
+    ObservationSpace currentObservationSpace;
+    ActionSpace actionSpace;
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);
 
     Point3D currentPointTargetForTCP = new Point3D(0,0,0);
+
+    public RobotDecisionProcess(UR3Model robotModel) {
+        this.robotModel = robotModel;
+        currentObservationSpace = new ObservationSpace(robotModel);
+        actionSpace = new ActionSpace(robotModel);
+    }
+
+    public RobotDecisionProcess() {
+        this.robotModel = new UR3Model();
+    }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
         this.currentPointTargetForTCP = currentPointTargetForTCP;
