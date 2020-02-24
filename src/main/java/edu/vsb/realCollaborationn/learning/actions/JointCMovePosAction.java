@@ -22,6 +22,9 @@ public class JointCMovePosAction implements Action {
         Observation currentObservation = new Observation(currentModel);
         double reward = currentObservation.getReward(targetPoint);
         boolean isDone = (reward>MAX_REWARD);
+        if(isDone) {
+            System.out.println("___________DONE____________");
+        }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;
     }

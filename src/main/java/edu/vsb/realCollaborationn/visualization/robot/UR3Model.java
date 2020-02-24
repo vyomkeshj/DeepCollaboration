@@ -20,7 +20,9 @@ public class UR3Model extends ArtifactStructure {
     private final Rotate wrist1Wrist2JointTransformation = new Rotate(0,0, 0.64816, -0.1067, new Point3D(0,1,0));
     private final Rotate wrist2Wrist3JointTransformation = new Rotate(0,0, 0.69378, -0.14753, new Point3D(0,0,1));      //todo: axis impact
 
-    private float incrementBy = 0.5f;
+    private int stepsTaken = 0;
+
+    private float incrementBy = 0.8f;
 
     public UR3Model() {
         loadParts();
@@ -170,63 +172,76 @@ public class UR3Model extends ArtifactStructure {
         wrist2Wrist3JointTransformation.setAngle(angle);
     }
 
-
     public void incrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        stepsTaken++;
     }
 
     public void decrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        stepsTaken++;
     }
 
     public void incrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + incrementBy);
+        stepsTaken++;
     }
 
     public void decrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
+        stepsTaken++;
     }
 
     public void incrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        stepsTaken++;
     }
 
     public void decrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        stepsTaken++;
     }
     public void incrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        stepsTaken++;
     }
 
     public void decrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        stepsTaken++;
     }
     public void incrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        stepsTaken++;
     }
 
     public void decrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        stepsTaken++;
     }
 
-    public int getA() {
-        return (int) baseShoulderJointTransformation.getAngle();
+    public double getA() {
+        return  baseShoulderJointTransformation.getAngle();
     }
 
-    public int getB() {
-        return (int) upperArmShoulderJointTransformation.getAngle();
+    public double getB() {
+        return  upperArmShoulderJointTransformation.getAngle();
     }
 
-    public int getC() {
-        return (int) shoulderForeArmJointTransformation.getAngle();
+    public double getC() {
+        return shoulderForeArmJointTransformation.getAngle();
     }
 
-    public int getD() {
-        return (int) foreArmWrist1JointTransformation.getAngle();
+    public double getD() {
+        return foreArmWrist1JointTransformation.getAngle();
     }
 
-    public int getE() {
-        return (int) wrist1Wrist2JointTransformation.getAngle();
+    public double getE() {
+        return wrist1Wrist2JointTransformation.getAngle();
+    }
+
+    public int getStepsTaken() {
+        return stepsTaken;
     }
 
     public void reset() {
@@ -236,6 +251,7 @@ public class UR3Model extends ArtifactStructure {
         setShoulderForeArmJointAngle(0);
         setWrist1Wrist2JointAngle(0);
         setWrist2Wrist3JointAngle(0);
+        stepsTaken = 0;
     }
 
 }

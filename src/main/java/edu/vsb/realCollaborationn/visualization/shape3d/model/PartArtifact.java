@@ -60,7 +60,14 @@ public class PartArtifact implements Artifact {
 
     @Override
     public Transform getTransform() {
-        return artifactModel.getLocalToSceneTransform();
+        Transform returnTransform;
+        try {
+             returnTransform = artifactModel.getLocalToParentTransform();
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnTransform = artifactModel.getLocalToParentTransform();
+        }
+        return returnTransform;
     }
 
     public Node getArtifactModel() {

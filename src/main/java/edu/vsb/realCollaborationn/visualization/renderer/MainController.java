@@ -31,6 +31,7 @@
  */
 package edu.vsb.realCollaborationn.visualization.renderer;
 
+import edu.vsb.realCollaborationn.learning.RobotDecisionProcess;
 import edu.vsb.realCollaborationn.learning.URAgent;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.importers.Optimizer;
@@ -50,6 +51,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.MeshView;
+import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -144,6 +146,7 @@ public class MainController implements Initializable {
                 }
             }
         }.start();
+
         contentModel.setContent(model.getStructureNode());
 
         updateStatus();

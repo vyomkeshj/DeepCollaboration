@@ -19,7 +19,7 @@ public class URAgent {
     public static QLearning.QLConfiguration UR_QL_CONF =
             new QLearning.QLConfiguration(
                     123,    //Random seed
-                    200,    //Max step By epoch
+                    3000,    //Max step By epoch
                     150000, //Max step
                     150000, //Max size of experience replay
                     32,     //size of batches
@@ -68,6 +68,6 @@ public class URAgent {
             rewards += reward;
             Logger.getAnonymousLogger().info("Reward: " + reward);
         }
-        Logger.getAnonymousLogger().info("average: " + rewards/1000);
+        Logger.getAnonymousLogger().info("average: " + rewards/3000);
     }
 }

@@ -14,8 +14,9 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     ObservationSpace currentObservationSpace;
     ActionSpace actionSpace;
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);
+    private boolean isDone = false;
 
-    Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.03, 0.6);
+    public static Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.03, 0.6);
 
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
@@ -51,17 +52,23 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public void close() {
-
+        System.out.println("CLOSE CALLED");
     }
 
     @Override
     public StepReply<Observation> step(Integer integer) {
-        return actionSpace.executeActionAt(integer);
+        StepReply<Observation> currentStepReply = actionSpace.executeActionAt(integer);
+        isDone = currentStepReply.isDone();
+        return currentStepReply;
     }
 
     @Override
     public boolean isDone() {
-        return false;
+         if(isDone) {
+             isDone = false;
+             return true;
+         }
+         return false;
     }
 
     @Override
