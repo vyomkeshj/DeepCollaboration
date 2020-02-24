@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class URAgent {
     public static UR3Model robotModel = new UR3Model();
 
-    public static QLearning.QLConfiguration CARTPOLE_QL =
+    public static QLearning.QLConfiguration UR_QL_CONF =
             new QLearning.QLConfiguration(
                     123,    //Random seed
                     200,    //Max step By epoch
@@ -30,12 +30,12 @@ public class URAgent {
                     1.0,    //td-error clipping
                     0.1f,   //min epsilon
                     1000,   //num step for eps greedy anneal
-                    false    //double DQN
+                    true    //double DQN
             );
 
-    public static DQNFactoryStdDense.Configuration CARTPOLE_NET =
+    public static DQNFactoryStdDense.Configuration UR_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(5).numLayer(3).build();
+                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(3).build();
 
     public static void main(String[] args) throws IOException {
         urAgent();
@@ -45,7 +45,7 @@ public class URAgent {
     public static void urAgent() throws IOException {
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
-        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, CARTPOLE_NET, CARTPOLE_QL);
+        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET, UR_QL_CONF);
         //train
         dql.train();
         //get the final policy

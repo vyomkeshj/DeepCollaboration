@@ -20,7 +20,9 @@ public class JointBMoveNegAction implements Action {
     public StepReply<Observation> performAction() {
         currentModel.decrementB();
         Observation currentObservation = new Observation(currentModel);
-        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, currentObservation.getReward(targetPoint), false, new JSONObject(currentObservation));
+        double reward = currentObservation.getReward(targetPoint);
+        boolean isDone = (reward>MAX_REWARD);
+        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;
     }
 }

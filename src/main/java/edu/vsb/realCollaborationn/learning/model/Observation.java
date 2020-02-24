@@ -10,6 +10,9 @@ public class Observation implements Encodable {
     UR3Model robotModel;
     double jointAngleA = 0.00;
     double jointAngleB = 0.00;
+    double jointAngleC = 0.00;
+    double jointAngleD = 0.00;
+    double jointAngleE = 0.00;
 
     int tcpFactor = 100;
 
@@ -28,6 +31,18 @@ public class Observation implements Encodable {
         return robotModel.getB();
     }
 
+    public double getJointAngleC() {
+        return jointAngleC;
+    }
+
+    public double getJointAngleD() {
+        return jointAngleD;
+    }
+
+    public double getJointAngleE() {
+        return jointAngleE;
+    }
+
     public Point3D getCurrentTCPCoords() {
         return robotModel.getTCPcoords();
     }
@@ -37,16 +52,16 @@ public class Observation implements Encodable {
     }
 
     public INDArray getData() {
-        double[] stateArray = {jointAngleA, jointAngleB, currentTCPCoords.getX() ,currentTCPCoords.getY(), currentTCPCoords.getZ()};
+        double[] stateArray = {jointAngleA, jointAngleB,jointAngleC, jointAngleD, jointAngleE, currentTCPCoords.getX() ,currentTCPCoords.getY(), currentTCPCoords.getZ()};
         return Nd4j.create(stateArray);
     }
 
     public double getReward(Point3D target) {
-        return currentTCPCoords.distance(target);
+        return 1.00/(currentTCPCoords.distance(target));
     }
 
     @Override
     public double[] toArray() {
-        return new double[] {jointAngleA, jointAngleB, currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ()};
+        return new double[] {jointAngleA, jointAngleB,jointAngleC, jointAngleD, jointAngleE, currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ()};
     }
 }

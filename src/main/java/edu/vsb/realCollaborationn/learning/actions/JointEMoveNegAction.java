@@ -7,17 +7,17 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
 
-public class JointAMoveNegAction implements Action {
+public class JointEMoveNegAction implements Action {
     UR3Model currentModel;
     Point3D targetPoint;
-    public JointAMoveNegAction(UR3Model currentModel, Point3D targetPoint) {
+    public JointEMoveNegAction(UR3Model currentModel, Point3D targetPoint) {
         this.currentModel = currentModel;
         this.targetPoint = targetPoint;
     }
 
     @Override
     public StepReply<Observation> performAction() {
-        currentModel.decrementA();
+        currentModel.decrementE();
         Observation currentObservation = new Observation(currentModel);
         double reward = currentObservation.getReward(targetPoint);
         boolean isDone = (reward>MAX_REWARD);

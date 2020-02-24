@@ -14,17 +14,36 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     List<Action> actionsList = new ArrayList<>();
     Point3D targetPoint = new Point3D(0, 0, 0);
     NoOpAction noOpAction;
+
     public ActionSpace(UR3Model robot) {
         JointAMoveNegAction jointAMoveNegAction = new JointAMoveNegAction(robot, targetPoint);
         JointBMoveNegAction jointBMoveNegAction = new JointBMoveNegAction(robot, targetPoint);
+        JointCMoveNegAction jointCMoveNegAction = new JointCMoveNegAction(robot, targetPoint);
+        JointDMoveNegAction jointDMoveNegAction = new JointDMoveNegAction(robot, targetPoint);
+        JointEMoveNegAction jointEMoveNegAction = new JointEMoveNegAction(robot, targetPoint);
+
+
         JointAMovePosAction jointAMovePosAction = new JointAMovePosAction(robot, targetPoint);
         JointBMovePosAction jointBMovePosAction = new JointBMovePosAction(robot, targetPoint);
+        JointCMovePosAction jointCMovePosAction = new JointCMovePosAction(robot, targetPoint);
+        JointDMovePosAction jointDMovePosAction = new JointDMovePosAction(robot, targetPoint);
+        JointEMovePosAction jointEMovePosAction = new JointEMovePosAction(robot, targetPoint);
+
         noOpAction = new NoOpAction(robot, targetPoint);
 
         actionsList.add(jointAMoveNegAction);
         actionsList.add(jointAMovePosAction);
         actionsList.add(jointBMoveNegAction);
         actionsList.add(jointBMovePosAction);
+
+        actionsList.add(jointCMoveNegAction);
+        actionsList.add(jointCMovePosAction);
+        actionsList.add(jointDMoveNegAction);
+        actionsList.add(jointDMovePosAction);
+        actionsList.add(jointEMoveNegAction);
+        actionsList.add(jointEMovePosAction);
+
+
         actionsList.add(noOpAction);
     }
 
@@ -38,7 +57,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
 
     @Override
     public Action randomAction() {
-        return actionsList.get(getRandomNumberInRange(0,4));
+        return actionsList.get(getRandomNumberInRange(0,10));
     }
 
     @Override
@@ -48,7 +67,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
 
     @Override
     public int getSize() {
-        return 5;
+        return 11;
     }
 
     @Override

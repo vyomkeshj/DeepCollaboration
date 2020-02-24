@@ -166,7 +166,7 @@ public class UR3Model extends ArtifactStructure {
         wrist1Wrist2JointTransformation.setAngle(angle);
     }
 
-    void wrist2Wrist3JointAngle(double angle) {
+    void setWrist2Wrist3JointAngle(double angle) {
         wrist2Wrist3JointTransformation.setAngle(angle);
     }
 
@@ -187,12 +187,55 @@ public class UR3Model extends ArtifactStructure {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
     }
 
+    public void incrementC() {
+        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+    }
+
+    public void decrementC() {
+        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+    }
+    public void incrementD() {
+        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+    }
+
+    public void decrementD() {
+        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+    }
+    public void incrementE() {
+        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+    }
+
+    public void decrementE() {
+        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+    }
+
     public int getA() {
         return (int) baseShoulderJointTransformation.getAngle();
     }
 
     public int getB() {
         return (int) upperArmShoulderJointTransformation.getAngle();
+    }
+
+    public int getC() {
+        return (int) shoulderForeArmJointTransformation.getAngle();
+    }
+
+    public int getD() {
+        return (int) foreArmWrist1JointTransformation.getAngle();
+    }
+
+    public int getE() {
+        return (int) wrist1Wrist2JointTransformation.getAngle();
+    }
+
+    public void reset() {
+        setUpperArmShoulderJointAngle(0);
+        setBaseShoulderJointAngle(0);
+        setForeArmWrist1JointAngle(0);
+        setShoulderForeArmJointAngle(0);
+        setWrist1Wrist2JointAngle(0);
+        setWrist2Wrist3JointAngle(0);
     }
 
 }

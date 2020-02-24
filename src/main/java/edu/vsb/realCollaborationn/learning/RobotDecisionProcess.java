@@ -6,6 +6,8 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 
+import static edu.vsb.realCollaborationn.learning.Utils.getRandomPointsBetweenTwoConcentricSpheres;
+
 public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteActionSpace> {
 
     UR3Model robotModel;
@@ -13,7 +15,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     ActionSpace actionSpace;
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);
 
-    Point3D currentPointTargetForTCP = new Point3D(0,0,0);
+    Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.03, 0.6);
 
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
@@ -42,6 +44,8 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public Observation reset() {
+        robotModel.reset();
+        setCurrentPointTargetForTCP(getRandomPointsBetweenTwoConcentricSpheres(0.03, 0.6));
         return new Observation(robotModel);
     }
 
