@@ -1,7 +1,8 @@
 package edu.vsb.realCollaborationn.learning.model;
 
-import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
+import javafx.geometry.Point3D;
+import org.deeplearning4j.gym.StepReply;
 
 public interface Action {
-    void performAction();
+    StepReply<Observation> performAction();
 }

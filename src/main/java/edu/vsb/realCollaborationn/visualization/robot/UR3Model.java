@@ -20,7 +20,7 @@ public class UR3Model extends ArtifactStructure {
     private final Rotate wrist1Wrist2JointTransformation = new Rotate(0,0, 0.64816, -0.1067, new Point3D(0,1,0));
     private final Rotate wrist2Wrist3JointTransformation = new Rotate(0,0, 0.69378, -0.14753, new Point3D(0,0,1));      //todo: axis impact
 
-    private float incrementBy = 0.1f;
+    private float incrementBy = 0.5f;
 
     public UR3Model() {
         loadParts();
@@ -185,8 +185,14 @@ public class UR3Model extends ArtifactStructure {
 
     public void decrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
-
     }
 
+    public int getA() {
+        return (int) baseShoulderJointTransformation.getAngle();
+    }
+
+    public int getB() {
+        return (int) upperArmShoulderJointTransformation.getAngle();
+    }
 
 }
