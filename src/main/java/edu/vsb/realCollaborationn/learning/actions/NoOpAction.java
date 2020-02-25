@@ -23,4 +23,9 @@ public class NoOpAction implements Action {
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, currentObservation.getReward(targetPoint), false, new JSONObject(currentObservation));
         return reply;
     }
+
+    @Override
+    public void setTarget(Point3D target) {
+        this.targetPoint = target;
+    }
 }

@@ -21,11 +21,17 @@ public class JointEMoveNegAction implements Action {
         Observation currentObservation = new Observation(currentModel);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
-        boolean isDone = (distanceFromTarget>MAX_REWARD);
+        boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
+            reward = reward+10;
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;
+    }
+
+    @Override
+    public void setTarget(Point3D target) {
+        this.targetPoint = target;
     }
 }

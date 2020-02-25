@@ -62,12 +62,17 @@ public class Observation implements Encodable {
 
     public double getReward(Point3D target) {
 
-        double stepReward = 1.00/(1-currentTCPCoords.distance(target));
+        if(currentTCPCoords.getY()<=0) {
+            return -2;
+        }
+        double stepReward = 1.000d/(1.000d+currentTCPCoords.distance(target));
         return stepReward;
     }
 
     @Override
     public double[] toArray() {
-        return new double[] {jointAngleA, jointAngleB,jointAngleC, jointAngleD, jointAngleE, currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ()};
+        return new double[] {jointAngleA, jointAngleB,jointAngleC, jointAngleD, jointAngleE, Math.sin(jointAngleA), Math.sin(jointAngleB),Math.sin(jointAngleC), Math.sin(jointAngleD),
+                Math.sin(jointAngleE), currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ()};
+
     }
 }
