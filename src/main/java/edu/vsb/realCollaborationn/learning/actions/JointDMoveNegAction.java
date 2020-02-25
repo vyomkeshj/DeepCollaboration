@@ -26,7 +26,7 @@ public class JointDMoveNegAction implements Action {
             System.out.println("___________DONE____________");
             reward = reward+10;
         }
-        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
+        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;
     }
 

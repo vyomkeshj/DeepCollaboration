@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="RealCollaboration" target="13.0.1" />
+      <module name="RealCollaboration" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

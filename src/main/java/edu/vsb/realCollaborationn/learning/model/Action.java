@@ -4,7 +4,7 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 
 public interface Action {
-    public static final double MAX_REWARD = 0.05;
+    public static final double MAX_REWARD = 0.12;
     StepReply<Observation> performAction();
     void setTarget(Point3D target);
 }
