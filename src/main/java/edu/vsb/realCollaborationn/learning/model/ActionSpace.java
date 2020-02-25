@@ -71,6 +71,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         jointAMovePosAction.setTarget(targetPoint);
         jointAMovePosAction.setTarget(targetPoint);
         jointAMovePosAction.setTarget(targetPoint);
+        noOpAction.setTarget(targetPoint);
     }
 
     public StepReply<Observation> executeActionAt(Integer actionIndex) {
