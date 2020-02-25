@@ -21,7 +21,8 @@ public class JointAMovePosAction implements Action {
         currentModel.incrementA();
         Observation currentObservation = new Observation(currentModel);
         double reward = currentObservation.getReward(targetPoint);
-        boolean isDone = (reward>MAX_REWARD);
+        double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
+        boolean isDone = (distanceFromTarget>MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
         }

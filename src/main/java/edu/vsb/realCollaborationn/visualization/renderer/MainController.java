@@ -115,7 +115,6 @@ public class MainController implements Initializable {
         // do initial status update
         ArtifactStructure model = URAgent.robotModel;
 
-
 /*
         final Timeline rotationAnimation = new Timeline();
 
@@ -148,7 +147,6 @@ public class MainController implements Initializable {
         }.start();
 
         contentModel.setContent(model.getStructureNode());
-
         updateStatus();
     }
 

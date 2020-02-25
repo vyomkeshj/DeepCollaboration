@@ -20,10 +20,13 @@ public class JointAMoveNegAction implements Action {
         currentModel.decrementA();
         Observation currentObservation = new Observation(currentModel);
         double reward = currentObservation.getReward(targetPoint);
-        //System.out.println("current reward = "+reward);
-        boolean isDone = (reward>MAX_REWARD);
+
+        double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
+
+        boolean isDone = ((1.00/distanceFromTarget)>MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
+            reward = reward+100;
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;

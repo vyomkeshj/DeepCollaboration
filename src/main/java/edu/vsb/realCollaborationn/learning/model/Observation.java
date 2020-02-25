@@ -13,7 +13,7 @@ public class Observation implements Encodable {
     double jointAngleC = 0.00;
     double jointAngleD = 0.00;
     double jointAngleE = 0.00;
-
+    double lastReward = 0;
     int tcpFactor = 100;
 
     Point3D currentTCPCoords = new Point3D(0,0,0);
@@ -56,8 +56,14 @@ public class Observation implements Encodable {
         return Nd4j.create(stateArray);
     }
 
+    public double getDistanceFromTarget(Point3D target) {
+        return currentTCPCoords.distance(target);
+    }
+
     public double getReward(Point3D target) {
-        return 1.00/(currentTCPCoords.distance(target));
+
+        double stepReward = 1.00/(1-currentTCPCoords.distance(target));
+        return stepReward;
     }
 
     @Override
