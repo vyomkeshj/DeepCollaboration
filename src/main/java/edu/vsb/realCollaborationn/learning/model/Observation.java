@@ -13,9 +13,8 @@ public class Observation implements Encodable {
     double jointAngleC = 0.00;
     double jointAngleD = 0.00;
     double jointAngleE = 0.00;
-    double lastReward = 0;
     int tcpFactor = 100;
-
+    private static double previousReward = 0;
     Point3D currentTCPCoords = new Point3D(0,0,0);
 
     public Observation(UR3Model robotModel) {
@@ -66,6 +65,15 @@ public class Observation implements Encodable {
             return -2;
         }
         double stepReward = 1.000d/(1.000d+currentTCPCoords.distance(target));
+
+        if(previousReward==0) {
+            previousReward = stepReward;
+            return stepReward;
+        }
+        double lastReward = previousReward;
+        previousReward = stepReward;
+
+        stepReward = stepReward - lastReward;
         return stepReward;
     }
 
