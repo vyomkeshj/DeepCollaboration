@@ -39,8 +39,6 @@ public class UR3Model extends ArtifactStructure {
             URL wrist3 = getClass().getResource("/wrist3.obj");
 
             URL table = getClass().getResource("/stul.obj");
-            Affine3D baseAffine = new Affine3D();
-            Affine3D tableAffine = new Affine3D();
 
             Affine3D shoulderAffine = new Affine3D();
             shoulderAffine.translate(0, 0.085, 0);

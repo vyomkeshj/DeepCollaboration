@@ -3,6 +3,7 @@ package edu.vsb.realCollaborationn.learning;
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import org.deeplearning4j.api.storage.StatsStorage;
+import org.deeplearning4j.optimize.api.TrainingListener;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
@@ -19,28 +20,29 @@ import java.util.logging.Logger;
 
 public class URAgent {
     public static UR3Model robotModel = new UR3Model();
+    static UIServer uiServer = UIServer.getInstance();
 
     public static QLearning.QLConfiguration UR_QL_CONF =
             new QLearning.QLConfiguration(
                     123,    //Random seed
                     1000,    //Max step By epoch
-                    50000, //Max step
+                    5000000, //Max step
                     15000, //Max size of experience replay
-                    32,     //size of batches
-                    300,    //target update (hard)
+                    128,     //size of batches
+                    1000,    //target update (hard)
                     10,     //num step noop warmup
                     0.01,   //reward scaling
                     0.99,   //gamma
                     1.0,    //td-error clipping
                     0.1f,   //min epsilon
-                    1000,   //num step for eps greedy anneal
+                    10000,   //num step for eps greedy anneal
                     true    //double DQN
             );
 
 
     public static DQNFactoryStdDense.Configuration.ConfigurationBuilder UR_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(10);
+                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(20);
 
 
     public static void main(String[] args) throws IOException {
@@ -49,7 +51,17 @@ public class URAgent {
     }
 
     public static void urAgent() throws IOException {
+        //Initialize the user interface backend
 
+        //Configure where the network information (gradients, score vs. time etc) is to be stored. Here: store in memory.
+        StatsStorage statsStorage = new InMemoryStatsStorage();         //Alternative: new FileStatsStorage(File), for saving and loading later
+
+        //Attach the StatsStorage instance to the UI: this allows the contents of the StatsStorage to be visualized
+        uiServer.attach(statsStorage);
+
+        //Then add the StatsListener to collect this information from the network, as it trains
+        TrainingListener[] listeners = {new StatsListener(statsStorage)};
+        UR_NET.listeners(listeners);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training

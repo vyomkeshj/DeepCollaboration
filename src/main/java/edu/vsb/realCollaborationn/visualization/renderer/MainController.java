@@ -146,7 +146,7 @@ public class MainController implements Initializable {
             }
         }.start();
 
-        contentModel.setContent(model.getStructureNode());
+        //contentModel.setContent(model.getStructureNode());
         updateStatus();
     }
 
