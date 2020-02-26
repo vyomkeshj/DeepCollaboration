@@ -74,6 +74,7 @@ public class RealCollaborationApplication extends Application {
         //org.scenicview.ScenicView.show(contentModel.getSubScene().getRoot());
     }
     public static void main(String[] args) {
+
         launch(args);
     }
 }
