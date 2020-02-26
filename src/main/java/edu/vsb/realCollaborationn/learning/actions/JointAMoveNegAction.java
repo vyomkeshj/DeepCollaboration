@@ -18,7 +18,7 @@ public class JointAMoveNegAction implements Action {
     @Override
     public StepReply<Observation> performAction() {
         currentModel.decrementA();
-        Observation currentObservation = new Observation(currentModel);
+        Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);

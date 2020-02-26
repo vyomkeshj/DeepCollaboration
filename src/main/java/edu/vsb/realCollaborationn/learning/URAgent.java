@@ -1,13 +1,19 @@
 package edu.vsb.realCollaborationn.learning;
 
 
+import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import org.deeplearning4j.api.storage.StatsStorage;
+import org.deeplearning4j.nn.api.Model;
 import org.deeplearning4j.optimize.api.TrainingListener;
+import org.deeplearning4j.rl4j.learning.async.a3c.discrete.A3CDiscrete;
+import org.deeplearning4j.rl4j.learning.async.a3c.discrete.A3CDiscreteDense;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
+import org.deeplearning4j.rl4j.network.ac.ActorCriticFactoryCompGraphStdDense;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
+import org.deeplearning4j.rl4j.policy.ACPolicy;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.ui.api.UIServer;
@@ -22,32 +28,26 @@ public class URAgent {
     public static UR3Model robotModel = new UR3Model();
     static UIServer uiServer = UIServer.getInstance();
 
-    public static QLearning.QLConfiguration UR_QL_CONF =
-            new QLearning.QLConfiguration(
-                    123,    //Random seed
-                    1000,    //Max step By epoch
-                    5000000, //Max step
-                    15000, //Max size of experience replay
-                    128,     //size of batches
-                    1000,    //target update (hard)
-                    10,     //num step noop warmup
-                    0.01,   //reward scaling
-                    0.99,   //gamma
-                    1.0,    //td-error clipping
-                    0.1f,   //min epsilon
-                    10000,   //num step for eps greedy anneal
-                    true    //double DQN
-            );
 
-
-    public static DQNFactoryStdDense.Configuration.ConfigurationBuilder UR_NET =
-            DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(20);
+    public static A3CDiscreteDense.A3CConfiguration A3C_CONF = new A3CDiscreteDense.A3CConfiguration(
+            123,    //Random seed
+            1000,    //Max step By epoch
+            1000000, //Max step
+            6, //Max size of experience replay
+            1000,     //size of batches
+            10,    //target update (hard)
+            0.01,     //num step noop warmup
+            0.99,   //reward scaling
+            1.0   //gamma
+    );
+        public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(20)
+                .numLayer(20).useLSTM(false).updater(new Adam(0.0005));
 
 
     public static void main(String[] args) throws IOException {
         urAgent();
-        loadAgent();
+        //loadAgent();
     }
 
     public static void urAgent() throws IOException {
@@ -61,19 +61,18 @@ public class URAgent {
 
         //Then add the StatsListener to collect this information from the network, as it trains
         TrainingListener[] listeners = {new StatsListener(statsStorage)};
-        UR_NET.listeners(listeners);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
-        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET.build(), UR_QL_CONF);
+        A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
         //train
-        dql.train();
+        a3c.train();
 
         //Initialize the user interface backend
 
 
         //get the final policy
-        DQNPolicy pol = dql.getPolicy();
+        ACPolicy pol = a3c.getPolicy();
         //serialize and save (serialization showcase, but not required)
         pol.save("saved_policy");
         //close the mdp (close http)

@@ -19,7 +19,7 @@ public class JointEMovePosAction implements Action {
     @Override
     public StepReply<Observation> performAction() {
         currentModel.incrementE();
-        Observation currentObservation = new Observation(currentModel);
+        Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
         boolean isDone = (distanceFromTarget<MAX_REWARD);

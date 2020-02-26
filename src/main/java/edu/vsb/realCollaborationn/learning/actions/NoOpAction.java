@@ -19,7 +19,7 @@ public class NoOpAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        Observation currentObservation = new Observation(currentModel);
+        Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
         boolean isDone = (distanceFromTarget<MAX_REWARD);

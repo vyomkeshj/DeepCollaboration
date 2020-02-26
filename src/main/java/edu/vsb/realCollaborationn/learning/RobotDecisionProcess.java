@@ -20,12 +20,14 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
-        currentObservationSpace = new ObservationSpace(robotModel);
+        currentObservationSpace = new ObservationSpace(robotModel, currentPointTargetForTCP);
         actionSpace = new ActionSpace(robotModel);
     }
 
     public RobotDecisionProcess() {
         this.robotModel = new UR3Model();
+        currentObservationSpace = new ObservationSpace(robotModel, currentPointTargetForTCP);
+        actionSpace = new ActionSpace(robotModel);
     }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
@@ -75,5 +77,4 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     public MDP<Observation, Integer, DiscreteActionSpace> newInstance() {
         return new RobotDecisionProcess();
     }
-
 }
