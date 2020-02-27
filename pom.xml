@@ -14,8 +14,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>13.0.1</source>
-                    <target>13.0.1</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -62,9 +62,18 @@
 
         <dependency>
             <groupId>org.nd4j</groupId>
-            <artifactId>nd4j-cuda-10.1-platform</artifactId>
+            <artifactId>nd4j-native</artifactId>
             <version>1.0.0-beta6</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.nd4j</groupId>
+            <artifactId>nd4j-native</artifactId>
+            <version>1.0.0-beta6</version>
+            <classifier>macosx-x86_64-avx2</classifier>
+        </dependency>
+
 
         <dependency>
             <groupId>org.deeplearning4j</groupId>
