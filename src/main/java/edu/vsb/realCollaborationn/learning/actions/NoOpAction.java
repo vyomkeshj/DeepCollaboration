@@ -7,6 +7,8 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
 
+import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
+
 public class NoOpAction implements Action {
 
     UR3Model currentModel;
@@ -26,7 +28,9 @@ public class NoOpAction implements Action {
         if(isDone) {
             System.out.println("___________DONE_______NP_____");
             reward = reward+10;
-        }        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
+            MADE_IT_TO_TARGET = true;
+        }
+        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;
     }
 

@@ -46,7 +46,7 @@ public class PartArtifact implements Artifact {
     }
 
     @Override
-    public void addOrSetTransform(Transform transformer) {
+    public synchronized void addOrSetTransform(Transform transformer) {
         artifactModel.getTransforms().add(transformer);
         for (CollisionArtifact curentCollisionArtifact: partCollisionArtifact) {
             curentCollisionArtifact.addOrSetTransform(transformer);
@@ -59,7 +59,7 @@ public class PartArtifact implements Artifact {
     }
 
     @Override
-    public Transform getTransform() {
+    public synchronized Transform getTransform() {
         Transform returnTransform;
         try {
              returnTransform = artifactModel.getLocalToParentTransform();

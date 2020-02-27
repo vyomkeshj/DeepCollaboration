@@ -148,9 +148,6 @@ public class UR3Model extends ArtifactStructure {
         }
     }
 
-    void initializeTargetSphere() {
-
-    }
     void setBaseShoulderJointAngle(double angle) {
         baseShoulderJointTransformation.setAngle(angle);
     }

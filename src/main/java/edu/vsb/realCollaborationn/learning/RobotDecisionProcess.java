@@ -16,7 +16,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);
     private boolean isDone = false;
 
-    public static Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.3, 0.6);
+    public static Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.2, 0.6);
 
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
@@ -49,7 +49,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     @Override
     public Observation reset() {
         robotModel.reset();
-        setCurrentPointTargetForTCP(getRandomPointsBetweenTwoConcentricSpheres(0.3, 0.6));
+        setCurrentPointTargetForTCP(getRandomPointsBetweenTwoConcentricSpheres(0.2, 0.6));
         return new Observation(robotModel);
     }
 

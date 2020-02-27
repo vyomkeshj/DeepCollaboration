@@ -2,14 +2,19 @@ package edu.vsb.realCollaborationn.learning;
 
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
-import org.deeplearning4j.api.storage.StatsStorage;
-import org.deeplearning4j.optimize.api.TrainingListener;
+import org.deeplearning4j.nn.api.Model;
+import org.deeplearning4j.optimize.api.BaseTrainingListener;
+import org.deeplearning4j.rl4j.learning.IEpochTrainer;
+import org.deeplearning4j.rl4j.learning.ILearning;
+import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
+import org.deeplearning4j.rl4j.util.IDataManager;
+import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.IOException;
@@ -43,7 +48,7 @@ public class URAgent {
 
     public static void main(String[] args) throws IOException {
         urAgent();
-        loadAgent();
+        //loadAgent();
     }
 
     public static void urAgent() throws IOException {
@@ -51,16 +56,52 @@ public class URAgent {
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
         QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET.build(), UR_QL_CONF);
-        //train
+
+
+
+        TrainingListener iterationListener = new TrainingListener() {
+
+            @Override
+            public ListenerResponse onTrainingStart() {
+                return null;
+            }
+
+            @Override
+            public void onTrainingEnd() {
+
+            }
+
+            @Override
+            public ListenerResponse onNewEpoch(IEpochTrainer trainer) {
+                return null;
+            }
+
+            @Override
+            public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
+                DQNPolicy pol = dql.getPolicy();
+                //serialize and save (serialization showcase, but not required)
+                try {
+                    pol.save("saved_policies/saved_policy_ep_"+trainer.getEpochCounter());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            public ListenerResponse onTrainingProgress(ILearning learning) {
+                return null;
+            }
+        };
+
+        dql.addListener(iterationListener);
         dql.train();
 
         //Initialize the user interface backend
 
 
         //get the final policy
-        DQNPolicy pol = dql.getPolicy();
-        //serialize and save (serialization showcase, but not required)
-        pol.save("saved_policy");
         //close the mdp (close http)
         mdp.close();
     }

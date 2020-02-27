@@ -13,7 +13,7 @@ import java.util.List;
 public class ArtifactStructure {
     private List<Artifact> partList = new ArrayList<>();
     private Group rootNode = new Group();
-    Sphere targetSphere;
+    private Sphere targetSphere = new Sphere(0.02);;
     private Translate sphereTranslator = new Translate(0,0,0);
     public void addToParts(Artifact toAddArtifact) {
         partList.add(toAddArtifact);
@@ -73,7 +73,6 @@ public class ArtifactStructure {
     }
 
     public void addTargetSphere() {
-        targetSphere = new Sphere(0.02);
         rootNode.getChildren().add(targetSphere);
     }
 

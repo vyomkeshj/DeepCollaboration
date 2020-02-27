@@ -7,6 +7,8 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
 
+import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
+
 public class JointBMoveNegAction implements Action {
     UR3Model currentModel;
     Point3D targetPoint;
@@ -26,6 +28,8 @@ public class JointBMoveNegAction implements Action {
         if(isDone) {
             System.out.println("___________DONE____________");
             reward = reward+10;
+            MADE_IT_TO_TARGET = true;
+
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;
