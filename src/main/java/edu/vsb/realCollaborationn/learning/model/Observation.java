@@ -68,6 +68,11 @@ public class Observation implements Encodable {
 
     public double getReward(Point3D target) {
 
+        int stepFlipReward = 0;
+        if(robotModel.isStepFlip()) {
+            stepFlipReward = -5;
+        }
+
         if(currentTCPCoords.getY()<=0) {
             return -2;
         }
@@ -80,7 +85,7 @@ public class Observation implements Encodable {
         double lastReward = previousReward;
         previousReward = stepReward;
 
-        stepReward = stepReward - lastReward;
+        stepReward = (stepReward - lastReward)*currentTCPCoords.distance(target) + stepFlipReward;
         return stepReward;
     }
 

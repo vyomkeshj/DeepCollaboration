@@ -2,8 +2,6 @@ package edu.vsb.realCollaborationn.learning;
 
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
-import org.deeplearning4j.nn.api.Model;
-import org.deeplearning4j.optimize.api.BaseTrainingListener;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
 import org.deeplearning4j.rl4j.learning.ILearning;
 import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
@@ -14,7 +12,6 @@ import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
-import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.IOException;
