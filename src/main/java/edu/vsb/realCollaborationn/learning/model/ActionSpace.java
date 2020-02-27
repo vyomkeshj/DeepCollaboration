@@ -85,7 +85,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
 
     @Override
     public Object encode(Action action) {
-        return null;
+        return action.getEncoding();
     }
 
     @Override
