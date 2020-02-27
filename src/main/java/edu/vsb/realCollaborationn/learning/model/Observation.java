@@ -16,10 +16,17 @@ public class Observation implements Encodable {
     int tcpFactor = 100;
     private static double previousReward = 0;
     Point3D currentTCPCoords = new Point3D(0,0,0);
+    Point3D targetTCPCoords = new Point3D(0,0,0);
 
     public Observation(UR3Model robotModel) {
         this.robotModel = robotModel;
         currentTCPCoords = robotModel.getTCPcoords();
+    }
+
+    public Observation(UR3Model robotModel, Point3D targetTCPCoords) {
+        this.robotModel = robotModel;
+        currentTCPCoords = robotModel.getTCPcoords();
+        this.targetTCPCoords = targetTCPCoords;
     }
 
     public double getJointAngleA() {
@@ -80,7 +87,8 @@ public class Observation implements Encodable {
     @Override
     public double[] toArray() {
         return new double[] {Math.sin(jointAngleA), Math.sin(jointAngleB),Math.sin(jointAngleC), Math.sin(jointAngleD),
-                Math.sin(jointAngleE), currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ()};
+                Math.sin(jointAngleE), currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ(),
+                targetTCPCoords.getX(), targetTCPCoords.getY(), targetTCPCoords.getZ(), currentTCPCoords.distance(targetTCPCoords)};
 
     }
 }

@@ -26,13 +26,13 @@ public class URAgent {
             new QLearning.QLConfiguration(
                     123,    //Random seed
                     1000,    //Max step By epoch
-                    5000000, //Max step
+                    500000, //Max step
                     15000, //Max size of experience replay
-                    128,     //size of batches
+                    64,     //size of batches
                     1000,    //target update (hard)
                     10,     //num step noop warmup
                     0.01,   //reward scaling
-                    0.99,   //gamma
+                    0.90,   //gamma
                     1.0,    //td-error clipping
                     0.1f,   //min epsilon
                     10000,   //num step for eps greedy anneal
@@ -42,7 +42,7 @@ public class URAgent {
 
     public static DQNFactoryStdDense.Configuration.ConfigurationBuilder UR_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(20);
+                    .l2(0.001).updater(new Adam(0.0005)).numHiddenNodes(16).numLayer(25);
 
 
     public static void main(String[] args) throws IOException {

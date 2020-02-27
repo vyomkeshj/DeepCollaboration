@@ -19,12 +19,12 @@ public class NoOpAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        Observation currentObservation = new Observation(currentModel);
+        Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
-            System.out.println("___________DONE____________");
+            System.out.println("___________DONE_______NP_____");
             reward = reward+10;
         }        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;
@@ -33,5 +33,10 @@ public class NoOpAction implements Action {
     @Override
     public void setTarget(Point3D target) {
         this.targetPoint = target;
+    }
+
+    @Override
+    public Integer getEncoding() {
+        return 11;
     }
 }
