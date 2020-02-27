@@ -9,6 +9,7 @@ import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
+import org.deeplearning4j.rl4j.network.dqn.IDQN;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
@@ -55,7 +56,6 @@ public class URAgent {
         QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET.build(), UR_QL_CONF);
 
 
-
         TrainingListener iterationListener = new TrainingListener() {
 
             @Override
@@ -76,7 +76,6 @@ public class URAgent {
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
                 DQNPolicy pol = dql.getPolicy();
-                //serialize and save (serialization showcase, but not required)
                 try {
                     pol.save("saved_policies/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
@@ -92,29 +91,59 @@ public class URAgent {
             }
         };
 
+
         dql.addListener(iterationListener);
         dql.train();
 
-        //Initialize the user interface backend
-
-
-        //get the final policy
-        //close the mdp (close http)
         mdp.close();
     }
-    public static void loadAgent() throws IOException {
+    public static void retrainAgent() throws IOException {
         //define the mdp from gym (name, render)
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy<Box> pol2 = DQNPolicy.load("saved_policy");
-        //evaluate the agent
-        double rewards = 0;
-        for (int i = 0; i < 1000; i++) {
-            mdp2.reset();
-            double reward = pol2.play(mdp2);
-            rewards += reward;
-            Logger.getAnonymousLogger().info("Reward: " + reward);
-        }
-        Logger.getAnonymousLogger().info("average: " + rewards/3000);
+        DQNPolicy pol2 = DQNPolicy.load("saved_policies/saved_policy_ep_249");
+
+        IDQN preTrainedNetwork = pol2.getNeuralNet();
+        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp2, preTrainedNetwork, UR_QL_CONF);
+        TrainingListener iterationListener = new TrainingListener() {
+
+            @Override
+            public ListenerResponse onTrainingStart() {
+                return null;
+            }
+
+            @Override
+            public void onTrainingEnd() {
+
+            }
+
+            @Override
+            public ListenerResponse onNewEpoch(IEpochTrainer trainer) {
+                return null;
+            }
+
+            @Override
+            public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
+                DQNPolicy pol = dql.getPolicy();
+                try {
+                    pol.save("saved_policies_2/saved_policy_ep_"+trainer.getEpochCounter());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            public ListenerResponse onTrainingProgress(ILearning learning) {
+                return null;
+            }
+        };
+
+
+        dql.addListener(iterationListener);
+        dql.train();
+
+
     }
 }

@@ -139,7 +139,7 @@ public class MainController implements Initializable {
             public void run() {
                 super.run();
                 try {
-                    URAgent.urAgent();
+                    URAgent.retrainAgent();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
