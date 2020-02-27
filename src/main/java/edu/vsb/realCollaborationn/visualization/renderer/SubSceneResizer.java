@@ -83,8 +83,8 @@ public class SubSceneResizer extends Pane {
             subScene.setWidth(width);
             subScene.setHeight(height);
         }
-        //final double controlsWidth = snapSizeX(controlsPanel.prefWidth(-1));
-        //final double controlsHeight = snapSizeY(controlsPanel.prefHeight(-1));
-        //controlsPanel.resizeRelocate(width-controlsWidth,0,controlsWidth,controlsHeight);
+        final double controlsWidth = snapSizeX(controlsPanel.prefWidth(-1));
+        final double controlsHeight = snapSizeY(controlsPanel.prefHeight(-1));
+        controlsPanel.resizeRelocate(width-controlsWidth,0,controlsWidth,controlsHeight);
     }
 }

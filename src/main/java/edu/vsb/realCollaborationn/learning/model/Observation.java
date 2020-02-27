@@ -81,7 +81,7 @@ public class Observation implements Encodable {
         previousReward = stepReward;
 
         stepReward = stepReward - lastReward;
-        return stepReward;
+        return stepReward*currentTCPCoords.distance(target);
     }
 
     @Override

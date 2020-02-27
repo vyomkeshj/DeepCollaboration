@@ -29,7 +29,7 @@ public class URAgent {
                     1000,    //Max step By epoch
                     500000, //Max step
                     15000, //Max size of experience replay
-                    64,     //size of batches
+                    128,     //size of batches
                     1000,    //target update (hard)
                     10,     //num step noop warmup
                     0.01,   //reward scaling
