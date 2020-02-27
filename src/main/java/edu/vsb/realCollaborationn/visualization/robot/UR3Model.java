@@ -24,6 +24,14 @@ public class UR3Model extends ArtifactStructure {
 
     private float incrementBy = 0.8f;
 
+    private boolean jointAMovingPositive = true;
+    private boolean jointBMovingPositive = true;
+    private boolean jointCMovingPositive = true;
+    private boolean jointDMovingPositive = true;
+    private boolean jointEMovingPositive = true;
+
+    private boolean stepFlip = false;
+
     public UR3Model() {
         loadParts();
         addTargetSphere();
@@ -174,49 +182,95 @@ public class UR3Model extends ArtifactStructure {
 
    synchronized public void incrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        if(!jointAMovingPositive) {
+            jointAMovingPositive = true;
+            stepFlip = true;
+        }
         stepsTaken++;
     }
 
     synchronized public void decrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+
+        if(jointAMovingPositive) {
+            jointAMovingPositive = false;
+            stepFlip = true;
+        }
         stepsTaken++;
     }
 
     synchronized public void incrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + incrementBy);
+        if(!jointBMovingPositive) {
+            jointBMovingPositive = true;
+            stepFlip = true;
+        }
+
         stepsTaken++;
     }
 
     synchronized public void decrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
+        if(jointBMovingPositive) {
+            jointBMovingPositive = false;
+            stepFlip = true;
+        }
+
         stepsTaken++;
     }
 
     synchronized  public void incrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        if(!jointCMovingPositive) {
+            jointCMovingPositive = true;
+            stepFlip = true;
+        }
+
         stepsTaken++;
     }
 
     synchronized public void decrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        if(jointCMovingPositive) {
+            jointCMovingPositive = false;
+            stepFlip = true;
+        }
         stepsTaken++;
     }
     synchronized public void incrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        if(!jointDMovingPositive) {
+            jointDMovingPositive = true;
+            stepFlip = true;
+        }
         stepsTaken++;
     }
 
     synchronized public void decrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        if(jointDMovingPositive) {
+            jointDMovingPositive = false;
+            stepFlip = true;
+        }
         stepsTaken++;
     }
     synchronized public void incrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        if(!jointEMovingPositive) {
+            jointEMovingPositive = true;
+            stepFlip = true;
+        }
+
         stepsTaken++;
     }
 
     synchronized public void decrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        if(jointEMovingPositive) {
+            jointEMovingPositive = false;
+            stepFlip = true;
+        }
+
         stepsTaken++;
     }
 
@@ -254,4 +308,11 @@ public class UR3Model extends ArtifactStructure {
         stepsTaken = 0;
     }
 
+    public boolean isStepFlip() {
+        if(stepFlip){
+            stepFlip = false;
+            return true;
+        }
+        return stepFlip;
+    }
 }
