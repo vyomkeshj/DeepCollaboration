@@ -26,10 +26,12 @@ public class UR3Model extends ArtifactStructure {
 
     public UR3Model() {
         loadParts();
+        addTargetSphere();
     }
 
     private void loadParts() {
         try {
+
             URL base = getClass().getResource("/base.obj");
             URL shoulder = getClass().getResource("/shoulder.obj");
             URL upperArm = getClass().getResource("/upperarm.obj");
@@ -146,6 +148,9 @@ public class UR3Model extends ArtifactStructure {
         }
     }
 
+    void initializeTargetSphere() {
+
+    }
     void setBaseShoulderJointAngle(double angle) {
         baseShoulderJointTransformation.setAngle(angle);
     }
@@ -170,79 +175,79 @@ public class UR3Model extends ArtifactStructure {
         wrist2Wrist3JointTransformation.setAngle(angle);
     }
 
-    public void incrementA() {
+   synchronized public void incrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
         stepsTaken++;
     }
 
-    public void decrementA() {
+    synchronized public void decrementA() {
         setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
         stepsTaken++;
     }
 
-    public void incrementB() {
+    synchronized public void incrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + incrementBy);
         stepsTaken++;
     }
 
-    public void decrementB() {
+    synchronized public void decrementB() {
         setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
         stepsTaken++;
     }
 
-    public void incrementC() {
+    synchronized  public void incrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
         stepsTaken++;
     }
 
-    public void decrementC() {
+    synchronized public void decrementC() {
         setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
         stepsTaken++;
     }
-    public void incrementD() {
+    synchronized public void incrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
         stepsTaken++;
     }
 
-    public void decrementD() {
+    synchronized public void decrementD() {
         setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
         stepsTaken++;
     }
-    public void incrementE() {
+    synchronized public void incrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
         stepsTaken++;
     }
 
-    public void decrementE() {
+    synchronized public void decrementE() {
         setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
         stepsTaken++;
     }
 
-    public double getA() {
+    synchronized public double getA() {
         return  baseShoulderJointTransformation.getAngle();
     }
 
-    public double getB() {
+    synchronized public double getB() {
         return  upperArmShoulderJointTransformation.getAngle();
     }
 
-    public double getC() {
+    synchronized public double getC() {
         return shoulderForeArmJointTransformation.getAngle();
     }
 
-    public double getD() {
+    synchronized public double getD() {
         return foreArmWrist1JointTransformation.getAngle();
     }
 
-    public double getE() {
+    synchronized public double getE() {
         return wrist1Wrist2JointTransformation.getAngle();
     }
 
-    public int getStepsTaken() {
+    synchronized public int getStepsTaken() {
         return stepsTaken;
     }
 
-    public void reset() {
+    synchronized public void reset() {
         setUpperArmShoulderJointAngle(0);
         setBaseShoulderJointAngle(0);
         setForeArmWrist1JointAngle(0);

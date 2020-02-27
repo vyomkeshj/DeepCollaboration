@@ -3,7 +3,9 @@ package edu.vsb.realCollaborationn.visualization.shape3d.model;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,8 @@ import java.util.List;
 public class ArtifactStructure {
     private List<Artifact> partList = new ArrayList<>();
     private Group rootNode = new Group();
-
+    Sphere targetSphere;
+    private Translate sphereTranslator = new Translate(0,0,0);
     public void addToParts(Artifact toAddArtifact) {
         partList.add(toAddArtifact);
     }
@@ -67,5 +70,16 @@ public class ArtifactStructure {
             }
         }
         return rootNode;
+    }
+
+    public void addTargetSphere() {
+        targetSphere = new Sphere(0.02);
+        rootNode.getChildren().add(targetSphere);
+    }
+
+    synchronized public void translateTargetSphere(Point3D translation) {
+        targetSphere.setTranslateY(translation.getY());
+        targetSphere.setTranslateX(translation.getX());
+        targetSphere.setTranslateZ(translation.getZ());
     }
 }

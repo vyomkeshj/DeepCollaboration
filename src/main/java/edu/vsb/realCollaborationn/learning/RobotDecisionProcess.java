@@ -32,6 +32,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
         this.currentPointTargetForTCP = currentPointTargetForTCP;
+        robotModel.translateTargetSphere(currentPointTargetForTCP);
         actionSpace.setTargetPoint(currentPointTargetForTCP);            //sets the target point that the robot has to reach
     }
 

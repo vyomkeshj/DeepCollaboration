@@ -10,9 +10,6 @@ import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
-import org.deeplearning4j.ui.api.UIServer;
-import org.deeplearning4j.ui.stats.StatsListener;
-import org.deeplearning4j.ui.storage.InMemoryStatsStorage;
 import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.IOException;
@@ -20,7 +17,6 @@ import java.util.logging.Logger;
 
 public class URAgent {
     public static UR3Model robotModel = new UR3Model();
-    static UIServer uiServer = UIServer.getInstance();
 
     public static QLearning.QLConfiguration UR_QL_CONF =
             new QLearning.QLConfiguration(
@@ -51,17 +47,6 @@ public class URAgent {
     }
 
     public static void urAgent() throws IOException {
-        //Initialize the user interface backend
-
-        //Configure where the network information (gradients, score vs. time etc) is to be stored. Here: store in memory.
-        StatsStorage statsStorage = new InMemoryStatsStorage();         //Alternative: new FileStatsStorage(File), for saving and loading later
-
-        //Attach the StatsStorage instance to the UI: this allows the contents of the StatsStorage to be visualized
-        uiServer.attach(statsStorage);
-
-        //Then add the StatsListener to collect this information from the network, as it trains
-        TrainingListener[] listeners = {new StatsListener(statsStorage)};
-        UR_NET.listeners(listeners);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
