@@ -28,7 +28,7 @@ public class JointCMovePosAction implements Action {
         if(isDone) {
             System.out.println("___________DONE____________");
             reward = reward+10;
-            MADE_IT_TO_TARGET = true;
+            //MADE_IT_TO_TARGET = true;
 
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));

@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning;
 
+import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
 
 import java.util.Random;
@@ -44,6 +45,14 @@ public class Utils {
             return nextTarget;
         }
         return CURRENT_TARGET;
+    }
+
+    public static Point3D getTargetOnConstrainedRobot() {
+        UR3Model robotModel = new UR3Model();
+        //set the random angles to the joints that are unconstrained
+        robotModel.rotateAtJoint(2, getRandomDoubleInRange(0,180));
+        robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 180));
+        return robotModel.getTCPcoords();
     }
 
     public static Point3D polarToCartesian(double r, double theta, double alpha) {

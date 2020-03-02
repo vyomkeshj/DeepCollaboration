@@ -80,7 +80,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
 
     @Override
     public Action randomAction() {
-        return actionsList.get(getRandomNumberInRange(0,10));
+        return actionsList.get(getRandomNumberInRange(0,actionsList.size()-1));
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
 
     @Override
     public int getSize() {
-        return 11;
+        return actionsList.size();
     }
 
     @Override

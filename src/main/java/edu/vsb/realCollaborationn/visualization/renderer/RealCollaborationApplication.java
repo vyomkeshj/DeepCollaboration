@@ -42,6 +42,11 @@ import java.util.List;
 
 /**
  * JavaFX 3D Viewer Application
+ *
+ * -Xms512M
+ * -Xmx1G
+ * -Dorg.bytedeco.javacpp.maxbytes=1G
+ * -Dorg.bytedeco.javacpp.maxphysicalbytes=3G
  */
 public class RealCollaborationApplication extends Application {
     public static final String FILE_URL_PROPERTY = "fileUrl";

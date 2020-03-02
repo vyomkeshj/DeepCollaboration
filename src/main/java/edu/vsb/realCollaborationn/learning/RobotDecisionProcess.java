@@ -13,25 +13,24 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     UR3Model robotModel;
     ObservationSpace currentObservationSpace;
     ActionSpace actionSpace;
-    DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);
+    DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(11);
     private boolean isDone = false;
 
-    public static Point3D currentPointTargetForTCP = getRandomPointsBetweenTwoConcentricSpheres(0.2, 0.6);
-
+    public static Point3D currentFixedPointTarget = new Point3D(0.1496433,0.278275, 0.1997760);
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
-        currentObservationSpace = new ObservationSpace(robotModel, currentPointTargetForTCP);
+        currentObservationSpace = new ObservationSpace(robotModel, currentFixedPointTarget);
         actionSpace = new ActionSpace(robotModel);
     }
 
     public RobotDecisionProcess() {
         this.robotModel = new UR3Model();
-        currentObservationSpace = new ObservationSpace(robotModel, currentPointTargetForTCP);
+        currentObservationSpace = new ObservationSpace(robotModel, currentFixedPointTarget);
         actionSpace = new ActionSpace(robotModel);
     }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
-        this.currentPointTargetForTCP = currentPointTargetForTCP;
+        this.currentFixedPointTarget = currentPointTargetForTCP;
         robotModel.translateTargetSphere(currentPointTargetForTCP);
         actionSpace.setTargetPoint(currentPointTargetForTCP);            //sets the target point that the robot has to reach
     }
@@ -49,7 +48,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     @Override
     public Observation reset() {
         robotModel.reset();
-        setCurrentPointTargetForTCP(getRandomPointsBetweenTwoConcentricSpheres(0.2, 0.6));
+        setCurrentPointTargetForTCP(currentFixedPointTarget);
         return new Observation(robotModel);
     }
 
