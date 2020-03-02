@@ -21,7 +21,7 @@ public class JointAMovePosAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        System.out.println("Joint A+");
+        //System.out.println("Joint A+");
 
         currentModel.incrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);

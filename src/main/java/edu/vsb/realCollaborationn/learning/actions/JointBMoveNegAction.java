@@ -21,7 +21,7 @@ public class JointBMoveNegAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        System.out.println("Joint B-");
+        //System.out.println("Joint B-");
 
         currentModel.decrementB();
         Observation currentObservation = new Observation(currentModel, targetPoint);

@@ -19,7 +19,7 @@ public class JointAMoveNegAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        System.out.println("Joint A-");
+        //System.out.println("Joint A-");
         currentModel.decrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);

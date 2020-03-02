@@ -120,7 +120,7 @@ public class MainController implements Initializable {
             public void run() {
                 super.run();
                 try {
-                    URAgent.retrainAgent();
+                    URAgent.urAgent();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

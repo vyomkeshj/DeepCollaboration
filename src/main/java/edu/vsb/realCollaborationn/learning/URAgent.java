@@ -5,13 +5,17 @@ import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import org.deeplearning4j.nn.api.NeuralNetwork;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
 import org.deeplearning4j.rl4j.learning.ILearning;
+import org.deeplearning4j.rl4j.learning.async.a3c.discrete.A3CDiscreteDense;
 import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.network.NeuralNet;
+import org.deeplearning4j.rl4j.network.ac.ActorCriticFactoryCompGraphStdDense;
+import org.deeplearning4j.rl4j.network.ac.IActorCritic;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.network.dqn.IDQN;
+import org.deeplearning4j.rl4j.policy.ACPolicy;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
@@ -30,32 +34,25 @@ import java.util.logging.Logger;
 public class URAgent {
     public static UR3Model robotModel = new UR3Model();
 
-    public static QLearning.QLConfiguration UR_QL_CONF =
-            new QLearning.QLConfiguration(
-                    123,    //Random seed
-                    500,    //Max step By epoch
-                    150000, //Max step
-                    15000, //Max size of experience replay
-                    32,     //size of batches
-                    250,    //target update (hard)
-                    10,     //num step noop warmup
-                    0.1,   //reward scaling
-                    1,   //gamma
-                    1.0,    //td-error clipping
-                    0.0001f,   //min epsilon
-                    10000,   //num step for eps greedy anneal
-                    true    //double DQN
-            );
 
-
-    public static DQNFactoryStdDense.Configuration.ConfigurationBuilder UR_NET =
-            DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0001)).numHiddenNodes(12).numLayer(5);
-
+    public static A3CDiscreteDense.A3CConfiguration A3C_CONF = new A3CDiscreteDense.A3CConfiguration(
+            123,    //Random seed
+            500,    //Max step By epoch
+            1000000, //Max step
+            6, //Max size of experience replay
+            1000000,     //size of batches
+            10,    //target update (hard)
+            0.01,     //num step noop warmup
+            1,   //reward scaling
+            1.0   //gamma
+    );
+        public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(12)
+                .numLayer(25).useLSTM(true).updater(new Adam(0.0005));
 
 
     public static void main(String[] args) throws IOException {
-        //retrainAgent();
+        urAgent();
         //loadAgent();
         //testAgentPolicy();
 
@@ -71,7 +68,8 @@ public class URAgent {
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
-        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET.build(), UR_QL_CONF);
+        A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
+        //train
 
         TrainingListener iterationListener = new TrainingListener() {
 
@@ -92,10 +90,10 @@ public class URAgent {
 
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
-                DQNPolicy pol = dql.getPolicy();
+                ACPolicy policy = a3c.getPolicy();
 
                 try {
-                    pol.save("saved_pol_constr_2/saved_policy_ep_"+trainer.getEpochCounter());
+                    policy.save("saved_pol_lstm/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -110,8 +108,8 @@ public class URAgent {
         };
 
 
-        dql.addListener(iterationListener);
-        dql.train();
+        a3c.addListener(iterationListener);
+        a3c.train();
 
         mdp.close();
     }
@@ -120,18 +118,13 @@ public class URAgent {
         initWorkspace();
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
+        ACPolicy pol2 = ACPolicy.load("saved_pol_constr/saved_policy_ep_299");
 
-        IDQN preTrainedNetwork = pol2.getNeuralNet();
+        IActorCritic preTrainedNetwork = pol2.getNeuralNet();
 
-        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp2, preTrainedNetwork, UR_QL_CONF);
-
-        NeuralNetwork[] trainingNets = dql.getNeuralNet().getNeuralNetworks();
+        A3CDiscreteDense a3c = new A3CDiscreteDense(mdp2,preTrainedNetwork, A3C_CONF);
 
 
-        for (int i = 0; i < trainingNets.length; i++) {
-
-        }
 
         TrainingListener iterationListener = new TrainingListener() {
 
@@ -152,9 +145,9 @@ public class URAgent {
 
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
-                DQNPolicy pol = dql.getPolicy();
+                ACPolicy pol = a3c.getPolicy();
                 try {
-                    pol.save("saved_policies/saved_policy_ep_"+trainer.getEpochCounter());
+                    pol.save("saved_pol_lstm/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -169,8 +162,8 @@ public class URAgent {
         };
 
 
-        dql.addListener(iterationListener);
-        dql.train();
+        a3c.addListener(iterationListener);
+        a3c.train();
 
 
     }

@@ -21,11 +21,11 @@ public class NoOpAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        System.out.println("NoOp");
+        //System.out.println("NoOp");
 
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
-        reward-=1d;
+        reward-=2d;
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
