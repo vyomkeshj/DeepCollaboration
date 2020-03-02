@@ -48,11 +48,17 @@ public class Utils {
     }
 
     public static Point3D getTargetOnConstrainedRobot() {
-        UR3Model robotModel = new UR3Model();
-        //set the random angles to the joints that are unconstrained
-        robotModel.rotateAtJoint(2, getRandomDoubleInRange(0,180));
-        robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 180));
-        return robotModel.getTCPcoords();
+        if(MADE_IT_TO_TARGET) {
+            UR3Model robotModel = new UR3Model();
+            //set the random angles to the joints that are unconstrained
+            robotModel.rotateAtJoint(2, getRandomDoubleInRange(0, 70));
+            robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 70));
+            CURRENT_TARGET = robotModel.getTCPcoords();
+            MADE_IT_TO_TARGET=false;
+        }
+        System.out.println("NEW TARGET:"+CURRENT_TARGET);
+        //return new Point3D(0.159588, 0.516524, -0.396608);
+        return CURRENT_TARGET;
     }
 
     public static Point3D polarToCartesian(double r, double theta, double alpha) {

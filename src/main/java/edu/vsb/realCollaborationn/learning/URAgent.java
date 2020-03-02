@@ -20,6 +20,7 @@ import org.nd4j.linalg.api.memory.enums.AllocationPolicy;
 import org.nd4j.linalg.api.memory.enums.LearningPolicy;
 import org.nd4j.linalg.api.memory.enums.MirroringPolicy;
 import org.nd4j.linalg.api.memory.enums.SpillPolicy;
+import org.nd4j.linalg.api.ops.impl.layers.recurrent.config.LSTMConfiguration;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 
@@ -32,13 +33,13 @@ public class URAgent {
     public static QLearning.QLConfiguration UR_QL_CONF =
             new QLearning.QLConfiguration(
                     123,    //Random seed
-                    1000,    //Max step By epoch
-                    15000, //Max step
+                    500,    //Max step By epoch
+                    150000, //Max step
                     15000, //Max size of experience replay
-                    128,     //size of batches
-                    100,    //target update (hard)
+                    32,     //size of batches
+                    250,    //target update (hard)
                     10,     //num step noop warmup
-                    0.01,   //reward scaling
+                    0.1,   //reward scaling
                     1,   //gamma
                     1.0,    //td-error clipping
                     0.0001f,   //min epsilon
@@ -49,7 +50,8 @@ public class URAgent {
 
     public static DQNFactoryStdDense.Configuration.ConfigurationBuilder UR_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.01)).numHiddenNodes(300).numLayer(25);
+                    .l2(0.001).updater(new Adam(0.0001)).numHiddenNodes(12).numLayer(5);
+
 
 
     public static void main(String[] args) throws IOException {
@@ -59,7 +61,7 @@ public class URAgent {
 
 
 
-        retrainAgent();
+        urAgent();
 
 
 
@@ -93,7 +95,7 @@ public class URAgent {
                 DQNPolicy pol = dql.getPolicy();
 
                 try {
-                    pol.save("saved_policies_5/saved_policy_ep_"+trainer.getEpochCounter());
+                    pol.save("saved_pol_constr_2/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -118,7 +120,7 @@ public class URAgent {
         initWorkspace();
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy pol2 = DQNPolicy.load("saved_policies_6/saved_policy_ep_27");
+        DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
 
         IDQN preTrainedNetwork = pol2.getNeuralNet();
 
@@ -152,7 +154,7 @@ public class URAgent {
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
                 DQNPolicy pol = dql.getPolicy();
                 try {
-                    pol.save("saved_policies_7/saved_policy_ep_"+trainer.getEpochCounter());
+                    pol.save("saved_policies/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -175,21 +177,11 @@ public class URAgent {
     public static void testAgentPolicy() throws IOException {
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy pol2 = DQNPolicy.load("saved_policies_3/saved_policy_ep_2134");
+        DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
 
-        IDQN preTrainedNetwork = pol2.getNeuralNet();
-        QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp2, preTrainedNetwork, UR_QL_CONF);
+        double reward = pol2.play(mdp2);
 
-        double rewards = 0;
-        for (int i = 0; i < 1000; i++) {
-            //mdp2.reset();
-            double reward = pol2.play(mdp2);
-            rewards += reward;
-            Logger.getAnonymousLogger().info("Reward: " + reward);
-        }
-        Logger.getAnonymousLogger().info("average: " + rewards/3000);
-
-
+        System.out.println(reward);
     }
 
      private static void initWorkspace() {

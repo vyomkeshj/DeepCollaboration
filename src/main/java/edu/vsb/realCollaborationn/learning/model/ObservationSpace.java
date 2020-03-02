@@ -20,18 +20,18 @@ public class ObservationSpace implements org.deeplearning4j.rl4j.space.Observati
 
     @Override
     public int[] getShape() {
-        return new int[] {12};
+        return new int[] {9};
     }
 
     @Override
     public INDArray getLow() {
-        double[] stateArray = {-1,-1,-1,-1,-1,0,0,0, 0, 0,0,0};
+        double[] stateArray = {-1,-1,0,0,0, 0, 0,0,0};
         return Nd4j.create(stateArray);
     }
 
     @Override
     public INDArray getHigh() {
-        int[] stateArray = {1,1,1,1,1,1,1,1,1,1,1,1};
+        int[] stateArray = {1,1,1,1,1,1,1,1,1};
         return Nd4j.create(stateArray);
     }
 

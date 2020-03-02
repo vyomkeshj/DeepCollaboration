@@ -49,7 +49,7 @@ public class ArtifactStructure {
             }
         }
 
-        System.out.println("TCP at: "+getTCPcoords());
+        //System.out.println("TCP at: "+getTCPcoords());
     }
 
     public void transformStructureRoot(Transform structureTransformer) {

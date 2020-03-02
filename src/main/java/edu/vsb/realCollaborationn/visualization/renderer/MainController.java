@@ -115,25 +115,6 @@ public class MainController implements Initializable {
         // do initial status update
         ArtifactStructure model = URAgent.robotModel;
 
-/*
-        final Timeline rotationAnimation = new Timeline();
-
-        for(float angle = -45; angle<=45; angle=angle+0.08f) {
-            float finalAngle = angle;
-            System.out.println(finalAngle);
-            rotationAnimation.getKeyFrames()
-                    .addAll(
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(2, Math.abs(finalAngle))),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(4, Math.abs(finalAngle*1.42))),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(6, Math.abs(finalAngle*2))),
-                            new KeyFrame(Duration.seconds(0.1*Math.abs(finalAngle)), actionEvent -> model.rotateAtJoint(8, Math.abs(finalAngle*2)))
-                    );
-        }
-
-
-        rotationAnimation.setCycleCount(Animation.INDEFINITE);
-        rotationAnimation.play();
-*/
         new Thread() {
             @Override
             public void run() {

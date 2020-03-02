@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
+import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
@@ -20,6 +21,8 @@ public class JointBMovePosAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
+        System.out.println("Joint B+");
+
         currentModel.incrementB();
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
@@ -28,7 +31,7 @@ public class JointBMovePosAction implements Action {
         if(isDone) {
             System.out.println("___________DONE____________");
             reward = reward+10;
-            //MADE_IT_TO_TARGET = true;
+            Utils.MADE_IT_TO_TARGET = true;
 
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));

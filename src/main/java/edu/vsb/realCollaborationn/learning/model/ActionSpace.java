@@ -48,12 +48,12 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         actionsList.add(jointBMoveNegAction);
         actionsList.add(jointBMovePosAction);
 
-        actionsList.add(jointCMoveNegAction);
-        actionsList.add(jointCMovePosAction);
-        actionsList.add(jointDMoveNegAction);
-        actionsList.add(jointDMovePosAction);
-        actionsList.add(jointEMoveNegAction);
-        actionsList.add(jointEMovePosAction);
+        //actionsList.add(jointCMoveNegAction);
+        //actionsList.add(jointCMovePosAction);
+        //actionsList.add(jointDMoveNegAction);
+        //actionsList.add(jointDMovePosAction);
+        //actionsList.add(jointEMoveNegAction);
+        //actionsList.add(jointEMovePosAction);
 
 
         actionsList.add(noOpAction);
