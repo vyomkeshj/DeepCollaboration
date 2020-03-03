@@ -2,6 +2,7 @@ package edu.vsb.realCollaborationn.learning;
 
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
+import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
 import org.deeplearning4j.rl4j.learning.ILearning;
 import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
@@ -12,8 +13,13 @@ import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
+import org.deeplearning4j.ui.api.UIServer;
+import org.deeplearning4j.ui.stats.StatsListener;
+import org.deeplearning4j.ui.storage.FileStatsStorage;
+import org.deeplearning4j.ui.storage.InMemoryStatsStorage;
 import org.nd4j.linalg.learning.config.Adam;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -44,29 +50,33 @@ public class URAgent {
 
 
     public static void main(String[] args) throws IOException {
+
         urAgent();
         //loadAgent();
     }
 
     public static void urAgent() throws IOException {
+        UIServer uiServer = UIServer.getInstance();
+        File statsStorageFile = new File("training_stats_1");
+        StatsStorage statsStorage = new FileStatsStorage(statsStorageFile);
+        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
+        UR_NET.listeners(listeners);
+
+        uiServer.attach(statsStorage);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
         QLearningDiscreteDense dql = new QLearningDiscreteDense(mdp, UR_NET.build(), UR_QL_CONF);
 
 
-
         TrainingListener iterationListener = new TrainingListener() {
-
             @Override
             public ListenerResponse onTrainingStart() {
                 return null;
             }
 
             @Override
-            public void onTrainingEnd() {
-
-            }
+            public void onTrainingEnd() {}
 
             @Override
             public ListenerResponse onNewEpoch(IEpochTrainer trainer) {
