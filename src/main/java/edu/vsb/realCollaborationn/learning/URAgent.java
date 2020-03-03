@@ -54,14 +54,13 @@ public class URAgent {
 
     public static void main(String[] args) throws IOException {
         System.setErr(new PrintStream("/dev/null"));
-        urAgent();
+        //urAgent();
         //loadAgent();
         //testAgentPolicy();
 
 
 
-        urAgent();
-
+        testAgentPolicy();
 
 
     }
@@ -172,7 +171,7 @@ public class URAgent {
     public static void testAgentPolicy() throws IOException {
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
+        ACPolicy pol2 = ACPolicy.load("saved_policies/saved_policy_ep_848");
 
         double reward = pol2.play(mdp2);
 
