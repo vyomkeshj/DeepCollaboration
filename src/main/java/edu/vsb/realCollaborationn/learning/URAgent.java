@@ -2,35 +2,29 @@ package edu.vsb.realCollaborationn.learning;
 
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
-import org.deeplearning4j.nn.api.NeuralNetwork;
+import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
 import org.deeplearning4j.rl4j.learning.ILearning;
 import org.deeplearning4j.rl4j.learning.async.a3c.discrete.A3CDiscreteDense;
 import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
-import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
-import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.mdp.MDP;
-import org.deeplearning4j.rl4j.network.NeuralNet;
 import org.deeplearning4j.rl4j.network.ac.ActorCriticFactoryCompGraphStdDense;
 import org.deeplearning4j.rl4j.network.ac.IActorCritic;
-import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
-import org.deeplearning4j.rl4j.network.dqn.IDQN;
 import org.deeplearning4j.rl4j.policy.ACPolicy;
-import org.deeplearning4j.rl4j.policy.DQNPolicy;
-import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
+import org.deeplearning4j.ui.api.UIServer;
+import org.deeplearning4j.ui.stats.StatsListener;
+import org.deeplearning4j.ui.storage.InMemoryStatsStorage;
 import org.nd4j.linalg.api.memory.conf.WorkspaceConfiguration;
 import org.nd4j.linalg.api.memory.enums.AllocationPolicy;
 import org.nd4j.linalg.api.memory.enums.LearningPolicy;
-import org.nd4j.linalg.api.memory.enums.MirroringPolicy;
 import org.nd4j.linalg.api.memory.enums.SpillPolicy;
-import org.nd4j.linalg.api.ops.impl.layers.recurrent.config.LSTMConfiguration;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
+import org.nd4j.shade.guava.math.Stats;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.logging.Logger;
 
 public class URAgent {
     public static UR3Model robotModel = new UR3Model();
@@ -49,28 +43,26 @@ public class URAgent {
     );
         public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
         ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(12)
-                .numLayer(25).useLSTM(true).updater(new Adam(0.0005));
+                .numLayer(25).useLSTM(false).updater(new Adam(0.0005));
 
 
     public static void main(String[] args) throws IOException {
-        System.setErr(new PrintStream("/dev/null"));
-        //urAgent();
-        //loadAgent();
+        urAgent();
         //testAgentPolicy();
-
-
-
-        testAgentPolicy();
-
-
     }
 
     public static void urAgent() throws IOException {
 
+        UIServer uiServer = UIServer.getInstance();
+        StatsStorage statsStorage = new InMemoryStatsStorage();
+        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
+        A3C_NET.listeners(listeners);
+
+        uiServer.attach(statsStorage);
+
+
         MDP mdp = new RobotDecisionProcess(robotModel);
-        //define the training
         A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
-        //train
 
         TrainingListener iterationListener = new TrainingListener() {
 
@@ -94,7 +86,7 @@ public class URAgent {
                 ACPolicy policy = a3c.getPolicy();
 
                 try {
-                    policy.save("saved_pol_lstm/saved_policy_ep_"+trainer.getEpochCounter());
+                    policy.save("saved_policies_2/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,7 +99,6 @@ public class URAgent {
                 return null;
             }
         };
-
 
         a3c.addListener(iterationListener);
         a3c.train();
@@ -171,6 +162,7 @@ public class URAgent {
     public static void testAgentPolicy() throws IOException {
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
+
         ACPolicy pol2 = ACPolicy.load("saved_policies/saved_policy_ep_848");
 
         double reward = pol2.play(mdp2);

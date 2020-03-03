@@ -88,14 +88,26 @@ public class UR3Model extends ArtifactStructure {
                     "wrist_3", 13, true);
 
 
-            JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointTransformation,"shoulderBaseJoint", 2, -90, 90, 10);
-            JointArtifact shoulderUpperArmJoint = new JointArtifact(upperArmShoulderJointTransformation,"shoulderUpperArmJoint", 4, -90, 90, 10);
-            JointArtifact upperArmForeArmJoint = new JointArtifact(shoulderForeArmJointTransformation, "upperArmForeArmJoint", 6,-90,90,0);
-            JointArtifact foreArmWrist1Joint = new JointArtifact(foreArmWrist1JointTransformation, "foreArmWrist1Joint", 8, -90, 90,0);
-            JointArtifact wrist1Wrist2Joint = new JointArtifact(wrist1Wrist2JointTransformation, "wrist1Wrist2Joint", 10, -90, 90,0);
-            JointArtifact wrist2Wrist3Joint = new JointArtifact(wrist2Wrist3JointTransformation, "wrist2Wrist3Joint", 12, -90, 90,0);
+            JointArtifact baseShoulderJoint = new JointArtifact(baseShoulderJointTransformation,
+                    "shoulderBaseJoint",
+                    2, -90, 90, 10);
+            JointArtifact shoulderUpperArmJoint = new JointArtifact(upperArmShoulderJointTransformation,
+                    "shoulderUpperArmJoint",
+                    4, -90, 90, 10);
+            JointArtifact upperArmForeArmJoint = new JointArtifact(shoulderForeArmJointTransformation,
+                    "upperArmForeArmJoint",
+                    6,-90,90,0);
+            JointArtifact foreArmWrist1Joint = new JointArtifact(foreArmWrist1JointTransformation,
+                    "foreArmWrist1Joint",
+                    8, -90, 90,0);
+            JointArtifact wrist1Wrist2Joint = new JointArtifact(wrist1Wrist2JointTransformation,
+                    "wrist1Wrist2Joint",
+                    10, -90, 90,0);
+            JointArtifact wrist2Wrist3Joint = new JointArtifact(wrist2Wrist3JointTransformation,
+                    "wrist2Wrist3Joint",
+                    12, -90, 90,0);
 
-            //`addToParts(robotTable);
+            //addToParts(robotTable);
             addToParts(robotBase);
             addToParts(baseShoulderJoint);
 
