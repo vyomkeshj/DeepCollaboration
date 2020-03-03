@@ -1,6 +1,5 @@
 package edu.vsb.realCollaborationn.learning;
 
-import com.sun.webkit.network.Util;
 import edu.vsb.realCollaborationn.learning.model.*;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
@@ -50,7 +49,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     @Override
     public Observation reset() {
         currentFixedPointTarget = Utils.getTargetOnConstrainedRobot();
-        robotModel.reset();
+        //robotModel.reset();
         setCurrentPointTargetForTCP(currentFixedPointTarget);
         return new Observation(robotModel);
     }

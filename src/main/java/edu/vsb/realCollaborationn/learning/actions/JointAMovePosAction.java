@@ -22,6 +22,8 @@ public class JointAMovePosAction implements Action {
     @Override
     public StepReply<Observation> performAction() {
         //System.out.println("Joint A+");
+        if(MADE_IT_TO_TARGET)
+            targetPoint = Utils.getTargetOnConstrainedRobot();
 
         currentModel.incrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
@@ -30,7 +32,7 @@ public class JointAMovePosAction implements Action {
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
-            reward = reward+10;
+            reward = reward+100;
             Utils.MADE_IT_TO_TARGET = true;
 
 

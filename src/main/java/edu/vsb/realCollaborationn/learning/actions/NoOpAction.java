@@ -32,6 +32,7 @@ public class NoOpAction implements Action {
             System.out.println("___________DONE_______NP_____");
             reward = reward+10;
             Utils.MADE_IT_TO_TARGET = true;
+            targetPoint = Utils.getTargetOnConstrainedRobot();
 
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));

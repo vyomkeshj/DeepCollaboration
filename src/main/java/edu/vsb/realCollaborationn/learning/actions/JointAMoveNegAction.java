@@ -8,6 +8,8 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
 
+import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
+
 
 public class JointAMoveNegAction implements Action {
     UR3Model currentModel;
@@ -20,6 +22,9 @@ public class JointAMoveNegAction implements Action {
     @Override
     public StepReply<Observation> performAction() {
         //System.out.println("Joint A-");
+        if(MADE_IT_TO_TARGET)
+            targetPoint = Utils.getTargetOnConstrainedRobot();
+
         currentModel.decrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
@@ -29,7 +34,7 @@ public class JointAMoveNegAction implements Action {
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
-            reward = reward+10;
+            reward = reward+100;
             Utils.MADE_IT_TO_TARGET = true;
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));

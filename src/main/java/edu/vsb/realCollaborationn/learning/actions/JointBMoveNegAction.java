@@ -23,6 +23,9 @@ public class JointBMoveNegAction implements Action {
     public StepReply<Observation> performAction() {
         //System.out.println("Joint B-");
 
+        if(MADE_IT_TO_TARGET)
+            targetPoint = Utils.getTargetOnConstrainedRobot();
+
         currentModel.decrementB();
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
@@ -30,7 +33,7 @@ public class JointBMoveNegAction implements Action {
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
             System.out.println("___________DONE____________");
-            reward = reward+10;
+            reward = reward+100;
             Utils.MADE_IT_TO_TARGET = true;
 
         }

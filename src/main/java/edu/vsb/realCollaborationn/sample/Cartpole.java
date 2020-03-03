@@ -92,7 +92,7 @@ public class Cartpole
         //evaluate the agent
         double rewards = 0;
         for (int i = 0; i < 1000; i++) {
-            mdp2.reset();
+            //mdp2.reset();
             double reward = pol2.play(mdp2);
             rewards += reward;
             Logger.getAnonymousLogger().info("Reward: " + reward);

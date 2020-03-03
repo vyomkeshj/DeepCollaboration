@@ -29,6 +29,7 @@ import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Logger;
 
 public class URAgent {
@@ -38,9 +39,9 @@ public class URAgent {
     public static A3CDiscreteDense.A3CConfiguration A3C_CONF = new A3CDiscreteDense.A3CConfiguration(
             123,    //Random seed
             500,    //Max step By epoch
-            1000000, //Max step
-            6, //Max size of experience replay
-            1000000,     //size of batches
+            10000000, //Max step
+            24, //Max size of experience replay
+            10000000,     //size of batches
             10,    //target update (hard)
             0.01,     //num step noop warmup
             1,   //reward scaling
@@ -52,6 +53,7 @@ public class URAgent {
 
 
     public static void main(String[] args) throws IOException {
+        System.setErr(new PrintStream("/dev/null"));
         urAgent();
         //loadAgent();
         //testAgentPolicy();
