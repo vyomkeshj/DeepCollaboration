@@ -99,7 +99,6 @@ public class URAgent {
             }
         };
 
-
         dql.addListener(iterationListener);
         dql.train();
 

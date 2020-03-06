@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning;
 
+import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
 
 import java.util.Random;
@@ -43,6 +44,25 @@ public class Utils {
             MADE_IT_TO_TARGET = false;
             return nextTarget;
         }
+        return CURRENT_TARGET;
+    }
+
+    public static Point3D getTargetOnConstrainedRobot() {
+        if(MADE_IT_TO_TARGET) {
+            UR3Model robotModel = new UR3Model();
+            //set the random angles to the joints that are unconstrained
+            robotModel.rotateAtJoint(2, getRandomDoubleInRange(0, 360));
+            robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 180));
+            robotModel.rotateAtJoint(6, getRandomDoubleInRange(-160, 160));
+            robotModel.rotateAtJoint(8, getRandomDoubleInRange(-160, 160));
+            robotModel.rotateAtJoint(10, getRandomDoubleInRange(-160, 160));
+
+
+            CURRENT_TARGET = robotModel.getTCPcoords();
+            MADE_IT_TO_TARGET=false;
+        }
+        System.out.println("NEW TARGET:"+CURRENT_TARGET);
+        //return new Point3D(0.159588, 0.516524, -0.396608);
         return CURRENT_TARGET;
     }
 

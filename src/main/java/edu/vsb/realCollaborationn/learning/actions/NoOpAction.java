@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
+import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
@@ -21,6 +22,9 @@ public class NoOpAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
+        if(MADE_IT_TO_TARGET)
+            this.targetPoint = Utils.getTargetOnConstrainedRobot();
+
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
