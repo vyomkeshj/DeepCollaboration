@@ -9,6 +9,7 @@ import org.deeplearning4j.rl4j.mdp.MDP;
 import static edu.vsb.realCollaborationn.learning.Utils.getRandomPointsBetweenTwoConcentricSpheres;
 
 public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteActionSpace> {
+    public static int THREAD_NO = 0;
 
     UR3Model robotModel;
     ObservationSpace currentObservationSpace;
@@ -19,15 +20,21 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
 
     public RobotDecisionProcess(UR3Model robotModel) {
+        Thread.currentThread().setName("Th"+THREAD_NO);
+        THREAD_NO++;
+
         this.robotModel = robotModel;
         currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
-        actionSpace = new ActionSpace(robotModel);
+        actionSpace = new ActionSpace(robotModel, targetProvider);
     }
 
     public RobotDecisionProcess() {
+        Thread.currentThread().setName("Th"+THREAD_NO);
+        THREAD_NO++;
+
         this.robotModel = new UR3Model();
         currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
-        actionSpace = new ActionSpace(robotModel);
+        actionSpace = new ActionSpace(robotModel, targetProvider);
     }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {

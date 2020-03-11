@@ -68,12 +68,13 @@ public class URAgent {
         UIServer uiServer = UIServer.getInstance();
         File statsStorageFile = new File("training_stats_2");
         StatsStorage statsStorage = new FileStatsStorage(statsStorageFile);
-        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
         uiServer.attach(statsStorage);
+
+        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
+        A3C_NET.listeners(listeners);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
-        A3C_NET.listeners(listeners);
         A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
         //train
 
@@ -97,6 +98,8 @@ public class URAgent {
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
                 ACPolicy policy = a3c.getPolicy();
+                if(statEntry.getReward()<0)
+                    System.out.println("_________NegativeRewardInEpoch____________"+statEntry.getReward()+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
 
                 try {
                     policy.save("saved_pol_lstm_viz/saved_policy_ep_"+trainer.getEpochCounter());

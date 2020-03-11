@@ -37,7 +37,7 @@ public class JointAMoveNegAction implements Action {
 
         boolean isDone = (distanceFromTarget<MAX_REWARD);
         if(isDone) {
-            System.out.println("___________DONE____________");
+            System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;
             provider.setMadeItToTarget(true);
         }
