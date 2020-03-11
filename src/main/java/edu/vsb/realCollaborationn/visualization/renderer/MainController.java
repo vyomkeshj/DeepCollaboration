@@ -119,7 +119,7 @@ public class MainController implements Initializable {
             public void run() {
                 super.run();
                 try {
-                    URAgent.urAgent();
+                    URAgent.testAgentPolicy();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
