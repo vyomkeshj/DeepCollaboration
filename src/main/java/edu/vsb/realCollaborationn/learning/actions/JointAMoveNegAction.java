@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
+import edu.vsb.realCollaborationn.learning.PointProvider;
 import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
@@ -14,16 +15,19 @@ import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
 public class JointAMoveNegAction implements Action {
     UR3Model currentModel;
     Point3D targetPoint;
-    public JointAMoveNegAction(UR3Model currentModel, Point3D targetPoint) {
+    PointProvider provider;
+
+    public JointAMoveNegAction(UR3Model currentModel, PointProvider targetPointProvider) {
+        this.provider = targetPointProvider;
         this.currentModel = currentModel;
-        this.targetPoint = targetPoint;
+        this.targetPoint = provider.renewPointTarget();
     }
 
     @Override
     public StepReply<Observation> performAction() {
         //System.out.println("Joint A-");
-        if(MADE_IT_TO_TARGET)
-            targetPoint = Utils.getTargetOnConstrainedRobot();
+        if(provider.hasMadeItToTarget())
+            targetPoint = provider.renewPointTarget();
 
         currentModel.decrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
@@ -35,7 +39,7 @@ public class JointAMoveNegAction implements Action {
         if(isDone) {
             System.out.println("___________DONE____________");
             reward = reward+100;
-            Utils.MADE_IT_TO_TARGET = true;
+            provider.setMadeItToTarget(true);
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;

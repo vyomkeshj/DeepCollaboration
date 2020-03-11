@@ -1,5 +1,6 @@
 package edu.vsb.realCollaborationn.learning.model;
 
+import edu.vsb.realCollaborationn.learning.PointProvider;
 import edu.vsb.realCollaborationn.learning.actions.*;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
@@ -12,7 +13,6 @@ import static edu.vsb.realCollaborationn.learning.Utils.getRandomNumberInRange;
 
 public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Action> {
     List<Action> actionsList = new ArrayList<>();
-    Point3D targetPoint = new Point3D(0, 0, 0);
     NoOpAction noOpAction;
     JointAMoveNegAction jointAMoveNegAction;
     JointBMoveNegAction jointBMoveNegAction;
@@ -27,21 +27,25 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     JointDMovePosAction jointDMovePosAction;
     JointEMovePosAction jointEMovePosAction;
 
-    public ActionSpace(UR3Model robot) {
-         jointAMoveNegAction = new JointAMoveNegAction(robot, targetPoint);
-         jointBMoveNegAction = new JointBMoveNegAction(robot, targetPoint);
-         jointCMoveNegAction = new JointCMoveNegAction(robot, targetPoint);
-         jointDMoveNegAction = new JointDMoveNegAction(robot, targetPoint);
-         jointEMoveNegAction = new JointEMoveNegAction(robot, targetPoint);
+    public ActionSpace(UR3Model robot, PointProvider provider) {
+         jointAMoveNegAction = new JointAMoveNegAction(robot, provider);
+         jointBMoveNegAction = new JointBMoveNegAction(robot, provider);
+/*
+         jointCMoveNegAction = new JointCMoveNegAction(robot, provider);
+         jointDMoveNegAction = new JointDMoveNegAction(robot, provider);
+         jointEMoveNegAction = new JointEMoveNegAction(robot, provider);
 
+*/
 
-         jointAMovePosAction = new JointAMovePosAction(robot, targetPoint);
-         jointBMovePosAction = new JointBMovePosAction(robot, targetPoint);
-         jointCMovePosAction = new JointCMovePosAction(robot, targetPoint);
-         jointDMovePosAction = new JointDMovePosAction(robot, targetPoint);
-         jointEMovePosAction = new JointEMovePosAction(robot, targetPoint);
+         jointAMovePosAction = new JointAMovePosAction(robot, provider);
+         jointBMovePosAction = new JointBMovePosAction(robot, provider);
+/*
+         jointCMovePosAction = new JointCMovePosAction(robot, provider);
+         jointDMovePosAction = new JointDMovePosAction(robot, provider);
+         jointEMovePosAction = new JointEMovePosAction(robot, provider);
 
-        noOpAction = new NoOpAction(robot, targetPoint);
+*/
+        noOpAction = new NoOpAction(robot, provider);
 
         actionsList.add(jointAMoveNegAction);
         actionsList.add(jointAMovePosAction);
@@ -60,7 +64,6 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     }
 
     public void setTargetPoint(Point3D targetPoint) {
-        this.targetPoint = targetPoint;
         jointAMoveNegAction.setTarget(targetPoint);
         jointBMoveNegAction.setTarget(targetPoint);
         jointCMoveNegAction.setTarget(targetPoint);

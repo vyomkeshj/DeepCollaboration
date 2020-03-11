@@ -2,6 +2,7 @@ package edu.vsb.realCollaborationn.learning;
 
 
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
+import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.nn.api.NeuralNetwork;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
 import org.deeplearning4j.rl4j.learning.ILearning;
@@ -19,6 +20,9 @@ import org.deeplearning4j.rl4j.policy.ACPolicy;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.space.Box;
 import org.deeplearning4j.rl4j.util.IDataManager;
+import org.deeplearning4j.ui.api.UIServer;
+import org.deeplearning4j.ui.stats.StatsListener;
+import org.deeplearning4j.ui.storage.FileStatsStorage;
 import org.nd4j.linalg.api.memory.conf.WorkspaceConfiguration;
 import org.nd4j.linalg.api.memory.enums.AllocationPolicy;
 import org.nd4j.linalg.api.memory.enums.LearningPolicy;
@@ -28,6 +32,7 @@ import org.nd4j.linalg.api.ops.impl.layers.recurrent.config.LSTMConfiguration;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Logger;
@@ -40,7 +45,7 @@ public class URAgent {
             123,    //Random seed
             500,    //Max step By epoch
             10000000, //Max step
-            24, //Max size of experience replay
+            64, //Max size of experience replay
             10000000,     //size of batches
             10,    //target update (hard)
             0.01,     //num step noop warmup
@@ -48,28 +53,27 @@ public class URAgent {
             1.0   //gamma
     );
         public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
-        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(12)
-                .numLayer(25).useLSTM(true).updater(new Adam(0.0005));
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(8)
+                .numLayer(12).useLSTM(true).updater(new Adam(0.0005));
 
 
     public static void main(String[] args) throws IOException {
         System.setErr(new PrintStream("/dev/null"));
         urAgent();
         //loadAgent();
-        //testAgentPolicy();
-
-
-
-        urAgent();
-
-
-
+        //testAgentPolicy()
     }
 
     public static void urAgent() throws IOException {
+        UIServer uiServer = UIServer.getInstance();
+        File statsStorageFile = new File("training_stats_2");
+        StatsStorage statsStorage = new FileStatsStorage(statsStorageFile);
+        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
+        uiServer.attach(statsStorage);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
+        A3C_NET.listeners(listeners);
         A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
         //train
 
@@ -95,7 +99,7 @@ public class URAgent {
                 ACPolicy policy = a3c.getPolicy();
 
                 try {
-                    policy.save("saved_pol_lstm/saved_policy_ep_"+trainer.getEpochCounter());
+                    policy.save("saved_pol_lstm_viz/saved_policy_ep_"+trainer.getEpochCounter());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -109,10 +113,8 @@ public class URAgent {
             }
         };
 
-
         a3c.addListener(iterationListener);
         a3c.train();
-
         mdp.close();
     }
     public static void retrainAgent() throws IOException {

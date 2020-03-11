@@ -14,24 +14,23 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     ObservationSpace currentObservationSpace;
     ActionSpace actionSpace;
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);    //todo: make dependent
+    PointProvider targetProvider = new PointProvider();
     private boolean isDone = false;
 
-    public static Point3D currentFixedPointTarget = Utils.getTargetOnConstrainedRobot();
 
     public RobotDecisionProcess(UR3Model robotModel) {
         this.robotModel = robotModel;
-        currentObservationSpace = new ObservationSpace(robotModel, currentFixedPointTarget);
+        currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
         actionSpace = new ActionSpace(robotModel);
     }
 
     public RobotDecisionProcess() {
         this.robotModel = new UR3Model();
-        currentObservationSpace = new ObservationSpace(robotModel, currentFixedPointTarget);
+        currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
         actionSpace = new ActionSpace(robotModel);
     }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
-        this.currentFixedPointTarget = currentPointTargetForTCP;
         robotModel.translateTargetSphere(currentPointTargetForTCP);
         actionSpace.setTargetPoint(currentPointTargetForTCP);            //sets the target point that the robot has to reach
     }
@@ -48,9 +47,8 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public Observation reset() {
-        currentFixedPointTarget = Utils.getTargetOnConstrainedRobot();
         //robotModel.reset();
-        setCurrentPointTargetForTCP(currentFixedPointTarget);
+        setCurrentPointTargetForTCP(targetProvider.renewPointTarget());
         return new Observation(robotModel);
     }
 
