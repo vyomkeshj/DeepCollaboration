@@ -66,14 +66,14 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     public void setTargetPoint(Point3D targetPoint) {
         jointAMoveNegAction.setTarget(targetPoint);
         jointBMoveNegAction.setTarget(targetPoint);
-        jointCMoveNegAction.setTarget(targetPoint);
-        jointDMoveNegAction.setTarget(targetPoint);
-        jointEMoveNegAction.setTarget(targetPoint);
+        //jointCMoveNegAction.setTarget(targetPoint);
+        //jointDMoveNegAction.setTarget(targetPoint);
+        //jointEMoveNegAction.setTarget(targetPoint);
         jointAMovePosAction.setTarget(targetPoint);
-        jointAMovePosAction.setTarget(targetPoint);
-        jointAMovePosAction.setTarget(targetPoint);
-        jointAMovePosAction.setTarget(targetPoint);
-        jointAMovePosAction.setTarget(targetPoint);
+        jointBMovePosAction.setTarget(targetPoint);
+        //jointCMovePosAction.setTarget(targetPoint);
+        //jointDMovePosAction.setTarget(targetPoint);
+        //jointEMovePosAction.setTarget(targetPoint);
         noOpAction.setTarget(targetPoint);
     }
 

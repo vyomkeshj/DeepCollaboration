@@ -45,33 +45,27 @@ public class URAgent {
             123,    //Random seed
             500,    //Max step By epoch
             10000000, //Max step
-            64, //Max size of experience replay
-            10000000,     //size of batches
+            6, //Max size of experience replay
+            125,     //size of batches
             10,    //target update (hard)
             0.01,     //num step noop warmup
-            1,   //reward scaling
+            0.9,   //reward scaling
             1.0   //gamma
     );
         public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
-        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(8)
-                .numLayer(12).useLSTM(true).updater(new Adam(0.0005));
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(12)
+                .numLayer(25).useLSTM(true).updater(new Adam(0.0005));
 
 
     public static void main(String[] args) throws IOException {
-        System.setErr(new PrintStream("/dev/null"));
+        //System.setErr(new PrintStream("/dev/null"));
         urAgent();
         //loadAgent();
         //testAgentPolicy()
     }
 
     public static void urAgent() throws IOException {
-        UIServer uiServer = UIServer.getInstance();
-        File statsStorageFile = new File("training_stats_2");
-        StatsStorage statsStorage = new FileStatsStorage(statsStorageFile);
-        uiServer.attach(statsStorage);
 
-        org.deeplearning4j.optimize.api.TrainingListener[] listeners = {new StatsListener(statsStorage)};
-        A3C_NET.listeners(listeners);
 
         MDP mdp = new RobotDecisionProcess(robotModel);
         //define the training
@@ -92,6 +86,7 @@ public class URAgent {
 
             @Override
             public ListenerResponse onNewEpoch(IEpochTrainer trainer) {
+                robotModel.reset();
                 return null;
             }
 

@@ -39,6 +39,7 @@ public class JointBMovePosAction implements Action {
             System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;
             provider.setMadeItToTarget(true);
+            currentModel.reset();
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;

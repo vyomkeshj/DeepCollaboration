@@ -53,7 +53,7 @@ public class Observation implements Encodable {
         return robotModel.getTCPcoords();
     }
 
-    public void setCurrentTCPCoords(Point3D currentTCPCoords) {
+    public void setCurrentTCPCoords (Point3D currentTCPCoords) {
         this.currentTCPCoords = currentTCPCoords;
     }
 
@@ -89,7 +89,7 @@ public class Observation implements Encodable {
         if(stepReward<0) {
             stepReward = stepReward * currentTCPCoords.distance(target) + stepFlipReward;
         } else {
-            stepReward = stepReward * (1.00/currentTCPCoords.distance(target)) + stepFlipReward;;
+            stepReward = stepReward * (1.00/currentTCPCoords.distance(target)) + stepFlipReward;
         }
 
         return stepReward;

@@ -35,11 +35,13 @@ public class JointAMoveNegAction implements Action {
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
-        boolean isDone = (distanceFromTarget<MAX_REWARD);
+        boolean isDone = (distanceFromTarget< MAX_REWARD);
         if(isDone) {
-            System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;
+            System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
+
             provider.setMadeItToTarget(true);
+            currentModel.reset();
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;

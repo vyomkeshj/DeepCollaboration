@@ -54,7 +54,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public Observation reset() {
-        //robotModel.reset();
+        robotModel.reset();
         setCurrentPointTargetForTCP(targetProvider.renewPointTarget());
         return new Observation(robotModel);
     }

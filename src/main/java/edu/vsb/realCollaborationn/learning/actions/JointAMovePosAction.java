@@ -1,7 +1,6 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
 import edu.vsb.realCollaborationn.learning.PointProvider;
-import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
@@ -9,9 +8,6 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
 
-import java.awt.*;
-
-import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
 
 public class JointAMovePosAction implements Action {
 
@@ -41,6 +37,7 @@ public class JointAMovePosAction implements Action {
             System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;
             provider.setMadeItToTarget(true);
+            currentModel.reset();
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
         return reply;
