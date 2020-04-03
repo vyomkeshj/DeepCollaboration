@@ -44,17 +44,17 @@ public class URAgent {
     public static A3CDiscreteDense.A3CConfiguration A3C_CONF = new A3CDiscreteDense.A3CConfiguration(
             123,    //Random seed
             500,    //Max step By epoch
-            10000000, //Max step
+            1000000, //Max step
             6, //Max size of experience replay
-            125,     //size of batches
+            5,     //size of batches
             10,    //target update (hard)
             0.01,     //num step noop warmup
             0.9,   //reward scaling
             1.0   //gamma
     );
         public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
-        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.001).numHiddenNodes(12)
-                .numLayer(25).useLSTM(true).updater(new Adam(0.0005));
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.01).numHiddenNodes(20)
+                .numLayer(5).useLSTM(true).updater(new Adam(0.0002));
 
 
     public static void main(String[] args) throws IOException {

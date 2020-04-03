@@ -87,9 +87,9 @@ public class Observation implements Encodable {
 
         stepReward = (stepReward - lastReward);
         if(stepReward<0) {
-            stepReward = stepReward * currentTCPCoords.distance(target) + stepFlipReward;
+            stepReward = stepReward  + stepFlipReward;
         } else {
-            stepReward = stepReward * (1.00/currentTCPCoords.distance(target)) + stepFlipReward;
+            stepReward = stepReward + stepFlipReward;
         }
 
         return stepReward;
@@ -97,9 +97,7 @@ public class Observation implements Encodable {
 
     @Override
     public double[] toArray() {
-        return new double[] {Math.sin(jointAngleA), Math.sin(jointAngleB),
-                currentTCPCoords.getX(), currentTCPCoords.getY(), currentTCPCoords.getZ(),
-                targetTCPCoords.getX(), targetTCPCoords.getY(), targetTCPCoords.getZ(), currentTCPCoords.distance(targetTCPCoords)};
+        return new double[] {Math.sin(jointAngleA), Math.sin(jointAngleB), currentTCPCoords.distance(targetTCPCoords)};
 
     }
 }

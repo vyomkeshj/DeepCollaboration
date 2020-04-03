@@ -43,7 +43,7 @@ public class JointAMoveNegAction implements Action {
             provider.setMadeItToTarget(true);
             currentModel.reset();
         }
-        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, false, new JSONObject(currentObservation));
+        StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;
     }
 
