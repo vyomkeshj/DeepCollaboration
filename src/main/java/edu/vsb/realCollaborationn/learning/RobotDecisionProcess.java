@@ -75,6 +75,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
     public boolean isDone() {
          if(isDone) {
              isDone = false;
+             reset();
              return true;
          }
          return false;

@@ -1,15 +1,12 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
 import edu.vsb.realCollaborationn.learning.PointProvider;
-import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.json.JSONObject;
-
-import static edu.vsb.realCollaborationn.learning.Utils.MADE_IT_TO_TARGET;
 
 
 public class JointAMoveNegAction implements Action {
@@ -25,9 +22,6 @@ public class JointAMoveNegAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        //System.out.println("Joint A-");
-        if(provider.hasMadeItToTarget())
-            targetPoint = provider.renewPointTarget();
 
         currentModel.decrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
@@ -35,7 +29,7 @@ public class JointAMoveNegAction implements Action {
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
-        boolean isDone = (distanceFromTarget< MAX_REWARD);
+        boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             reward = reward+100;
             System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());

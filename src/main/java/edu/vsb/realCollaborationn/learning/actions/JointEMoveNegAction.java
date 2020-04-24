@@ -21,7 +21,7 @@ public class JointEMoveNegAction implements Action {
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
-        boolean isDone = (distanceFromTarget< MAX_REWARD);
+        boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             System.out.println("___________DONE____________");
             reward = reward+10;

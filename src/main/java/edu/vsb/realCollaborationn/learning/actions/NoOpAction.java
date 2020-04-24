@@ -1,7 +1,6 @@
 package edu.vsb.realCollaborationn.learning.actions;
 
 import edu.vsb.realCollaborationn.learning.PointProvider;
-import edu.vsb.realCollaborationn.learning.Utils;
 import edu.vsb.realCollaborationn.learning.model.Action;
 import edu.vsb.realCollaborationn.learning.model.Observation;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
@@ -35,7 +34,7 @@ public class NoOpAction implements Action {
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
-        boolean isDone = (distanceFromTarget<MAX_REWARD);
+        boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;

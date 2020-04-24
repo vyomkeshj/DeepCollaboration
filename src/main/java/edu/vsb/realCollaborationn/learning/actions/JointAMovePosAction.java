@@ -22,9 +22,6 @@ public class JointAMovePosAction implements Action {
 
     @Override
     public StepReply<Observation> performAction() {
-        //System.out.println("Joint A-");
-        if(provider.hasMadeItToTarget())
-            targetPoint = provider.renewPointTarget();
 
         currentModel.incrementA();
         Observation currentObservation = new Observation(currentModel, targetPoint);
@@ -32,7 +29,7 @@ public class JointAMovePosAction implements Action {
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
-        boolean isDone = (distanceFromTarget<MAX_REWARD);
+        boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
             reward = reward+100;

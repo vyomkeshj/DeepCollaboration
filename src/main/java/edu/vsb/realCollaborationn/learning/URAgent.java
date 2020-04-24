@@ -45,7 +45,7 @@ public class URAgent {
             123,    //Random seed
             500,    //Max step By epoch
             5000000, //Max step
-            6, //Max size of experience replay
+            32, //Max size of experience replay
             2,     //size of batches
             1,    //target update (hard)
             1,     //num step noop warmup
@@ -58,7 +58,7 @@ public class URAgent {
 
 
     public static void main(String[] args) throws IOException {
-        //System.setErr(new PrintStream("/dev/null"));
+        System.setErr(new PrintStream("/dev/null"));
         urAgent();
         //loadAgent();
         //testAgentPolicy()
@@ -67,7 +67,7 @@ public class URAgent {
     public static void urAgent() throws IOException {
 
 
-        MDP mdp = new RobotDecisionProcess(robotModel);
+        MDP mdp = new RobotDecisionProcess();
         //define the training
         A3CDiscreteDense a3c = new A3CDiscreteDense(mdp, A3C_NET.build(), A3C_CONF);
         //train
@@ -86,7 +86,6 @@ public class URAgent {
 
             @Override
             public ListenerResponse onNewEpoch(IEpochTrainer trainer) {
-                robotModel.reset();
                 return null;
             }
 
