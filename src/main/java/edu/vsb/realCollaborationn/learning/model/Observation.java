@@ -70,13 +70,13 @@ public class Observation implements Encodable {
 
         double stepFlipReward = 0;
         if(robotModel.isStepFlip()) {
-            stepFlipReward = -0.02d;
+            stepFlipReward = -0.4d;
         }
 
         if(currentTCPCoords.getY()<=0) {
             return -2;
         }
-        double stepReward = 1.000d/(1.000d+currentTCPCoords.distance(target));
+        double stepReward = currentTCPCoords.distance(target);
 
         if(previousReward==0) {
             previousReward = stepReward;
@@ -87,17 +87,18 @@ public class Observation implements Encodable {
 
         stepReward = (stepReward - lastReward);
         if(stepReward<0) {
-            stepReward = stepReward  + stepFlipReward;
-        } else {
-            stepReward = stepReward + stepFlipReward;
+            return -1 + stepFlipReward;
         }
 
-        return stepReward;
+        return -1;
     }
 
     @Override
     public double[] toArray() {
-        return new double[] {Math.sin(jointAngleA), Math.sin(jointAngleB), currentTCPCoords.distance(targetTCPCoords)};
+        return new double[] {(3.141/180.000)*(jointAngleA), (3.141/180.000)*(jointAngleB),
+                targetTCPCoords.getX()-currentTCPCoords.getX(), targetTCPCoords.getY()-currentTCPCoords.getY(),
+                targetTCPCoords.getZ()-currentTCPCoords.getZ()
+                ,currentTCPCoords.distance(targetTCPCoords)};
 
     }
 }

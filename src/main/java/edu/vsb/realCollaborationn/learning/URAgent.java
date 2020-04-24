@@ -44,17 +44,17 @@ public class URAgent {
     public static A3CDiscreteDense.A3CConfiguration A3C_CONF = new A3CDiscreteDense.A3CConfiguration(
             123,    //Random seed
             500,    //Max step By epoch
-            1000000, //Max step
+            5000000, //Max step
             6, //Max size of experience replay
-            5,     //size of batches
-            10,    //target update (hard)
-            0.01,     //num step noop warmup
-            0.9,   //reward scaling
+            2,     //size of batches
+            1,    //target update (hard)
+            1,     //num step noop warmup
+            0.90,   //reward scaling
             1.0   //gamma
     );
         public static ActorCriticFactoryCompGraphStdDense.Configuration.ConfigurationBuilder A3C_NET =
-        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.01).numHiddenNodes(20)
-                .numLayer(5).useLSTM(true).updater(new Adam(0.0002));
+        ActorCriticFactoryCompGraphStdDense.Configuration.builder().l2(0.02).numHiddenNodes(200)
+                .numLayer(3).useLSTM(false).updater(new Adam(0.005));
 
 
     public static void main(String[] args) throws IOException {
@@ -93,8 +93,8 @@ public class URAgent {
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
                 ACPolicy policy = a3c.getPolicy();
-                if(statEntry.getReward()<0)
-                    System.out.println("_________NegativeRewardInEpoch____________"+statEntry.getReward()+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
+                //if(statEntry.getReward()<0)
+                   //System.out.println("_________NegativeRewardInEpoch____________"+statEntry.getReward()+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
 
                 try {
                     policy.save("saved_pol_lstm_viz/saved_policy_ep_"+trainer.getEpochCounter());
