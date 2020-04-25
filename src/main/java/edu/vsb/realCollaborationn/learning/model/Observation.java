@@ -90,7 +90,7 @@ public class Observation implements Encodable {
 
         stepReward = (stepReward - lastReward);
         if(stepReward<0) {
-            return -1 + stepFlipReward;
+            return -1.5 + stepFlipReward;
         }
 
         return -1;

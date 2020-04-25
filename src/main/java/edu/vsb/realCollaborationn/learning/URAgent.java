@@ -45,7 +45,7 @@ public class URAgent {
             123,    //Random seed
             500,    //Max step By epoch
             5000000, //Max step
-            32, //Max size of experience replay
+            6, //Max size of experience replay
             2,     //size of batches
             1,    //target update (hard)
             1,     //num step noop warmup
