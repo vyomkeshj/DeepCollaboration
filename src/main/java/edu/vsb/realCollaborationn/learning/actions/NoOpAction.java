@@ -36,8 +36,8 @@ public class NoOpAction implements Action {
 
         boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
-            System.out.println("___________DONE____________"+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
-            reward = reward+100;
+            System.out.println("__DONE__%"+"REWARD="+reward+"TIME="+System.currentTimeMillis());
+            reward = reward+REWARD_SUCCESS;
             provider.setMadeItToTarget(true);
             currentModel.reset();
         }

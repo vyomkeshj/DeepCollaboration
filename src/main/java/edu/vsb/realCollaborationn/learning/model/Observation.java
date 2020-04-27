@@ -58,10 +58,8 @@ public class Observation implements Encodable {
     }
 
     public INDArray getData() {
-        double[] stateArray = {(3.141/180.000)*(jointAngleA), (3.141/180.000)*(jointAngleB),
-                targetTCPCoords.getX()-currentTCPCoords.getX(), targetTCPCoords.getY()-currentTCPCoords.getY(),
-                targetTCPCoords.getZ()-currentTCPCoords.getZ()
-                ,currentTCPCoords.distance(targetTCPCoords)};
+        double[] stateArray = new double[] {targetTCPCoords.getX(), currentTCPCoords.getX(), targetTCPCoords.getY() ,currentTCPCoords.getY(),
+                targetTCPCoords.getZ(), currentTCPCoords.getZ()};
         return Nd4j.create(stateArray);
     }
 
@@ -90,7 +88,7 @@ public class Observation implements Encodable {
 
         stepReward = (stepReward - lastReward);
         if(stepReward<0) {
-            return -1.5 + stepFlipReward;
+            return -2   ;
         }
 
         return -1;
@@ -98,10 +96,8 @@ public class Observation implements Encodable {
 
     @Override
     public double[] toArray() {
-        return new double[] {(3.141/180.000)*(jointAngleA), (3.141/180.000)*(jointAngleB),
-                targetTCPCoords.getX()-currentTCPCoords.getX(), targetTCPCoords.getY()-currentTCPCoords.getY(),
-                targetTCPCoords.getZ()-currentTCPCoords.getZ()
-                ,currentTCPCoords.distance(targetTCPCoords)};
+        return new double[] {targetTCPCoords.getX(), currentTCPCoords.getX(), targetTCPCoords.getY() ,currentTCPCoords.getY(),
+                targetTCPCoords.getZ(), currentTCPCoords.getZ()};
 
     }
 }
