@@ -22,7 +22,7 @@ public class UR3Model extends ArtifactStructure {
 
     private int stepsTaken = 0;
 
-    private float incrementBy = 0.8f;
+    private float incrementBy = 10.0f;
 
     private boolean jointAMovingPositive = true;
     private boolean jointBMovingPositive = true;

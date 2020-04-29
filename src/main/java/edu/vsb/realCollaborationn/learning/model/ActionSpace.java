@@ -2,6 +2,10 @@ package edu.vsb.realCollaborationn.learning.model;
 
 import edu.vsb.realCollaborationn.learning.PointProvider;
 import edu.vsb.realCollaborationn.learning.actions.*;
+import edu.vsb.realCollaborationn.learning.actions.pairwise.DecrementADecrementB;
+import edu.vsb.realCollaborationn.learning.actions.pairwise.DecrementBIncrementA;
+import edu.vsb.realCollaborationn.learning.actions.pairwise.IncrementAIncrementB;
+import edu.vsb.realCollaborationn.learning.actions.pairwise.IncrementBDecrementA;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
@@ -27,6 +31,11 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     JointDMovePosAction jointDMovePosAction;
     JointEMovePosAction jointEMovePosAction;
 
+    IncrementAIncrementB incrementAIncrementB;
+    IncrementBDecrementA incrementBDecrementA;
+    DecrementADecrementB decrementADecrementB;
+    DecrementBIncrementA decrementBIncrementA;
+
     public ActionSpace(UR3Model robot, PointProvider provider) {
          jointAMoveNegAction = new JointAMoveNegAction(robot, provider);
          jointBMoveNegAction = new JointBMoveNegAction(robot, provider);
@@ -45,12 +54,23 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
          jointEMovePosAction = new JointEMovePosAction(robot, provider);
 
 */
+
+        incrementAIncrementB = new IncrementAIncrementB(robot, provider);
+        incrementBDecrementA = new IncrementBDecrementA(robot, provider);
+        decrementBIncrementA = new DecrementBIncrementA(robot, provider);
+        decrementADecrementB = new DecrementADecrementB(robot, provider);
+
         noOpAction = new NoOpAction(robot, provider);
 
         actionsList.add(jointAMoveNegAction);
         actionsList.add(jointAMovePosAction);
         actionsList.add(jointBMoveNegAction);
         actionsList.add(jointBMovePosAction);
+
+        actionsList.add(incrementAIncrementB);
+        actionsList.add(incrementBDecrementA);
+        actionsList.add(decrementADecrementB);
+        actionsList.add(decrementBIncrementA);
 
         //actionsList.add(jointCMoveNegAction);
         //actionsList.add(jointCMovePosAction);

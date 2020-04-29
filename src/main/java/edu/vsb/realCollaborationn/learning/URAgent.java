@@ -27,7 +27,7 @@ public class URAgent {
     public static QLearning.QLConfiguration CARTPOLE_QL =
             new QLearning.QLConfiguration(
                     123,    //Random seed
-                    1500,    //Max step By epoch
+                    200,    //Max step By epoch
                     2500000, //Max step
                     25000, //Max size of experience replay
                     128,     //size of batches
@@ -43,7 +43,7 @@ public class URAgent {
 
     public static DQNFactoryStdDense.Configuration CARTPOLE_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.001)).numHiddenNodes(300).numLayer(2).build();
+                    .l2(0.001).updater(new Adam(0.0001)).numHiddenNodes(300).numLayer(2).build();
 
     public static void main(String[] args) throws IOException {
         System.setErr(new PrintStream("/dev/null"));
