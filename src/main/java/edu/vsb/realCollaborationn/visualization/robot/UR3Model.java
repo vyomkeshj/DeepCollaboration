@@ -310,6 +310,11 @@ public class UR3Model extends ArtifactStructure {
         return stepsTaken;
     }
 
+    public void setJointAngles(double angleA, double angleB) {
+        setBaseShoulderJointAngle(angleA);
+        setBaseShoulderJointAngle(angleB);
+    }
+
     synchronized public void reset() {
         setUpperArmShoulderJointAngle(0);
         setBaseShoulderJointAngle(0);

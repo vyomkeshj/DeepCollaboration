@@ -2,6 +2,7 @@ package edu.vsb.realCollaborationn.learning.model;
 
 import edu.vsb.realCollaborationn.learning.PointProvider;
 import edu.vsb.realCollaborationn.learning.actions.*;
+import edu.vsb.realCollaborationn.learning.actions.continuous.ContinuousAction;
 import edu.vsb.realCollaborationn.learning.actions.pairwise.DecrementADecrementB;
 import edu.vsb.realCollaborationn.learning.actions.pairwise.DecrementBIncrementA;
 import edu.vsb.realCollaborationn.learning.actions.pairwise.IncrementAIncrementB;
@@ -36,7 +37,11 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     DecrementADecrementB decrementADecrementB;
     DecrementBIncrementA decrementBIncrementA;
 
+    ContinuousAction continuousAction;
+
     public ActionSpace(UR3Model robot, PointProvider provider) {
+
+         continuousAction = new ContinuousAction(robot, provider);
          jointAMoveNegAction = new JointAMoveNegAction(robot, provider);
          jointBMoveNegAction = new JointBMoveNegAction(robot, provider);
 /*
@@ -101,6 +106,11 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         return actionsList.get(actionIndex).performAction();
     }
 
+    public StepReply<Observation> executeContinuousAction(double angleA, double angleB) {
+        return continuousAction.performAction(angleA, angleB);
+    }
+
+
     @Override
     public Action randomAction() {
         return actionsList.get(getRandomNumberInRange(0,actionsList.size()-1));
@@ -120,4 +130,6 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     public Action noOp() {
         return noOpAction;
     }
+
+
 }

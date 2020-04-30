@@ -58,7 +58,8 @@ public class Observation implements Encodable {
     }
 
     public INDArray getData() {
-        double[] stateArray = new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), currentTCPCoords.distance(targetTCPCoords)};
+        double[] stateArray = new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
+        , targetTCPCoords.getY()-currentTCPCoords.getY(), targetTCPCoords.getZ()-currentTCPCoords.getZ()};
         return Nd4j.create(stateArray);
     }
 
@@ -87,7 +88,7 @@ public class Observation implements Encodable {
 
         stepReward = (stepReward - lastReward);
         if(stepReward<0) {
-            return -2   ;
+            return -2;
         }
 
         return -1;
@@ -95,7 +96,8 @@ public class Observation implements Encodable {
 
     @Override
     public double[] toArray() {
-        return new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), currentTCPCoords.distance(targetTCPCoords)};
+        return new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
+                , targetTCPCoords.getY()-currentTCPCoords.getY(), targetTCPCoords.getZ()-currentTCPCoords.getZ()};
 
     }
 }
