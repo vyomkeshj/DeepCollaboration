@@ -55,7 +55,7 @@ public class URAgent {
     public static void urAgent() throws IOException {
 
 
-        MDP mdp = new RobotDecisionProcess();
+        MDP mdp = new RobotDecisionProcessDiscrete();
         //define the training
         QLearningDiscreteDense a3c = new QLearningDiscreteDense(mdp, CARTPOLE_NET, CARTPOLE_QL);
         //train
@@ -104,7 +104,7 @@ public class URAgent {
     }
 
     public static void testAgentPolicy() throws IOException {
-        MDP mdp2 = new RobotDecisionProcess(robotModel);
+        MDP mdp2 = new RobotDecisionProcessDiscrete(robotModel);
         //load the previous agent
         DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
 

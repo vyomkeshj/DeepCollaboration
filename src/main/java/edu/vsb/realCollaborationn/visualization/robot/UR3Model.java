@@ -306,6 +306,9 @@ public class UR3Model extends ArtifactStructure {
         return wrist1Wrist2JointTransformation.getAngle();
     }
 
+
+
+
     synchronized public int getStepsTaken() {
         return stepsTaken;
     }

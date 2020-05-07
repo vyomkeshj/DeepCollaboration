@@ -1,45 +1,44 @@
 package edu.vsb.realCollaborationn.learning;
 
 import edu.vsb.realCollaborationn.learning.model.*;
+import edu.vsb.realCollaborationn.learning.model.baseActionSpace.DiscreteActionSpace;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 
-import static edu.vsb.realCollaborationn.learning.Utils.getRandomPointsBetweenTwoConcentricSpheres;
-
-public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteActionSpace> {
+public class RobotDecisionProcessDiscrete implements MDP<Observation, Integer, DiscreteActionSpace> {
     public static int THREAD_NO = 0;
 
     UR3Model robotModel;
     ObservationSpace currentObservationSpace;
-    ActionSpace actionSpace;
+    RobotDiscreteActionSpace robotDiscreteActionSpace;
     DiscreteActionSpace currentActionSpace = new DiscreteActionSpace(5);    //todo: make dependent
     PointProvider targetProvider = new PointProvider();
     private boolean isDone = false;
 
 
-    public RobotDecisionProcess(UR3Model robotModel) {
+    public RobotDecisionProcessDiscrete(UR3Model robotModel) {
         Thread.currentThread().setName("Th"+THREAD_NO);
         THREAD_NO++;
 
         this.robotModel = robotModel;
         currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
-        actionSpace = new ActionSpace(robotModel, targetProvider);
+        robotDiscreteActionSpace = new RobotDiscreteActionSpace(robotModel, targetProvider);
     }
 
-    public RobotDecisionProcess() {
+    public RobotDecisionProcessDiscrete() {
         Thread.currentThread().setName("Th"+THREAD_NO);
         THREAD_NO++;
 
         this.robotModel = new UR3Model();
         currentObservationSpace = new ObservationSpace(robotModel, targetProvider.renewPointTarget());
-        actionSpace = new ActionSpace(robotModel, targetProvider);
+        robotDiscreteActionSpace = new RobotDiscreteActionSpace(robotModel, targetProvider);
     }
 
     public void setCurrentPointTargetForTCP(Point3D currentPointTargetForTCP) {
         robotModel.translateTargetSphere(currentPointTargetForTCP);
-        actionSpace.setTargetPoint(currentPointTargetForTCP);            //sets the target point that the robot has to reach
+        robotDiscreteActionSpace.setTargetPoint(currentPointTargetForTCP);            //sets the target point that the robot has to reach
     }
 
     @Override
@@ -66,7 +65,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public StepReply<Observation> step(Integer integer) {
-        StepReply<Observation> currentStepReply = actionSpace.executeActionAt(integer);
+        StepReply<Observation> currentStepReply = robotDiscreteActionSpace.executeActionAt(integer);
         isDone = currentStepReply.isDone();
         return currentStepReply;
     }
@@ -83,7 +82,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public MDP<Observation, Integer, DiscreteActionSpace> newInstance() {
-        return new RobotDecisionProcess();
+        return new RobotDecisionProcessDiscrete();
     }
 
 }

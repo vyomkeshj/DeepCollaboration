@@ -1,4 +1,4 @@
-package edu.vsb.realCollaborationn.learning.model;
+package edu.vsb.realCollaborationn.learning.model.baseActionSpace;
 
 import org.deeplearning4j.rl4j.space.DiscreteSpace;
 

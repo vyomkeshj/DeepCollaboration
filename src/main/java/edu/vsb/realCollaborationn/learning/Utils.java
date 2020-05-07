@@ -12,6 +12,7 @@ import static java.lang.Math.sin;
 public class Utils {
    public static boolean MADE_IT_TO_TARGET = true;
    public static Point3D CURRENT_TARGET;
+   public static final double PI = 3.14;
 
     public static int getRandomNumberInRange(int min, int max) {
         if (min >= max) {
