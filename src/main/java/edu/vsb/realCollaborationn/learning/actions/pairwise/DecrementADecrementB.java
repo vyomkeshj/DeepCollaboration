@@ -33,8 +33,7 @@ public class DecrementADecrementB implements Action {
         boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             reward = reward+REWARD_SUCCESS;
-            System.out.println("__DONE__%"+"REWARD="+reward+"TIME="+System.currentTimeMillis());
-
+            System.out.println("DONE__"+currentModel.getStepsTaken()+"__"+System.currentTimeMillis());
             provider.setMadeItToTarget(true);
             currentModel.reset();
         }

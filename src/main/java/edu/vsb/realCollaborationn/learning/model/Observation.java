@@ -58,7 +58,7 @@ public class Observation implements Encodable {
     }
 
     public INDArray getData() {
-        double[] stateArray = new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
+        double[] stateArray = new double[] {(3.14/180)*(robotModel.getA()), (3.14/180)*(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
         , targetTCPCoords.getY()-currentTCPCoords.getY(), targetTCPCoords.getZ()-currentTCPCoords.getZ()};
         return Nd4j.create(stateArray);
     }
@@ -67,37 +67,53 @@ public class Observation implements Encodable {
         return currentTCPCoords.distance(target);
     }
 
+    int rewardMomentum = 0;
     public double getReward(Point3D target) {
 
-        double stepFlipReward = 0;
-        if(robotModel.isStepFlip()) {
-            stepFlipReward = -0.4d;
+        if(rewardMomentum<-2) {
+            rewardMomentum = -2;
+        } else if (rewardMomentum > 10) {
+            rewardMomentum = 10;
         }
 
         if(currentTCPCoords.getY()<=0) {
-            return -2;
+            return -6;
         }
-        double stepReward = currentTCPCoords.distance(target);
+        double currentDistance = currentTCPCoords.distance(target);
 
         if(previousReward==0) {
-            previousReward = stepReward;
-            return stepReward;
+            previousReward = currentDistance;
+            return currentDistance;
         }
-        double lastReward = previousReward;
-        previousReward = stepReward;
+        double lastDistance = previousReward;
+        previousReward = currentDistance;
 
-        stepReward = (stepReward - lastReward);
-        if(stepReward<0) {
+        currentDistance = (currentDistance - lastDistance);
+
+        if(currentDistance<0) {
+            rewardMomentum = rewardMomentum-2;
             return -2;
+        } else {
+            rewardMomentum = rewardMomentum +3;
+            return -1;
         }
-
-        return -1;
     }
+
 
     @Override
     public double[] toArray() {
-        return new double[] {Math.sin(robotModel.getA()), Math.sin(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
+        return new double[] {(3.14/180)*(robotModel.getA()), (3.14/180)*(robotModel.getB()), targetTCPCoords.getX()-currentTCPCoords.getX()
                 , targetTCPCoords.getY()-currentTCPCoords.getY(), targetTCPCoords.getZ()-currentTCPCoords.getZ()};
 
+    }
+
+    @Override
+    public String toString() {
+        return "" +
+                (robotModel.getA()) +
+                "," +(robotModel.getB()) +
+                "," + (targetTCPCoords.getX()-currentTCPCoords.getX()) +
+                "," + (targetTCPCoords.getY()-currentTCPCoords.getY()) +
+                "," + (targetTCPCoords.getZ()-currentTCPCoords.getZ());
     }
 }

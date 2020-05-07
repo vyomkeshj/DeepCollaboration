@@ -25,13 +25,13 @@ public class ObservationSpace implements org.deeplearning4j.rl4j.space.Observati
 
     @Override
     public INDArray getLow() {
-        double[] stateArray = {-1,-1,0,0,0};
+        double[] stateArray = {-3.14,-3.14,0,0,0};
         return Nd4j.create(stateArray);
     }
 
     @Override
     public INDArray getHigh() {
-        double[] stateArray = {1,1,1.000,1,1};
+        double[] stateArray = {3.14,3.14,1.000,1,1};
         return Nd4j.create(stateArray);
     }
 

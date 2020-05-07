@@ -19,7 +19,7 @@ public class PointProvider {
             madeItToTarget=false;
             System.out.println("NEW TARGET:"+ targetPoint+"DEM BY"+Thread.currentThread().getName());
         }
-        //return new Point3D(0.159588, 0.516524, -0.396608);
+        //return new Point3D(-0.3107, 0.2893, 0.44794);
         return targetPoint;
     }
 

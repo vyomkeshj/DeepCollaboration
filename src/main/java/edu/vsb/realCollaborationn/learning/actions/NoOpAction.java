@@ -30,7 +30,7 @@ public class NoOpAction implements Action {
 
         Observation currentObservation = new Observation(currentModel, targetPoint);
         double reward = currentObservation.getReward(targetPoint);
-        reward = reward-2;
+        reward = reward-8;
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
         boolean isDone = (distanceFromTarget< DISTANCE_THRESH);

@@ -31,25 +31,25 @@ public class URAgent {
                     2500000, //Max step
                     25000, //Max size of experience replay
                     128,     //size of batches
-                    2,    //target update (hard)
-                    10,     //num step noop warmup
-                    0.01,   //reward scaling
+                    10,    //target update (hard)
+                    0,     //num step noop warmup
+                    0.1,   //reward scaling
                     0.90,   //gamma
                     1.0,    //td-error clipping
                     0.05f,   //min epsilon
-                    1000000,   //num step for eps greedy anneal
+                    100000,   //num step for eps greedy anneal
                     true    //double DQN
             );
 
     public static DQNFactoryStdDense.Configuration CARTPOLE_NET =
             DQNFactoryStdDense.Configuration.builder()
-                    .l2(0.001).updater(new Adam(0.0001)).numHiddenNodes(300).numLayer(2).build();
+                    .l2(0.001).updater(new Adam(0.00005)).numHiddenNodes(100).numLayer(2).build();
 
     public static void main(String[] args) throws IOException {
         System.setErr(new PrintStream("/dev/null"));
         urAgent();
         //loadAgent();
-        //testAgentPolicy()
+        //testAgentPolicy();
     }
 
     public static void urAgent() throws IOException {
@@ -79,7 +79,9 @@ public class URAgent {
 
             @Override
             public ListenerResponse onEpochTrainingResult(IEpochTrainer trainer, IDataManager.StatEntry statEntry) {
+
                 DQNPolicy policy = a3c.getPolicy();
+
                 //if(statEntry.getReward()<0)
                    //System.out.println("_________NegativeRewardInEpoch____________"+statEntry.getReward()+"__FromThread___"+Thread.currentThread().getName()+"TIME="+System.currentTimeMillis());
 
@@ -106,7 +108,7 @@ public class URAgent {
     public static void testAgentPolicy() throws IOException {
         MDP mdp2 = new RobotDecisionProcess(robotModel);
         //load the previous agent
-        DQNPolicy pol2 = DQNPolicy.load("saved_pol_constr/saved_policy_ep_299");
+        DQNPolicy pol2 = DQNPolicy.load("dqn/saved_policy_ep_1369");
 
         double reward = pol2.play(mdp2);
 

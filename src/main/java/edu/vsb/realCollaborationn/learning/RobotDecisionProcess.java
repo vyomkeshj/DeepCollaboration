@@ -6,8 +6,6 @@ import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 
-import static edu.vsb.realCollaborationn.learning.Utils.getRandomPointsBetweenTwoConcentricSpheres;
-
 public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteActionSpace> {
     public static int THREAD_NO = 0;
 

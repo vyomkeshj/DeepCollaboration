@@ -72,10 +72,10 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         actionsList.add(jointBMoveNegAction);
         actionsList.add(jointBMovePosAction);
 
-        actionsList.add(incrementAIncrementB);
-        actionsList.add(incrementBDecrementA);
-        actionsList.add(decrementADecrementB);
-        actionsList.add(decrementBIncrementA);
+        //actionsList.add(incrementAIncrementB);
+        //actionsList.add(incrementBDecrementA);
+        //actionsList.add(decrementADecrementB);
+        //actionsList.add(decrementBIncrementA);
 
         //actionsList.add(jointCMoveNegAction);
         //actionsList.add(jointCMovePosAction);
@@ -91,6 +91,10 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
     public void setTargetPoint(Point3D targetPoint) {
         jointAMoveNegAction.setTarget(targetPoint);
         jointBMoveNegAction.setTarget(targetPoint);
+        incrementAIncrementB.setTarget(targetPoint);
+        incrementBDecrementA.setTarget(targetPoint);
+        decrementADecrementB.setTarget(targetPoint);
+        decrementBIncrementA.setTarget(targetPoint);
         //jointCMoveNegAction.setTarget(targetPoint);
         //jointDMoveNegAction.setTarget(targetPoint);
         //jointEMoveNegAction.setTarget(targetPoint);

@@ -29,6 +29,7 @@ public class ContinuousAction implements Action {
     public StepReply<Observation> performAction() {
 
         Observation currentObservation = new Observation(currentModel, targetPoint);
+            System.out.println("Now here the observation ive made is: "+currentObservation.getJointAngleA()+","+currentObservation.getJointAngleB());
         double reward = currentObservation.getReward(targetPoint);
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);

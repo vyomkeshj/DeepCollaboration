@@ -22,7 +22,12 @@ public class UR3Model extends ArtifactStructure {
 
     private int stepsTaken = 0;
 
-    private float incrementBy = 10.0f;
+    private double maxStep = 5;
+    private double stepSize = 10.0f;
+    private double alpha = 0.8;
+
+    double momentumStepSizeB = 0;
+    double momentumStepSizeA = 0;
 
     private boolean jointAMovingPositive = true;
     private boolean jointBMovingPositive = true;
@@ -193,7 +198,9 @@ public class UR3Model extends ArtifactStructure {
     }
 
    synchronized public void incrementA() {
-        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        momentumStepSizeA = alpha*momentumStepSizeA + (1-alpha)*stepSize;
+        fixMomentumStepSize();
+        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + momentumStepSizeA);
         if(!jointAMovingPositive) {
             jointAMovingPositive = true;
             stepFlip = true;
@@ -202,7 +209,10 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void decrementA() {
-        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        momentumStepSizeA = alpha*momentumStepSizeA - (1-alpha)*stepSize;
+        fixMomentumStepSize();
+
+        setBaseShoulderJointAngle(baseShoulderJointTransformation.getAngle() + momentumStepSizeA);
 
         if(jointAMovingPositive) {
             jointAMovingPositive = false;
@@ -212,7 +222,10 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void incrementB() {
-        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + incrementBy);
+        momentumStepSizeB = alpha*momentumStepSizeB + (1-alpha)*stepSize;
+        fixMomentumStepSize();
+
+        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + momentumStepSizeB);
         if(!jointBMovingPositive) {
             jointBMovingPositive = true;
             stepFlip = true;
@@ -222,7 +235,10 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void decrementB() {
-        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() - incrementBy);
+        momentumStepSizeB = alpha*momentumStepSizeB - (1-alpha)*stepSize;
+        fixMomentumStepSize();
+
+        setUpperArmShoulderJointAngle(upperArmShoulderJointTransformation.getAngle() + momentumStepSizeB);
         if(jointBMovingPositive) {
             jointBMovingPositive = false;
             stepFlip = true;
@@ -231,8 +247,21 @@ public class UR3Model extends ArtifactStructure {
         stepsTaken++;
     }
 
+    void fixMomentumStepSize() {
+    if (momentumStepSizeA< -maxStep) {
+        momentumStepSizeA = -maxStep;
+    } else if(momentumStepSizeA >maxStep) {
+        momentumStepSizeA = maxStep;
+    }
+        if (momentumStepSizeB< -maxStep) {
+            momentumStepSizeB = -maxStep;
+        } else if(momentumStepSizeB >maxStep) {
+            momentumStepSizeB = maxStep;
+        }
+    }
+
     synchronized  public void incrementC() {
-        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() + stepSize);
         if(!jointCMovingPositive) {
             jointCMovingPositive = true;
             stepFlip = true;
@@ -242,7 +271,7 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void decrementC() {
-        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        setShoulderForeArmJointAngle(baseShoulderJointTransformation.getAngle() - stepSize);
         if(jointCMovingPositive) {
             jointCMovingPositive = false;
             stepFlip = true;
@@ -250,7 +279,7 @@ public class UR3Model extends ArtifactStructure {
         stepsTaken++;
     }
     synchronized public void incrementD() {
-        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() + stepSize);
         if(!jointDMovingPositive) {
             jointDMovingPositive = true;
             stepFlip = true;
@@ -259,7 +288,7 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void decrementD() {
-        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        setForeArmWrist1JointAngle(baseShoulderJointTransformation.getAngle() - stepSize);
         if(jointDMovingPositive) {
             jointDMovingPositive = false;
             stepFlip = true;
@@ -267,7 +296,7 @@ public class UR3Model extends ArtifactStructure {
         stepsTaken++;
     }
     synchronized public void incrementE() {
-        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + incrementBy);
+        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() + stepSize);
         if(!jointEMovingPositive) {
             jointEMovingPositive = true;
             stepFlip = true;
@@ -277,7 +306,7 @@ public class UR3Model extends ArtifactStructure {
     }
 
     synchronized public void decrementE() {
-        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - incrementBy);
+        setWrist1Wrist2JointAngle(baseShoulderJointTransformation.getAngle() - stepSize);
         if(jointEMovingPositive) {
             jointEMovingPositive = false;
             stepFlip = true;
@@ -312,7 +341,9 @@ public class UR3Model extends ArtifactStructure {
 
     public void setJointAngles(double angleA, double angleB) {
         setBaseShoulderJointAngle(angleA);
-        setBaseShoulderJointAngle(angleB);
+        setUpperArmShoulderJointAngle(angleB);
+        System.out.println("set angles "+getA()+","+getB());
+        stepsTaken++;
     }
 
     synchronized public void reset() {

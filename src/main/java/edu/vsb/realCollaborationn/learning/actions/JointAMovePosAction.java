@@ -31,7 +31,7 @@ public class JointAMovePosAction implements Action {
 
         boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
-            System.out.println("__DONE__%"+"REWARD="+reward+"TIME="+System.currentTimeMillis());
+            System.out.println("DONE__"+currentModel.getStepsTaken()+"__"+System.currentTimeMillis());
             reward = reward+REWARD_SUCCESS;
             provider.setMadeItToTarget(true);
             currentModel.reset();
