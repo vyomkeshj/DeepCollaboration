@@ -95,6 +95,7 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         incrementBDecrementA.setTarget(targetPoint);
         decrementADecrementB.setTarget(targetPoint);
         decrementBIncrementA.setTarget(targetPoint);
+        continuousAction.setTarget(targetPoint);
         //jointCMoveNegAction.setTarget(targetPoint);
         //jointDMoveNegAction.setTarget(targetPoint);
         //jointEMoveNegAction.setTarget(targetPoint);

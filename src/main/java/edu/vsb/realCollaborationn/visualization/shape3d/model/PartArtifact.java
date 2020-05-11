@@ -63,7 +63,7 @@ public class PartArtifact implements Artifact {
         Transform returnTransform;
         try {
              returnTransform = artifactModel.getLocalToParentTransform();
-        } catch (Exception e) {
+        } catch (Error e) {
             e.printStackTrace();
             returnTransform = artifactModel.getLocalToParentTransform();
         }

@@ -17,9 +17,8 @@ public class PointProvider {
             robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 90));
             targetPoint = robotModel.getTCPcoords();
             madeItToTarget=false;
-            System.out.println("NEW TARGET:"+ targetPoint+"DEM BY"+Thread.currentThread().getName());
+            System.out.println("NEW_TARGET:"+ targetPoint);
         }
-        //return new Point3D(-0.3107, 0.2893, 0.44794);
         return targetPoint;
     }
 

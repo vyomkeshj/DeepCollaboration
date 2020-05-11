@@ -10,6 +10,8 @@ import javafx.scene.transform.Rotate;
 import java.io.IOException;
 import java.net.URL;
 
+import static org.apache.commons.math3.util.MathUtils.TWO_PI;
+
 public class UR3Model extends ArtifactStructure {
 
     private static final double PI = 3.14;
@@ -24,10 +26,13 @@ public class UR3Model extends ArtifactStructure {
 
     private double maxStep = 5;
     private double stepSize = 10.0f;
-    private double alpha = 0.8;
+    private double alpha = 0.5;
 
     double momentumStepSizeB = 0;
     double momentumStepSizeA = 0;
+
+    double lastAngleA = 0;
+    double lastAngleB = 0;
 
     private boolean jointAMovingPositive = true;
     private boolean jointBMovingPositive = true;
@@ -342,9 +347,31 @@ public class UR3Model extends ArtifactStructure {
     public void setJointAngles(double angleA, double angleB) {
         setBaseShoulderJointAngle(angleA);
         setUpperArmShoulderJointAngle(angleB);
-        System.out.println("set angles "+getA()+","+getB());
         stepsTaken++;
     }
+
+    public void updateJointAnglesBy(double angleA, double angleB) {
+
+        stepFlip = (lastAngleA<0 && angleA>0) || (lastAngleA>0 && angleA<0)
+        ||  (lastAngleB<0 && angleB>0) || (lastAngleB>0 && angleB<0);
+
+        lastAngleA = angleA;
+        lastAngleB = angleB;
+
+        momentumStepSizeA = alpha*momentumStepSizeA + (1-alpha)*angleA;
+        momentumStepSizeB = alpha*momentumStepSizeB + (1-alpha)*angleB;
+        fixMomentumStepSize();
+        angleA = baseShoulderJointTransformation.getAngle() + momentumStepSizeA;
+        angleA = angleA - 360 * Math.floor((angleA + 180) / 360);
+        angleB = upperArmShoulderJointTransformation.getAngle() + momentumStepSizeB;
+        angleB = angleB - 360 * Math.floor((angleB + 180) / 360);
+
+        setBaseShoulderJointAngle(angleA);
+        setUpperArmShoulderJointAngle(angleB);
+        stepsTaken++;
+
+    }
+
 
     synchronized public void reset() {
         setUpperArmShoulderJointAngle(0);

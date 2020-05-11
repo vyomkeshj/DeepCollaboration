@@ -2,6 +2,7 @@ package edu.vsb.realCollaborationn.learning;
 
 import edu.vsb.realCollaborationn.learning.model.*;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
+import edu.vsb.realCollaborationn.visualization.shape3d.model.ArtifactStructure;
 import javafx.geometry.Point3D;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
@@ -52,6 +53,8 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public Observation reset() {
+        System.out.println("Model reset");
+        targetProvider.setMadeItToTarget(true);
         robotModel.reset();
         setCurrentPointTargetForTCP(targetProvider.renewPointTarget());
         return new Observation(robotModel);
@@ -75,6 +78,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
 
     @Override
     public boolean isDone() {
+        //fixme: is this good?
          if(isDone) {
              isDone = false;
              reset();
@@ -88,4 +92,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
         return new RobotDecisionProcess();
     }
 
+    public ArtifactStructure getModel() {
+        return robotModel;
+    }
 }

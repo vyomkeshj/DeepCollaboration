@@ -67,15 +67,7 @@ public class Observation implements Encodable {
         return currentTCPCoords.distance(target);
     }
 
-    int rewardMomentum = 0;
     public double getReward(Point3D target) {
-
-        if(rewardMomentum<-2) {
-            rewardMomentum = -2;
-        } else if (rewardMomentum > 10) {
-            rewardMomentum = 10;
-        }
-
         if(currentTCPCoords.getY()<=0) {
             return -6;
         }
@@ -90,13 +82,10 @@ public class Observation implements Encodable {
 
         currentDistance = (currentDistance - lastDistance);
 
-        if(currentDistance<0) {
-            rewardMomentum = rewardMomentum-2;
-            return -2;
-        } else {
-            rewardMomentum = rewardMomentum +3;
-            return -1;
+        if(robotModel.isStepFlip()) {
+            return -3;
         }
+       return -1;
     }
 
 
@@ -109,11 +98,16 @@ public class Observation implements Encodable {
 
     @Override
     public String toString() {
+
+        double x =targetTCPCoords.getX()-currentTCPCoords.getX();
+                double y = targetTCPCoords.getY()-currentTCPCoords.getY();
+                double z = targetTCPCoords.getZ()-currentTCPCoords.getZ();
         return "" +
                 (robotModel.getA()) +
-                "," +(robotModel.getB()) +
-                "," + (targetTCPCoords.getX()-currentTCPCoords.getX()) +
-                "," + (targetTCPCoords.getY()-currentTCPCoords.getY()) +
-                "," + (targetTCPCoords.getZ()-currentTCPCoords.getZ());
+                "," +(robotModel.getB()
+                +","
+                +x+","
+                +y
+                +","+z) ;
     }
 }

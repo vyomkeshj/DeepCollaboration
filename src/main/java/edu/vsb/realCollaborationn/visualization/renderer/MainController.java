@@ -31,15 +31,11 @@
  */
 package edu.vsb.realCollaborationn.visualization.renderer;
 
+import edu.vsb.realCollaborationn.learning.ModelCommunication;
 import edu.vsb.realCollaborationn.learning.URAgent;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.importers.Optimizer;
-import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import edu.vsb.realCollaborationn.visualization.shape3d.model.ArtifactStructure;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -50,10 +46,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.MeshView;
-import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,17 +106,13 @@ public class MainController implements Initializable {
 //            System.out.println("supportedFormatRegex[i] = " + supportedFormatRegex[i]);
         }
         // do initial status update
-        ArtifactStructure model = URAgent.robotModel;
+        ArtifactStructure model = ModelCommunication.decisionProcess.getModel();
 
         new Thread() {
             @Override
             public void run() {
                 super.run();
-                try {
-                    URAgent.testAgentPolicy();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                 ModelCommunication.run();
             }
         }.start();
 

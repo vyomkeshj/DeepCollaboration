@@ -6,9 +6,12 @@ import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
 public class ModelCommunication {
+    public static RobotDecisionProcess decisionProcess = new RobotDecisionProcess();
 
     public static void main(String[] args) {
-        RobotDecisionProcess decisionProcess = new RobotDecisionProcess();
+        run();
+    }
+    public static void run() {
 
         while (true) {
 
@@ -21,17 +24,17 @@ public class ModelCommunication {
                     byte[] reply = socket.recv(0);
                     // Print the message
                     String s = new String(reply, ZMQ.CHARSET);
-                    System.out.println(s);
+                    //System.out.println("input__"+s);
                     if (s.contains(",")) {
                         String[] data = s.split(",");
-                        double angleA = Double.parseDouble(data[0])*(180/3.14);
-                        double angleB = Double.parseDouble(data[1])*(180/3.14);
+                        double angleA = Double.parseDouble(data[0]);
+                        double angleB = Double.parseDouble(data[1]);
 
                         StepReply<Observation> observationStepReply = decisionProcess.step(angleA, angleB);
                         String response = observationStepReply.getObservation().toString()
                                 + "," + observationStepReply.getReward()
                                 + "," + (observationStepReply.isDone() ? 1 : 0);
-                        System.out.println("Observation" + response);
+                        //System.out.println("Observation" + response);
 
                         socket.send(response.getBytes(ZMQ.CHARSET), 0);
                     } else {

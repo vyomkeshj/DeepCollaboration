@@ -21,23 +21,22 @@ public class ContinuousAction implements Action {
     }
 
     public StepReply<Observation> performAction(double angleA, double angleB) {
-        currentModel.setJointAngles(angleA, angleB);
+        currentModel.updateJointAnglesBy(angleA, angleB);
         return performAction();
     }
 
         @Override
     public StepReply<Observation> performAction() {
-
+        targetPoint = provider.renewPointTarget();
         Observation currentObservation = new Observation(currentModel, targetPoint);
-            System.out.println("Now here the observation ive made is: "+currentObservation.getJointAngleA()+","+currentObservation.getJointAngleB());
-        double reward = currentObservation.getReward(targetPoint);
+        double reward = currentObservation.getReward(provider.renewPointTarget());
 
         double distanceFromTarget = currentObservation.getDistanceFromTarget(targetPoint);
 
         boolean isDone = (distanceFromTarget< DISTANCE_THRESH);
         if(isDone) {
             reward = reward+REWARD_SUCCESS;
-            System.out.println("__DONE__%"+"REWARD="+reward+"TIME="+System.currentTimeMillis());
+            System.out.println("DONE__"+"REWARD__"+reward+"__TIME="+System.currentTimeMillis());
 
             provider.setMadeItToTarget(true);
             currentModel.reset();
