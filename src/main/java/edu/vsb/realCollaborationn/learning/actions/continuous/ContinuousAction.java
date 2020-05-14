@@ -20,8 +20,8 @@ public class ContinuousAction implements Action {
         this.targetPoint = provider.renewPointTarget();
     }
 
-    public StepReply<Observation> performAction(double angleA, double angleB) {
-        currentModel.updateJointAnglesBy(angleA, angleB);
+    public StepReply<Observation> performAction(double angleA, double angleB, double angleC, double angleD, double angleE) {
+        currentModel.updateJointAnglesBy(angleA, angleB, angleC, angleD, angleE);
         return performAction();
     }
 

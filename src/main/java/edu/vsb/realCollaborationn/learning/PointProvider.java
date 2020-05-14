@@ -15,6 +15,9 @@ public class PointProvider {
             //set the random angles to the joints that are unconstrained
             robotModel.rotateAtJoint(2, getRandomDoubleInRange(0, 360));
             robotModel.rotateAtJoint(4, getRandomDoubleInRange(0, 90));
+            robotModel.rotateAtJoint(6, getRandomDoubleInRange(0, 120));
+            robotModel.rotateAtJoint(8, getRandomDoubleInRange(0, 120));
+
             targetPoint = robotModel.getTCPcoords();
             madeItToTarget=false;
             System.out.println("NEW_TARGET:"+ targetPoint);

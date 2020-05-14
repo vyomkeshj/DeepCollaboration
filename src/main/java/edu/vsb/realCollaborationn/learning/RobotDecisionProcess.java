@@ -72,8 +72,8 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
         return currentStepReply;
     }
 
-    public StepReply<Observation> step(double angleA, double angleB) {
-    return actionSpace.executeContinuousAction(angleA, angleB);
+    public StepReply<Observation> step(double angleA, double angleB, double angleC, double angleD, double angleE) {
+    return actionSpace.executeContinuousAction(angleA, angleB, angleC, angleD, angleE);
     }
 
     @Override

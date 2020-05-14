@@ -71,17 +71,6 @@ public class Observation implements Encodable {
         if(currentTCPCoords.getY()<=0) {
             return -6;
         }
-        double currentDistance = currentTCPCoords.distance(target);
-
-        if(previousReward==0) {
-            previousReward = currentDistance;
-            return currentDistance;
-        }
-        double lastDistance = previousReward;
-        previousReward = currentDistance;
-
-        currentDistance = (currentDistance - lastDistance);
-
         if(robotModel.isStepFlip()) {
             return -3;
         }
@@ -103,11 +92,7 @@ public class Observation implements Encodable {
                 double y = targetTCPCoords.getY()-currentTCPCoords.getY();
                 double z = targetTCPCoords.getZ()-currentTCPCoords.getZ();
         return "" +
-                (robotModel.getA()) +
-                "," +(robotModel.getB()
-                +","
-                +x+","
-                +y
-                +","+z) ;
+                (robotModel.getA()) + "," +(robotModel.getB()) +"," +(robotModel.getC()) +"," +(robotModel.getD()) +"," +(robotModel.getE() )+","
+                +x+"," +y +","+z;
     }
 }

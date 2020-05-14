@@ -111,8 +111,8 @@ public class ActionSpace implements org.deeplearning4j.rl4j.space.ActionSpace<Ac
         return actionsList.get(actionIndex).performAction();
     }
 
-    public StepReply<Observation> executeContinuousAction(double angleA, double angleB) {
-        return continuousAction.performAction(angleA, angleB);
+    public StepReply<Observation> executeContinuousAction(double angleA, double angleB, double angleC, double angleD, double angleE) {
+        return continuousAction.performAction(angleA, angleB, angleC, angleD, angleE);
     }
 
 
