@@ -87,10 +87,12 @@ public class Observation implements Encodable {
 
     @Override
     public String toString() {
-        double x =targetTCPCoords.getX();
-        double y = targetTCPCoords.getY();
-        double z = targetTCPCoords.getZ();
-        return "" + (robotModel.getA()) + "," +(robotModel.getB()) +"," +(robotModel.getC()) +"," +(robotModel.getD())
-                +"," +(robotModel.getE() )+"," +x+"," +y +","+z;
+        double xf =targetTCPCoords.getX() - currentTCPCoords.getX();    //initial is the target
+        double yf = targetTCPCoords.getY() - currentTCPCoords.getY();
+        double zf = targetTCPCoords.getZ() - currentTCPCoords.getZ();
+         String ret = "" + (robotModel.getA()) + "," +(robotModel.getB()) +"," +(robotModel.getC()) +"," +(robotModel.getD())
+                +"," +(robotModel.getE() )+"," +xf+"," +yf +","+zf;
+        //System.out.println("returning="+ret);
+        return ret;
     }
 }

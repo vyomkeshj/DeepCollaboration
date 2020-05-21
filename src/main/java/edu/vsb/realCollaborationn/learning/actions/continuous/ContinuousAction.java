@@ -39,7 +39,7 @@ public class ContinuousAction implements Action {
             System.out.println("DONE__"+"REWARD__"+reward+"__TIME="+System.currentTimeMillis());
 
             provider.setMadeItToTarget(true);
-            currentModel.reset();
+            //currentModel.reset(); fixme: returning zeros
         }
         StepReply<Observation> reply = new StepReply<Observation>(currentObservation, reward, isDone, new JSONObject(currentObservation));
         return reply;
