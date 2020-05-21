@@ -68,12 +68,6 @@ public class MainController implements Initializable {
     public ToggleButton settingsBtn;
     public CheckMenuItem loadAsPolygonsCheckBox;
     public CheckMenuItem optimizeCheckBox;
-    public Button startBtn;
-    public Button rwBtn;
-    public ToggleButton playBtn;
-    public Button ffBtn;
-    public Button endBtn;
-    public ToggleButton loopBtn;
     public TimelineDisplay timelineDisplay;
     private Accordion settingsPanel;
     private double settingsLastWidth = -1;

@@ -356,6 +356,10 @@ public class UR3Model extends ArtifactStructure {
         stepsTaken++;
     }
 
+    public Rotate getTCPRotation() {
+        return wrist2Wrist3JointTransformation;
+    }
+
     public void updateJointAnglesBy(double angleA, double angleB, double angleC, double angleD, double angleE) {
 
         stepFlip = (lastAngleA<0 && angleA>0) || (lastAngleA>0 && angleA<0)
@@ -399,11 +403,11 @@ public class UR3Model extends ArtifactStructure {
 
         stepsTaken++;
 
-        try {
+      /*  try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 
