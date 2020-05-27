@@ -29,11 +29,8 @@ public class ModelCommunication {
                         String[] data = s.split(",");
                         double angleA = Double.parseDouble(data[0]);
                         double angleB = Double.parseDouble(data[1]);
-                        double angleC = Double.parseDouble(data[2]);
-                        double angleD = Double.parseDouble(data[3]);
-                        double angleE = Double.parseDouble(data[4]);
 
-                        StepReply<Observation> observationStepReply = decisionProcess.step(angleA, angleB, angleC, angleD, angleE);
+                        StepReply<Observation> observationStepReply = decisionProcess.step(angleA, angleB, 0, 0, 0);
                         String response = observationStepReply.getObservation().toString()
                                 + "," + observationStepReply.getReward()
                                 + "," + (observationStepReply.isDone() ? 1 : 0);

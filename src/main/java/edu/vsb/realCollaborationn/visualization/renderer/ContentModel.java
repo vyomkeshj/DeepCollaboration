@@ -31,6 +31,7 @@
  */
 package edu.vsb.realCollaborationn.visualization.renderer;
 
+import edu.vsb.realCollaborationn.learning.ModelCommunication;
 import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import edu.vsb.realCollaborationn.visualization.shape3d.PolygonMeshView;
 import edu.vsb.realCollaborationn.visualization.shape3d.SubdivisionMesh;
@@ -135,6 +136,21 @@ public class ContentModel {
             }
         }
     };
+
+    private SimpleBooleanProperty toggleVisualization = new SimpleBooleanProperty(true){
+        @Override
+        protected void invalidated() {
+            UR3Model model = ModelCommunication.decisionProcess.getModel();
+
+            if (!model.isVisualizationOn()) {
+                    setContent(null);
+            } else {
+                setContent(model.getStructureNode());
+            }
+        }
+    };
+
+
     private Rotate yUpRotate = new Rotate(0,0,0,0, Rotate.X_AXIS);
     private SimpleBooleanProperty yUp = new SimpleBooleanProperty(false){
         @Override
@@ -401,17 +417,16 @@ public class ContentModel {
         this.yUp.set(yUp);
     }
 
-    public boolean getShowAxis() {
-        return showAxis.get();
-    }
 
     public SimpleBooleanProperty showAxisProperty() {
         return showAxis;
     }
 
-    public void setShowAxis(boolean showAxis) {
-        this.showAxis.set(showAxis);
+    public SimpleBooleanProperty visualiseModelProperty() {
+        return toggleVisualization;
     }
+
+
 
     public AutoScalingGroup getAutoScalingGroup() {
         return autoScalingGroup;

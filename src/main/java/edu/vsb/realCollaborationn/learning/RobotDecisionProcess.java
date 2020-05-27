@@ -92,7 +92,7 @@ public class RobotDecisionProcess implements MDP<Observation, Integer, DiscreteA
         return new RobotDecisionProcess();
     }
 
-    public ArtifactStructure getModel() {
+    public UR3Model getModel() {
         return robotModel;
     }
 }

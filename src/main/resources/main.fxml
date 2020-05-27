@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <Pane maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
       <TimelineDisplay fx:id="timelineDisplay" />
 
-      <ToggleButton fx:id="settingsBtn" mnemonicParsing="false" onAction="#toggleSettings" text="Settings" />
+      <ToggleButton fx:id="toggleVizButton" mnemonicParsing="false" onAction="#toggleSettings" text="Toggle Viz Speed" />
     </items>
   </ToolBar>
   <SplitPane fx:id="splitPane" dividerPositions="" focusTraversable="true" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />

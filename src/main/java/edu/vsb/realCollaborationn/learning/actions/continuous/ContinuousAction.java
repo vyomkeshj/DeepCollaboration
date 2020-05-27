@@ -25,7 +25,7 @@ public class ContinuousAction implements Action {
         return performAction();
     }
 
-        @Override
+    @Override
     public StepReply<Observation> performAction() {
         targetPoint = provider.renewPointTarget();
         Observation currentObservation = new Observation(currentModel, targetPoint);

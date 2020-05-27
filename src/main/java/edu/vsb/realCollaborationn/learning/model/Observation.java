@@ -72,7 +72,7 @@ public class Observation implements Encodable {
             return -6;
         }
         if(robotModel.isStepFlip()) {
-            return -3;
+            return -4;
         }
        return -1;
     }
@@ -88,11 +88,11 @@ public class Observation implements Encodable {
     @Override
     public String toString() {
 
-        double x =targetTCPCoords.getX()-currentTCPCoords.getX();
-                double y = targetTCPCoords.getY()-currentTCPCoords.getY();
-                double z = targetTCPCoords.getZ()-currentTCPCoords.getZ();
+        double x =targetTCPCoords.getX();
+                double y = targetTCPCoords.getY();
+                double z = targetTCPCoords.getZ();
         return "" +
-                (robotModel.getA()) + "," +(robotModel.getB()) +"," +(robotModel.getC()) +"," +(robotModel.getD()) +"," +(robotModel.getE() )+","
+                (robotModel.getA()) + "," +(robotModel.getB()) +","
                 +x+"," +y +","+z;
     }
 }

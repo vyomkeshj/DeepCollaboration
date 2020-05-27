@@ -24,6 +24,15 @@ public class UR3Model extends ArtifactStructure {
 
     private int stepsTaken = 0;
 
+    public boolean isVisualizationOn() {
+        return isVisualizationOn;
+    }
+
+    public void setVisualizationOn(boolean visualizationOn) {
+        isVisualizationOn = visualizationOn;
+    }
+
+    private boolean isVisualizationOn = false;
     private double maxStep = 5;
     private double stepSize = 10.0f;
     private double alpha = 0.5;
@@ -359,22 +368,13 @@ public class UR3Model extends ArtifactStructure {
     public void updateJointAnglesBy(double angleA, double angleB, double angleC, double angleD, double angleE) {
 
         stepFlip = (lastAngleA<0 && angleA>0) || (lastAngleA>0 && angleA<0)
-        ||  (lastAngleB<0 && angleB>0) || (lastAngleB>0 && angleB<0)
-                ||  (lastAngleC<0 && angleC>0) || (lastAngleC>0 && angleC<0)
-                ||  (lastAngleD<0 && angleD>0) || (lastAngleD>0 && angleD<0)
-                ||  (lastAngleE<0 && angleE>0) || (lastAngleE>0 && angleE<0);
+        ||  (lastAngleB<0 && angleB>0) || (lastAngleB>0 && angleB<0);
 
         lastAngleA = angleA;
         lastAngleB = angleB;        //assign to
-        lastAngleC = angleC;
-        lastAngleD = angleD;
-        lastAngleE = angleE;
 
         momentumStepSizeA = alpha*momentumStepSizeA + (1-alpha)*angleA;
         momentumStepSizeB = alpha*momentumStepSizeB + (1-alpha)*angleB;
-        momentumStepSizeC = alpha*momentumStepSizeC + (1-alpha)*angleC;
-        momentumStepSizeD = alpha*momentumStepSizeD + (1-alpha)*angleD;
-        momentumStepSizeE = alpha*momentumStepSizeE + (1-alpha)*angleE;
 
         fixMomentumStepSize();
         angleA = baseShoulderJointTransformation.getAngle() + momentumStepSizeA;
@@ -382,27 +382,17 @@ public class UR3Model extends ArtifactStructure {
         angleB = upperArmShoulderJointTransformation.getAngle() + momentumStepSizeB;
         angleB = angleB - 360 * Math.floor((angleB + 180) / 360);
 
-        angleC = shoulderForeArmJointTransformation.getAngle() + momentumStepSizeC;
-        angleC = angleC- 360 * Math.floor((angleC + 180) / 360);
-
-        angleD = foreArmWrist1JointTransformation.getAngle() + momentumStepSizeD;
-        angleD = angleD - 360 * Math.floor((angleD + 180) / 360);
-
-        angleE = wrist1Wrist2JointTransformation.getAngle() + momentumStepSizeE;
-        angleE = angleE - 360 * Math.floor((angleE + 180) / 360);
-
         setBaseShoulderJointAngle(angleA);
         setUpperArmShoulderJointAngle(angleB);
-        setShoulderForeArmJointAngle(angleC);
-        setForeArmWrist1JointAngle(angleD);
-        setWrist1Wrist2JointAngle(angleE);
 
         stepsTaken++;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(isVisualizationOn) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

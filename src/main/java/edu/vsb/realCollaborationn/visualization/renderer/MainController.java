@@ -32,10 +32,9 @@
 package edu.vsb.realCollaborationn.visualization.renderer;
 
 import edu.vsb.realCollaborationn.learning.ModelCommunication;
-import edu.vsb.realCollaborationn.learning.URAgent;
 import edu.vsb.realCollaborationn.visualization.importers.Importer3D;
 import edu.vsb.realCollaborationn.visualization.importers.Optimizer;
-import edu.vsb.realCollaborationn.visualization.shape3d.model.ArtifactStructure;
+import edu.vsb.realCollaborationn.visualization.robot.UR3Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,8 +50,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -65,15 +62,9 @@ public class MainController implements Initializable {
     public SplitMenuButton openMenuBtn;
     public Label status;
     public SplitPane splitPane;
-    public ToggleButton settingsBtn;
+    public ToggleButton toggleVizButton;
     public CheckMenuItem loadAsPolygonsCheckBox;
     public CheckMenuItem optimizeCheckBox;
-    public Button startBtn;
-    public Button rwBtn;
-    public ToggleButton playBtn;
-    public Button ffBtn;
-    public Button endBtn;
-    public ToggleButton loopBtn;
     public TimelineDisplay timelineDisplay;
     private Accordion settingsPanel;
     private double settingsLastWidth = -1;
@@ -85,7 +76,7 @@ public class MainController implements Initializable {
     private String loadedURL;
     private String[] supportedFormatRegex;
     private SessionManager sessionManager = SessionManager.getSessionManager();
-
+    private UR3Model model;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -106,8 +97,7 @@ public class MainController implements Initializable {
 //            System.out.println("supportedFormatRegex[i] = " + supportedFormatRegex[i]);
         }
         // do initial status update
-        ArtifactStructure model = ModelCommunication.decisionProcess.getModel();
-
+         model = ModelCommunication.decisionProcess.getModel();
         new Thread() {
             @Override
             public void run() {
@@ -137,19 +127,6 @@ public class MainController implements Initializable {
         loadedPath = file;
         try {
             doLoad(file.toURI().toURL().toString());
-        } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void load(String fileUrl) {
-        try {
-            try {
-                loadedPath = new File(new URL(fileUrl).toURI()).getAbsoluteFile();
-            } catch (IllegalArgumentException | MalformedURLException | URISyntaxException ignored) {
-                loadedPath = null;
-            }
-            doLoad(fileUrl);
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -208,15 +185,10 @@ public class MainController implements Initializable {
 
     public void toggleSettings(ActionEvent event) {
         final SplitPane.Divider divider = splitPane.getDividers().get(0);
-        if (settingsBtn.isSelected()) {
-            if (settingsLastWidth == -1) {
-                settingsLastWidth = settingsPanel.prefWidth(-1);
-            }
-            final double divPos = 1 - (settingsLastWidth / splitPane.getWidth());
-
+        if (toggleVizButton.isSelected()) {
+            model.setVisualizationOn(true);
         } else {
-            settingsLastWidth = settingsPanel.getWidth();
-            settingsPanel.setMinWidth(0);
+            model.setVisualizationOn(false);
         }
     }
 }
